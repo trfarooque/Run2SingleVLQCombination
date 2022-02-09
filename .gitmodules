@@ -1,0 +1,3 @@
+[submodule "workspaceCombiner"]
+	path = workspaceCombiner
+	url = https://gitlab.cern.ch/atlas_higgs_combination/software/workspaceCombiner.git
