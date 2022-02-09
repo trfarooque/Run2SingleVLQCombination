@@ -1,0 +1,6 @@
+-BEGIN
+NAME: HTX_c1lep0Tex0Hex6jin3bex
+LEGENDX: m_{eff} [GeV]
+LEGEND: 1lep, 0t, 0H, #geq6j, 3b
+BINNING: 1000,1200,1400,1600,1900,2500,3500
+-END

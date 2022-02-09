@@ -1,0 +1,87 @@
+  <Channel Name="WTX_binned">
+    <File Name="#WTX#"/>
+    <Workspace Name="combined"/>
+    <ModelConfig Name="ModelConfig"/>
+    <ModelPOI Name="mu_signal"/>
+    <ModelData Name="#DATA#"/>
+    <RenameMap>
+      <Syst OldName = "WTX_BKGNORM_TTbar"     NewName =       "WTX_BKGNORM_TTbar" />
+      <Syst OldName = "alpha_EG_RESOLUTION_ALL"     NewName =       "alpha_EG_RESOLUTION_ALL" />
+      <Syst OldName = "alpha_EG_SCALE_ALL"     NewName =       "alpha_EG_SCALE_ALL" />
+      <Syst OldName = "alpha_EL_EFF_Iso_TOTAL_1NPCOR_PLUS_UNCOR"     NewName =       "alpha_EL_EFF_Iso_TOTAL_1NPCOR_PLUS_UNCOR" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_B_0"     NewName =       "alpha_FT_EFF_OLD_Eigen_B_0" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_B_1"     NewName =       "alpha_FT_EFF_OLD_Eigen_B_1" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_B_2"     NewName =       "alpha_FT_EFF_OLD_Eigen_B_2" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_C_0"     NewName =       "alpha_FT_EFF_OLD_Eigen_C_0" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_C_1"     NewName =       "alpha_FT_EFF_OLD_Eigen_C_1" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_C_2"     NewName =       "alpha_FT_EFF_OLD_Eigen_C_2" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_C_3"     NewName =       "alpha_FT_EFF_OLD_Eigen_C_3" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_0"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_0" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_1"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_1" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_11"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_11" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_13"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_13" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_2"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_2" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_3"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_3" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_4"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_4" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_5"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_5" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_6"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_6" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_7"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_7" />
+      <Syst OldName = "alpha_FT_EFF_Eigen_Light_8"     NewName =       "alpha_FT_EFF_OLD_Eigen_Light_8" />
+      <Syst OldName = "alpha_FT_EFF_extrapolation"     NewName =       "alpha_FT_EFF_OLD_extrapolation" />
+      <Syst OldName = "alpha_FT_EFF_extrapolation_from_charm"     NewName =       "alpha_FT_EFF_OLD_extrapolation_from_charm" />
+      <Syst OldName = "alpha_JET_BJES_Response"     NewName =       "alpha_JET_BJES_Response" />
+      <Syst OldName = "alpha_JET_EffectiveNP_1"     NewName =       "alpha_JET_EffectiveNP_1" />
+      <Syst OldName = "alpha_JET_EffectiveNP_2"     NewName =       "alpha_JET_EffectiveNP_2" />
+      <Syst OldName = "alpha_JET_EffectiveNP_3"     NewName =       "alpha_JET_EffectiveNP_3" />
+      <Syst OldName = "alpha_JET_EffectiveNP_4"     NewName =       "alpha_JET_EffectiveNP_4" />
+      <Syst OldName = "alpha_JET_EffectiveNP_5"     NewName =       "alpha_JET_EffectiveNP_5" />
+      <Syst OldName = "alpha_JET_EffectiveNP_7"     NewName =       "alpha_JET_EffectiveNP_7" />
+      <Syst OldName = "alpha_JET_EffectiveNP_8restTerm"     NewName =       "alpha_JET_EffectiveNP_8restTerm" />
+      <Syst OldName = "alpha_JET_EtaIntercalibration_Modelling"     NewName =       "alpha_JET_EtaIntercalibration_Modelling" />
+      <Syst OldName = "alpha_JET_EtaIntercalibration_NonClosure"     NewName =       "alpha_JET_EtaIntercalibration_NonClosure" />
+      <Syst OldName = "alpha_JET_EtaIntercalibration_TotalStat"     NewName =       "alpha_JET_EtaIntercalibration_TotalStat" />
+      <Syst OldName = "alpha_JET_Flavor_Composition"     NewName =       "alpha_JET_Flavor_Composition" />
+      <Syst OldName = "alpha_JET_Flavor_Response"     NewName =       "alpha_JET_Flavor_Response" />
+      <Syst OldName = "alpha_JET_JER_SINGLE_NP"     NewName =       "alpha_JET_JER_SINGLE_NP" />
+      <Syst OldName = "alpha_JET_JvtEfficiency"     NewName =       "alpha_JET_JvtEfficiency" />
+      <Syst OldName = "alpha_JET_Pileup_OffsetMu"     NewName =       "alpha_JET_Pileup_OffsetMu" />
+      <Syst OldName = "alpha_JET_Pileup_OffsetNPV"     NewName =       "alpha_JET_Pileup_OffsetNPV" />
+      <Syst OldName = "alpha_JET_Pileup_PtTerm"     NewName =       "alpha_JET_Pileup_PtTerm" />
+      <Syst OldName = "alpha_JET_Pileup_RhoTopology"     NewName =       "alpha_JET_Pileup_RhoTopology" />
+      <Syst OldName = "alpha_JET_PunchThrough_MC15"     NewName =       "alpha_JET_PunchThrough_MC15" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Comb_Baseline_Kin"     NewName =       "alpha_LARGERJET_Medium_JET_Comb_Baseline_Kin" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Comb_Modelling_Kin"     NewName =       "alpha_LARGERJET_Medium_JET_Comb_Modelling_Kin" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Comb_TotalStat_Kin"     NewName =       "alpha_LARGERJET_Medium_JET_Comb_TotalStat_Kin" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Comb_Tracking_Kin"     NewName =       "alpha_LARGERJET_Medium_JET_Comb_Tracking_Kin" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Rtrk_Baseline_Sub"     NewName =       "alpha_LARGERJET_Medium_JET_Rtrk_Baseline_Sub" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Rtrk_Modelling_Sub"     NewName =       "alpha_LARGERJET_Medium_JET_Rtrk_Modelling_Sub" />
+      <Syst OldName = "alpha_LARGERJET_Medium_JET_Rtrk_Tracking_Sub"     NewName =       "alpha_LARGERJET_Medium_JET_Rtrk_Tracking_Sub" />
+      <Syst OldName = "alpha_Luminosity"     NewName =       "alpha_Luminosity" />
+      <Syst OldName = "alpha_MET_SoftTrk_ResoPara"     NewName =       "alpha_MET_SoftTrk_ResoPara" />
+      <Syst OldName = "alpha_MET_SoftTrk_ResoPerp"     NewName =       "alpha_MET_SoftTrk_ResoPerp" />
+      <Syst OldName = "alpha_MET_SoftTrk_Scale"     NewName =       "alpha_MET_SoftTrk_Scale" />
+      <Syst OldName = "alpha_MUON_EFF_SYS"     NewName =       "alpha_MUON_EFF_SYS" />
+      <Syst OldName = "alpha_MUON_ID"     NewName =       "alpha_MUON_ID" />
+      <Syst OldName = "alpha_MUON_MS"     NewName =       "alpha_MUON_MS" />
+      <Syst OldName = "alpha_PRW_DATASF"     NewName =       "alpha_PRW_DATASF" />
+      <Syst OldName = "alpha_WTX_BKGNP_MULTIJET"     NewName =       "alpha_WTX_BKGNP_MULTIJET" />
+      <Syst OldName = "alpha_WTX_BKGNP_OTHERS"     NewName =       "alpha_WTX_BKGNP_OTHERS" />
+      <Syst OldName = "alpha_WTX_BKGNP_STOP"     NewName =       "alpha_WTX_BKGNP_STOP" />
+      <Syst OldName = "alpha_WTX_BKGNP_STOP_DRDS"     NewName =       "alpha_WTX_BKGNP_STOP_DRDS" />
+      <Syst OldName = "alpha_WTX_BKGNP_TTBARV"     NewName =       "alpha_WTX_BKGNP_TTBARV" />
+      <Syst OldName = "alpha_WTX_BKGNP_TTbar_Generator"     NewName =       "alpha_WTX_BKGNP_TTbar_Generator" />
+      <Syst OldName = "alpha_WTX_BKGNP_TTbar_PS"     NewName =       "alpha_WTX_BKGNP_TTbar_PS" />
+      <Syst OldName = "alpha_WTX_BKGNP_TTbar_Radiation"     NewName =       "alpha_WTX_BKGNP_TTbar_Radiation" />
+      <Syst OldName = "alpha_WTX_BKGNP_VV"     NewName =       "alpha_WTX_BKGNP_VV" />
+      <Syst OldName = "alpha_WTX_BKGNP_WJETS"     NewName =       "alpha_WTX_BKGNP_WJETS" />
+      <Syst OldName = "alpha_WTX_BKGNP_ZJETS"     NewName =       "alpha_WTX_BKGNP_ZJETS" />
+      <Syst OldName = "gamma_stat_WTX_BDTSR_bin_0"     NewName =       "gamma_stat_WTX_BDTSR_bin_0" />
+      <Syst OldName = "gamma_stat_WTX_BDTSR_bin_1"     NewName =       "gamma_stat_WTX_BDTSR_bin_1" />
+      <Syst OldName = "gamma_stat_WTX_BDTSR_bin_2"     NewName =       "gamma_stat_WTX_BDTSR_bin_2" />
+      <Syst OldName = "gamma_stat_WTX_BDTSR_bin_3"     NewName =       "gamma_stat_WTX_BDTSR_bin_3" />
+      <Syst OldName = "gamma_stat_WTX_SR1_bin_0"     NewName =       "gamma_stat_WTX_SR1_bin_0" />
+      <Syst OldName = "gamma_stat_WTX_SR1_bin_1"     NewName =       "gamma_stat_WTX_SR1_bin_1" />
+      <Syst OldName = "gamma_stat_WTX_SR1_bin_2"     NewName =       "gamma_stat_WTX_SR1_bin_2" />
+      <Syst OldName = "channelCat"     NewName =       "WTX_channelCat" />
+    </RenameMap>
+  </Channel>

@@ -1,0 +1,88 @@
+| *CALIBRATION* |
+| *Electrons* |
+| EG_RESOLUTION_ALL |
+| EG_SCALE_ALL |
+| *Muons* |
+| MUON_ID |
+| MUON_MS |
+| MUON_SCALE |
+| MUON_SAGITTA_RESBIAS |
+| MUON_SAGITTA_RHO |
+| *Small-R jets* |
+| JET_BJES_Response |
+| JET_EffectiveNP_1 |
+| JET_EffectiveNP_2 |
+| JET_EffectiveNP_3 |
+| JET_EffectiveNP_4 |
+| JET_EffectiveNP_5 |
+| JET_EffectiveNP_6 |
+| JET_EffectiveNP_7 |
+| JET_EffectiveNP_8restTerm |
+| JET_EtaIntercalibration_Modelling |
+| JET_EtaIntercalibration_NonClosure |
+| JET_EtaIntercalibration_TotalStat |
+| JET_Flavor_Composition |
+| JET_Flavor_Response |
+| JET_Pileup_OffsetMu |
+| JET_Pileup_OffsetNPV |
+| JET_Pileup_PtTerm |
+| JET_Pileup_RhoTopology |
+| JET_PunchThrough_MC15 |
+| JET_SingleParticle_HighPt |
+| JET_JER_SINGLE_NP |
+| JET_Rtrk_Baseline_mass |
+| JET_Rtrk_Modelling_mass |
+| JET_Rtrk_TotalStat_mass |
+| JET_Rrk_Tracking_mass |
+| *MET* |
+| MET_SoftTrk_ResoPara |
+| MET_SoftTrk_ResoPerp |
+| MET_SoftTrk_Scale |
+| *Large R-jets* | 
+| LARGERJET_Medium_JET_Comb_Baseline_Kin |
+| LARGERJET_Medium_JET_Comb_Modelling_Kin |
+| LARGERJET_Medium_JET_Comb_TotalStat_Kin |
+| LARGERJET_Medium_JET_Comb_Tracking_Kin |
+| LARGERJET_Medium_JET_Rtrk_Baseline_Sub | 
+| LARGERJET_Medium_JET_Rtrk_Modelling_Sub | 
+| LARGERJET_Medium_JET_Rtrk_TotalStat_Sub | 
+| LARGERJET_Medium_JET_Rtrk_Tracking_Sub | 
+| *Taus* |
+| TAUS_TRUEHADTAU_SME_TES_DETECTOR |
+| TAUS_TRUEHADTAU_SME_TES_INSITU |
+| TAUS_TRUEHADTAU_SME_TES_MODEL |
+
+| *WEIGHTS* |
+| *Electrons* |
+| EL_EFF_ChargeIDSel_TOTAL_1NPCOR_PLUS_UNCOR |
+| EL_EFF_ID_TOTAL_1NPCOR_PLUS_UNCOR |
+| EL_EFF_Iso_TOTAL_1NPCOR_PLUS_UNCOR |
+| EL_EFF_Reco_TOTAL_1NPCOR_PLUS_UNCOR |
+| EL_EFF_TriggerEff_TOTAL_1NPCOR_PLUS_UNCOR |
+| EL_EFF_Trigger_TOTAL_1NPCOR_PLUS_UNCOR |
+| *Muons* |
+| MUON_BADMUON_STAT |
+| MUON_BADMUON_SYS |
+| MUON_EFF_STAT_LOWPT |
+| MUON_EFF_STAT |
+| MUON_EFF_SYS_LOWPT |
+| MUON_EFF_SYS |
+| MUON_ISO_STAT |
+| MUON_ISO_SYS |
+| MUON_TTVA_STAT |
+| MUON_TTVA_SYS |
+| MUON_EFF_TrigStatUncertainty |
+| MUON_EFF_TrigSystUncertainty |
+| *b-tagging* |
+| FT_EFF_Eigen_B_=index= (index = 0, ..., 5) |
+| FT_EFF_Eigen_C_=index= (index = 0, ..., 3) |
+| FT_EFF_Eigen_Light_=index= (index = 0,...,16) |
+| FT_EFF_extrapolation |
+| FT_EFF_extrapolation_from_charm |
+| *JVT efficiency* |
+| JET_JvtEfficiency |
+| *Pile-up reweighting* |
+| PRW_DATASF |
+
+| *Luminosity* |
+| Luminosity |

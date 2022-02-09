@@ -1,0 +1,10 @@
+# Background modeling
+Back.NP: CODE_BACKNP_NAME_explicit_name
+Back.Norm: CODE_BACKNORM_NAME_explicit_name
+
+# By default, some NPs are allowed. If an NP is not part of the
+# list, there is a fallback defined below
+Param.Default: CODE_explicit_name
+
+# POI name
+POI.Name: mu_signal

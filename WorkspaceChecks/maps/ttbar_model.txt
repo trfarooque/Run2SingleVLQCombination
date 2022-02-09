@@ -1,0 +1,4 @@
+alpha_WBX_BKGNP_TTbar_Generator : alpha_BKGNP_TTbar_Generator
+alpha_ZTMET_BKGNP_TTBAR_MCGen : alpha_BKGNP_TTbar_Generator
+alpha_WBX_BKGNP_TTbar_Radiation : alpha_BKGNP_TTbar_Radiation
+alpha_ZTMET_BKGNP_TTBAR_Radiation : alpha_BKGNP_TTbar_Radiation
