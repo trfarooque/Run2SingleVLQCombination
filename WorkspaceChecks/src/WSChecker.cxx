@@ -5,7 +5,7 @@
 
 #include "TFile.h"
 #include "TEnv.h"
-
+#include "TRegexp.h"
 #include "RooSimultaneous.h"
 #include "RooCategory.h"
 #include "RooCatType.h"
@@ -144,8 +144,12 @@ bool WSChecker::check_parameters(){
   RooRealVar* var = NULL;
   while( (var = (RooRealVar*) it->Next()) ){
     std::string varname = (std::string) var->GetName();
+    //std::cout<< varname << std::endl;
     varname = string_utils::replace_string( varname, "alpha_", "" );
     if ( varname.find("gamma_stat") != std::string::npos ){
+      continue;
+    }
+    if ( varname.find("gamma_shape_stat") != std::string::npos ){
       continue;
     }
     bool isOK = false;
@@ -158,29 +162,37 @@ bool WSChecker::check_parameters(){
     // If this is not part of the previous list, check if this follows
     // the background modeling NP/NF convention
     std::vector < std::string > vec_keys;
-    if(var->getVal() == 0){
-      // NP
-      vec_keys.push_back("Back.NP");
-    } else if(var->getVal() == 1){
-      // NF
-      vec_keys.push_back("Back.Norm");
-    }
+    // if(var->getVal() == 0){
+    //   // NP
+    //   vec_keys.push_back("Back.NP");
+    // } else if(var->getVal() == 1){
+    //   // NF
+    //   vec_keys.push_back("Back.Norm");
+    // }
     // If this is still not ok, checking the format of the default uncorelated
     // nuisance parameter
+    vec_keys.push_back("Back.NP");
+    vec_keys.push_back("Back.NF");
     vec_keys.push_back("Param.Default");
+    // vec_keys.push_back("Sig.NF");
     for ( const std::string &key : vec_keys ){
       for( const std::string &ana : m_analyses ){
-        for ( const std::string &back : m_backs ){
+        //for ( const std::string &back : m_backs ){
           std::string temp = string_utils::replace_string(m_templates[key],"CODE",ana);
-          temp = string_utils::replace_string(temp,"NAME",back);
+          // temp = string_utils::replace_string(temp,"NAME",back);
           temp = string_utils::replace_string(temp,"explicit_name","");
           if( varname.find(temp) == 0 ){
             isOK = true; break;
           }
-        }
-        if(isOK) break;
+	  //}
+	  //if(isOK) break;
       }
       if(isOK) break;
+    }
+    // if still not okay, check if it is a signal mu
+    if(!isOK){
+      if(((TString)varname).Contains((TRegexp)"mu_[WZ][TB][WZH][tb]"))
+	isOK = true;
     }
     if(!isOK){
       messages::print_error( __func__, __FILE__, __LINE__, "Variable " + (std::string)varname + " doesn't follow the standard.");
@@ -198,6 +210,13 @@ bool WSChecker::check_poi(){
   bool isOK = false;
   if(((std::string)poi_name)==m_templates["POI.Name"]){
     isOK = true;
+  }
+  
+  if(!isOK){
+    if(((TString)poi_name).Contains((TRegexp)"mu_[WZ][TB][WZH][tb]")){
+      isOK = true;
+      messages::print_warning( __func__, __FILE__, __LINE__, "POI " + (std::string)poi_name + " is not 'mu_signal'. Make Sure this is not a post-combination WS");
+    }
   }
 
   if(!isOK){
@@ -221,6 +240,7 @@ bool WSChecker::check_sample_names(){
   TString chanName = channelCat -> GetName();
   TIterator *iter = channelCat->typeIterator() ;
   RooCatType *tt  = NULL;
+  std::string sigex("[WZ][TB][WZH][tb]-M[0-9][0-9]K[0-9][0-9][0-9]");
 
   while((tt=(RooCatType*) iter->Next()) ){
 
@@ -236,8 +256,11 @@ bool WSChecker::check_sample_names(){
 
     while( (comp1 = (RooProduct*) funcIter1.Next()) ) {
       TString compname(comp1->GetName());
+      // std::cout<<compname<<std::endl;
       compname.ReplaceAll("L_x_","").ReplaceAll(tt->GetName(),"").ReplaceAll("_overallSyst_x_StatUncert","");
       compname.ReplaceAll("_overallSyst_x_HistSyst","").ReplaceAll("_overallSyst_x_Exp","").ReplaceAll("_","");
+      if(compname.Contains((TRegexp)sigex))
+	compname = compname(compname.Index((TRegexp)sigex), 12);
       set_samples.insert( (std::string) compname );
     }
   }
@@ -248,11 +271,17 @@ bool WSChecker::check_sample_names(){
   bool isOK = true;
   for ( const std::string &contained : set_samples ){
     bool is_allowed = false;
+    //std::cout << contained << std::endl;
     for ( const std::string &allowed : m_backs ){
       if( allowed==contained ){
         is_allowed = true;
         break;
       }
+    }
+    // Check if it is a signal
+    if(!is_allowed){
+      if(((TString)contained).Contains((TRegexp)sigex))
+	 is_allowed = true;
     }
     if(!is_allowed){
       isOK = false;

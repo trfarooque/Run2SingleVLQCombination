@@ -22,9 +22,10 @@
 | ttbar+W | TTBARW |
 | ttbar+Z | TTBARZ |
 | ttbar+H | TTBARH |
+| ttbar+V+4tops | TOPEW |
 | Dibosons | VV |
+| Tribosons | VVV |
 | Multijets | MULTIJET | 
 | Multijets0L | MULTIJET0L | 
 | Multijets1L | MULTIJET1L | 
 | Others | OTHERS |
-| Signal | SIGNAL |
