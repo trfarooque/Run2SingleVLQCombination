@@ -1,17 +1,4 @@
-Build status
----------
-.. image:: https://gitlab.cern.ch/VLQComb/WorkspaceChecks/badges/master/build.svg
-   :target: https://gitlab.cern.ch/VLQComb/WorkspaceChecks/commits/master
-
-
-Getting the tool
----------
-
-To get the tool, just do::
-
-  git clone ssh://git@gitlab.cern.ch:7999/VLQComb/WorkspaceChecks.git
-
-ROOT must be set up before (ROOT version must be higher than 6.07/07). A ``setup.sh``
+ROOT must be set up before compiling the code. A ``setup.sh``
 code has been added. To setup ROOT from cvmfs-aware machines::
 
   source setup.sh
@@ -26,7 +13,7 @@ Running the workspace checker
 
 You can execute the code by doing::
 
-  ./bin/workspace.exe file_path=<file> workspace_name=<workspace> do_checks=<do_checks> abort_on_error=<abort_on_error>
+  ./bin/workspace.exe file_path=<file> workspace_name=<workspace> data_name=<data_name> do_checks=<do_checks> abort_on_error=<abort_on_error>
 
 * ``file_path``: full path to the file containing the workspace
 * ``workspace_name``: the name of the RooWorkspace object to look for

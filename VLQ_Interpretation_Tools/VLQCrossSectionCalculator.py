@@ -142,3 +142,54 @@ def XSUncertainty(mass):
     fdown_high = (XSUncertainty_map_Stat_SingleWb[mhigh]**2 + XSUncertainty_map_PDF_SingleWb[mhigh]**2 + XSUncertainty_map_ScaleDown_SingleWb[mhigh]**2)**0.5/100.0
     return [interpolator(mlow, fup_low, mhigh, fup_high, mass), interpolator(mlow, fdown_low, mhigh, fdown_high, mass)]
 
+def FtFactor(proc, mass, GM):
+    if proc in ['WTWb','WTZt','WTHt','ZBWt']:
+        return 1.0
+    elif proc == 'ZTZt':
+        As = {'low': {1000.0: 0.9694110113247894, 
+                      1200.0: 0.9589911555945622, 
+                      1400.0: 0.9542319706981397, 
+                      1600.0: 0.9505205665336554, 
+                      1800.0: 0.9478867479160621, 
+                      2000.0: 0.9449261210380525, 
+                      2200.0: 0.9440950010333032, 
+                      2400.0: 0.9368601844670403, 
+                      2600.0: 0.9381265125972342}, 
+              'high': {1000.0: 1.0675136197603414, 
+                       1200.0: 1.0784822610477485, 
+                       1400.0: 1.0759352030736185, 
+                       1600.0: 1.0796884306459775, 
+                       1800.0: 1.0902476909486913, 
+                       2000.0: 1.0830544018678439, 
+                       2200.0: 1.097614485004791, 
+                       2400.0: 1.1015850504657756, 
+                       2600.0: 1.1011262157275725}}
+        Bs = {'low': {1000.0: -0.7482434525643866, 1200.0: -0.47119892633257704, 1400.0: -0.3731706237419776, 1600.0: -0.21938065102307053, 1800.0: -0.10816849981545607, 2000.0: 0.02894418887135209, 2200.0: 0.07067916383018459, 2400.0: 0.3317469155268278, 2600.0: 0.4087246390807451}, 'high': {1000.0: -0.7079336902578997, 1200.0: -0.5883217107278437, 1400.0: -0.38444847905941915, 1600.0: -0.23809289156725913, 1800.0: -0.1752482290244645, 2000.0: 0.015220113329158779, 2200.0: 0.026841925864909816, 2400.0: 0.13419851650838013, 2600.0: 0.2752357958410574}}
+        Cs = {'low': {1000.0: 0.0, 1200.0: 0.0, 1400.0: 0.0, 1600.0: 0.0, 1800.0: 0.0, 2000.0: 0.0, 2200.0: 0.0, 2400.0: 0.0, 2600.0: 0.0}, 'high': {1000.0: 0.3673992315304307, 1200.0: 0.3576324663892575, 1400.0: 0.18529637509248245, 1600.0: 0.1046109953497519, 1800.0: 0.14985359361494044, 2000.0: -0.03120971028245153, 2200.0: 0.11597011742395424, 2400.0: 0.07751488487372908, 2600.0: -0.011837950047630663}}
+    else:
+        return 1.0
+    
+    if GM < 0.1:
+        As,Bs,Cs = As['low'],Bs['low'],Cs['low']
+    else:
+        As,Bs,Cs = As['high'],Bs['high'],Cs['high']
+    known_masses = array(sorted(As.keys()))
+    if mass <= float(min(known_masses)): mlow, mhigh = float(known_masses[0]), float(known_masses[1])
+    elif mass >= float(max(known_masses)): mlow, mhigh = float(known_masses[-2]), float(known_masses[-1])
+    else:
+        for ii in range(len(known_masses)-1):
+            if mass >= known_masses[ii] and mass < known_masses[ii+1]:
+                mlow, mhigh = float(known_masses[ii]), float(known_masses[ii+1])
+                break
+    
+
+    ### GetFt value for mlow
+
+    flow = As[mlow] + Bs[mlow]*GM + Cs[mlow]*GM**2
+    fhigh = As[mhigh] + Bs[mhigh]*GM + Cs[mhigh]*GM**2
+
+    return interpolator(mlow, flow, mhigh, fhigh, mass)
+
+
+        
+
