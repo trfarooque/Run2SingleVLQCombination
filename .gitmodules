@@ -1,3 +1,6 @@
 [submodule "workspaceCombiner"]
 	path = workspaceCombiner
 	url = https://gitlab.cern.ch/atlas_higgs_combination/software/workspaceCombiner.git
+[submodule "CommonStatTools"]
+	path = CommonStatTools
+	url = ssh://git@gitlab.cern.ch:7999/atlas-phys/exot/CommonStatTools.git
