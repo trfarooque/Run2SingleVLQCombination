@@ -3,6 +3,8 @@ code has been added. To setup ROOT from cvmfs-aware machines::
 
   source setup.sh
 
+NOTE: If your worspaces are created by TRExFitter, you need to setup the same ROOT version as the one you used during creating the workspaces. Instead of using the ``setup.sh`` given with this repo, run the ``setup.sh`` file with your TRExFitter installation.
+
 The compilation of the code should be done by::
 
   make
@@ -17,7 +19,7 @@ You can execute the code by doing::
 
 * ``file_path``: full path to the file containing the workspace
 * ``workspace_name``: the name of the RooWorkspace object to look for
-* ``data_name``: name of the RooDataSet object in the workspace
+* ``data_name``: name of the RooDataSet object in the workspace (``obsData`` or ``asimovData``, based on your Fit setting)
 * ``do_checks`` [``true``/``false``]: perform the checks on the workspace (naming convention)
 * ``abort_on_error`` [``true``/``false``]: stop the checks at the first error
 
