@@ -4,6 +4,7 @@ To clone this project, run the following commands:
 
 ```
 	git clone ssh://git@gitlab.cern.ch:7999/atlas-phys/exot/hqt/VLQ_Single_Run2/Run2SingleVLQCombination.git
+	cd Run2SingleVLQCombination
 	git submodule init
 	git submodule update
 ```
