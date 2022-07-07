@@ -17,8 +17,8 @@ You can execute the code by doing::
 
   ./bin/workspace.exe file_path=<file> workspace_name=<workspace> data_name=<data_name> do_checks=<do_checks> abort_on_error=<abort_on_error>
 
-* ``file_path``: full path to the file containing the workspace
-* ``workspace_name``: the name of the RooWorkspace object to look for
+* ``file_path``: full path to the file containing the workspace (Usually found inside the ``RooStats`` directory within the TRExFitter-generated folder)
+* ``workspace_name``: the name of the RooWorkspace object to look for (Usually called ``combined``)
 * ``data_name``: name of the RooDataSet object in the workspace (``obsData`` or ``asimovData``, based on your Fit setting)
 * ``do_checks`` [``true``/``false``]: perform the checks on the workspace (naming convention)
 * ``abort_on_error`` [``true``/``false``]: stop the checks at the first error

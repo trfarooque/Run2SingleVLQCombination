@@ -7,14 +7,17 @@
 | Single-top | STOP |
 | Z+jets | ZJETS |
 | Z+jets+light | ZJETSLIGHT |
+| Z+jets+heavy | ZJETSHF |
 | Z+jets+bb | ZJETSBB |
 | Z+jets+cc | ZJETSCC |
 | W+jets | WJETS |
 | W+jets+light | WJETSLIGHT |
+| W+jets+heavy | WJETSHF |
 | W+jets+bb | WJETSBB |
 | W+jets+cc | WJETSCC |
 | V+jets | VJETS |
 | V+jets+light | VJETSLIGHT |
+| V+jets+heavy | VJETSHF |
 | V+jets+bb | VJETSBB |
 | V+jets+cc | VJETSCC |
 | V+jets | VJETS |
