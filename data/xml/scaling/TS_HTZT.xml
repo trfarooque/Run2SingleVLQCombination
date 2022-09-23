@@ -1,0 +1,18 @@
+<!DOCTYPE Organization  SYSTEM 'Organization.dtd'>
+<Organization 
+    InFile="/data/at3/scratch2/farooque/NewMaster/VLQAnalysisFramework/run/FittingArea/LocalArea/CombiStudy/BONLY_NEW_SPT_HTZT_WT16K050__/RooStats/BONLY_NEW_SPT_HTZT_WT16K050___combined_BONLY_NEW_SPT_HTZT_WT16K050___model.root" 
+    OutFile="data/workspaces/SPT_HTZT_TS_WT16K050.root"
+        ModelName="SPT_HTZT_TS"
+        POINames="mu_signal"
+        WorkspaceName="combined"
+        ModelConfigName="ModelConfig"
+        DataName="asimovData"
+        >
+  <Item Name="sc_TS_WTHt[0.6095]"/>
+  <Item Name="sc_TS_WTZt[0.336]"/>
+  <Item Name="mu_signal[1,-100,100]"/>
+
+  <Item Name="expr::mu_sc_TS_WTHt('@0*@1', sc_TS_WTHt, mu_signal)" />
+  <Item Name="expr::mu_sc_TS_WTZt('@0*@1', sc_TS_WTZt, mu_signal)" />
+  <Map Name="EDIT::NEWPDF(OLDPDF,                                                                                                             mu_WTHt=mu_sc_TS_WTHt,                                                                                                           mu_WTZt=mu_sc_TS_WTZt)" />
+</Organization>

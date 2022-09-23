@@ -1,0 +1,236 @@
+Job: BONLY__OSML_TS16K050__
+  Label: "Single-T #geq 3#font[12]{l}"
+  ReadFrom: HIST
+  ImageFormat: png
+  HistoChecks: NOCRASH
+
+Systematic: SPT_OSML_BKGNF_3l_mu_VV	 
+
+Systematic: SPT_OSML_BKGNF_3l_mu_Zjets	 
+
+Systematic: SPT_OSML_BKGNF_3l_mu_ttV	 
+
+Systematic: EG_RESOLUTION_ALL	 
+
+Systematic: EG_SCALE_ALL	 
+
+Systematic: EL_SF_ID	 
+
+Systematic: EL_SF_Isol	 
+
+Systematic: EL_SF_Reco	 
+
+Systematic: EL_SF_Trigger	 
+
+Systematic: JET_BJES_Response	 
+
+Systematic: JET_EffectiveNP_Detector1	 
+
+Systematic: JET_EffectiveNP_Detector2	 
+
+Systematic: JET_EffectiveNP_Mixed1	 
+
+Systematic: JET_EffectiveNP_Mixed2	 
+
+Systematic: JET_EffectiveNP_Mixed3	 
+
+Systematic: JET_EffectiveNP_Modelling1	 
+
+Systematic: JET_EffectiveNP_Modelling2	 
+
+Systematic: JET_EffectiveNP_Modelling3	 
+
+Systematic: JET_EffectiveNP_Modelling4	 
+
+Systematic: JET_EffectiveNP_Statistical1	 
+
+Systematic: JET_EffectiveNP_Statistical2	 
+
+Systematic: JET_EffectiveNP_Statistical3	 
+
+Systematic: JET_EffectiveNP_Statistical4	 
+
+Systematic: JET_EffectiveNP_Statistical5	 
+
+Systematic: JET_EffectiveNP_Statistical6	 
+
+Systematic: JET_EtaIntercalibration_Modelling	 
+
+Systematic: JET_EtaIntercalibration_NonClosure_2018data	 
+
+Systematic: JET_EtaIntercalibration_NonClosure_highE	 
+
+Systematic: JET_EtaIntercalibration_NonClosure_negEta	 
+
+Systematic: JET_EtaIntercalibration_NonClosure_posEta	 
+
+Systematic: JET_EtaIntercalibration_TotalStat	 
+
+Systematic: JET_Flavor_Composition	 
+
+Systematic: JET_Flavor_Response	 
+
+Systematic: JET_JER_DataVsMC_MC16	 
+
+Systematic: JET_JER_EffectiveNP_1	 
+
+Systematic: JET_JER_EffectiveNP_2	 
+
+Systematic: JET_JER_EffectiveNP_3	 
+
+Systematic: JET_JER_EffectiveNP_4	 
+
+Systematic: JET_JER_EffectiveNP_5	 
+
+Systematic: JET_JER_EffectiveNP_6	 
+
+Systematic: JET_JER_EffectiveNP_7restTerm	 
+
+Systematic: JET_JvtEfficiency	 
+
+Systematic: JET_Pileup_OffsetMu	 
+
+Systematic: JET_Pileup_OffsetNPV	 
+
+Systematic: JET_Pileup_PtTerm	 
+
+Systematic: JET_Pileup_RhoTopology	 
+
+Systematic: JET_PunchThrough_MC16	 
+
+Systematic: JET_SingleParticle_HighPt	 
+
+Systematic: Luminosity	 
+
+Systematic: MUON_ID	 
+
+Systematic: MUON_MS	 
+
+Systematic: MUON_SAGITTA_RESBIAS	 
+
+Systematic: MUON_SAGITTA_RHO	 
+
+Systematic: MUON_SCALE	 
+
+Systematic: MU_SF_ID_STAT	 
+
+Systematic: MU_SF_ID_STAT_LOWPT	 
+
+Systematic: MU_SF_ID_SYST	 
+
+Systematic: MU_SF_ID_SYST_LOWPT	 
+
+Systematic: MU_SF_Isol_STAT	 
+
+Systematic: MU_SF_Isol_SYST	 
+
+Systematic: MU_SF_TTVA_STAT	 
+
+Systematic: MU_SF_TTVA_SYST	 
+
+Systematic: MU_SF_Trigger_STAT	 
+
+Systematic: MU_SF_Trigger_SYST	 
+
+Systematic: PF_FT_EFF_Eigen_B_0	 
+
+Systematic: PF_FT_EFF_Eigen_B_1	 
+
+Systematic: PF_FT_EFF_Eigen_B_2	 
+
+Systematic: PF_FT_EFF_Eigen_B_3	 
+
+Systematic: PF_FT_EFF_Eigen_B_4	 
+
+Systematic: PF_FT_EFF_Eigen_B_5	 
+
+Systematic: PF_FT_EFF_Eigen_B_6	 
+
+Systematic: PF_FT_EFF_Eigen_B_7	 
+
+Systematic: PF_FT_EFF_Eigen_B_8	 
+
+Systematic: PF_FT_EFF_Eigen_C_0	 
+
+Systematic: PF_FT_EFF_Eigen_C_1	 
+
+Systematic: PF_FT_EFF_Eigen_C_2	 
+
+Systematic: PF_FT_EFF_Eigen_C_3	 
+
+Systematic: PF_FT_EFF_Eigen_C_4	 
+
+Systematic: PF_FT_EFF_Eigen_Light_0	 
+
+Systematic: PF_FT_EFF_Eigen_Light_1	 
+
+Systematic: PF_FT_EFF_Eigen_Light_2	 
+
+Systematic: PF_FT_EFF_Eigen_Light_3	 
+
+Systematic: PF_FT_EFF_Eigen_Light_4	 
+
+Systematic: PF_FT_EFF_Eigen_Light_5	 
+
+Systematic: PF_FT_EFF_extrapolation	 
+
+Systematic: PF_FT_EFF_extrapolation_from_charm	 
+
+Systematic: PRW_DATASF	 
+
+Systematic: SPT_OSML_BKGNP_3l_Fakes_cr1	 
+
+Systematic: SPT_OSML_BKGNP_3l_Fakes_cr2	 
+
+Systematic: SPT_OSML_BKGNP_3l_Fakes_cr3	 
+
+Systematic: SPT_OSML_BKGNP_3l_Fakes_sr	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_HF	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_PDFScale_0b_norm	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_PDFScale_0b_shape	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_PDFScale_1gb_norm	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_PDFScale_1gb_shape	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_PDFVar	 
+
+Systematic: SPT_OSML_BKGNP_3l_VV_Reweighting	 
+
+Systematic: SPT_OSML_BKGNP_3l_Zjets_Generator	 
+
+Systematic: SPT_OSML_BKGNP_3l_Zjets_HF	 
+
+Systematic: SPT_OSML_BKGNP_3l_Zjets_PDFScale	 
+
+Systematic: SPT_OSML_BKGNP_3l_Zjets_PDFVar	 
+
+Systematic: SPT_OSML_BKGNP_3l_Zjets_XS	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbarV_Generator	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbarV_PDFScale	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbarV_PartonShower	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbarV_Radiation	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbarV_Reweighting	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_FSR	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_ISR	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_MatrixElement	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_PDFScale	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_PDFVar	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_PartonShower	 
+
+Systematic: SPT_OSML_BKGNP_3l_ttbar_XS	 
+
