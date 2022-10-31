@@ -18,7 +18,10 @@ int main( int argc, char **argv ){
   std::string file_path = "";
   std::string workspace_name = "combined";
   std::string data_name = "obsData";
-  std::string output_folder = "output/";
+  std::string output_xml_folder = "output/";
+  std::string output_ws_folder = "output/";
+  std::string output_xml_name = "combination.xml";
+  std::string output_ws_name = "combined.root";
 
   //
   // Get the user's command options
@@ -30,7 +33,10 @@ int main( int argc, char **argv ){
     if(argument=="file_path") file_path = value;
     else if(argument=="workspace_name") workspace_name = value;
     else if(argument=="data_name") data_name = value;
-    else if(argument=="output_folder") output_folder = value;
+    else if(argument=="output_xml_folder") output_xml_folder = value;
+    else if(argument=="output_ws_folder") output_ws_folder = value;
+    else if(argument=="output_xml_name") output_xml_name = value;
+    else if(argument=="output_ws_name") output_ws_name = value;
     else if(argument=="do_checks") do_checks = string_utils::bool_value(value);
     else if(argument=="do_config_dump") do_config_dump = string_utils::bool_value(value);
     else if(argument=="abort_on_error") abort_on_error = string_utils::bool_value(value);
@@ -77,7 +83,10 @@ int main( int argc, char **argv ){
     config_options.ws_name = workspace_name;
     config_options.data_name = data_name;
     config_options.abort_on_error = abort_on_error;
-    config_options.output_folder = output_folder;
+    config_options.output_xml_folder = output_xml_folder;
+    config_options.output_ws_folder = output_ws_folder;
+    config_options.output_xml_name = output_xml_name;
+    config_options.output_ws_name = output_ws_name;
     config_options.decorr_all = decorr_all;
     WSConfig config( config_options );
     config.init();

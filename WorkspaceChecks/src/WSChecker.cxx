@@ -144,8 +144,8 @@ bool WSChecker::check_parameters(){
   RooRealVar* var = NULL;
   while( (var = (RooRealVar*) it->Next()) ){
     std::string varname = (std::string) var->GetName();
-    //std::cout<< varname << std::endl;
     varname = string_utils::replace_string( varname, "alpha_", "" );
+    //std::cout<< varname << std::endl;
     if ( varname.find("gamma_stat") != std::string::npos ){
       continue;
     }
@@ -156,7 +156,19 @@ bool WSChecker::check_parameters(){
     // First checking if the NP is part of the object NP list
     for( const std::string &np : m_nps ){
       if(np==varname){
+	//std::cout<< "Matched with " << varname << std::endl;
         isOK = true; break;
+      }
+      else if(np.find("<WP>") != std::string::npos){
+	std::string wps[5] = {"60", "70", "77", "85", "PsC"};
+	for(const std::string &wp : wps){
+	  std::string modnp = string_utils::replace_string( np, "<WP>", wp );
+	  if(modnp==varname){
+	    //std::cout<< "Matched with " << varname << std::endl;
+	    isOK = true; break;
+	  }
+	}
+	if(isOK) break;
       }
     }
     // If this is not part of the previous list, check if this follows
@@ -181,7 +193,8 @@ bool WSChecker::check_parameters(){
           std::string temp = string_utils::replace_string(m_templates[key],"CODE",ana);
           // temp = string_utils::replace_string(temp,"NAME",back);
           temp = string_utils::replace_string(temp,"explicit_name","");
-          if( varname.find(temp) == 0 ){
+          if( !temp.empty() && varname.find(temp) == 0 ){
+	    //std::cout<<"Matched here "<< "=" + temp + "R2D2" << std::endl;
             isOK = true; break;
           }
 	  //}

@@ -85,7 +85,7 @@
 | *WEIGHTS* |
 | *Electrons* |
 | EL_SF_ID |
-| EL_SF_Isol |
+| EL_SF_Iso |
 | EL_SF_Reco |
 | EL_SF_Trigger |
 | *Muons* |
@@ -100,19 +100,19 @@
 | MU_SF_Trigger_STAT |
 | MU_SF_Trigger_SYST |
 | *b-tagging* |
-| TRK_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| TRK_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| TRK_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| TRK_FT_EFF_extrapolation |
-| TRK_FT_EFF_extrapolation_from_charm |
-| PF_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| PF_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| PF_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| PF_FT_EFF_extrapolation |
-| PF_FT_EFF_extrapolation_from_charm |
+| TRK_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| TRK_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| TRK_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| TRK_<WP>_FT_EFF_extrapolation |
+| TRK_<WP>_FT_EFF_extrapolation_from_charm |
+| PF_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| PF_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| PF_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| PF_<WP>_FT_EFF_extrapolation |
+| PF_<WP>_FT_EFF_extrapolation_from_charm |
 | *JVT efficiency* |
 | JET_JvtEfficiency |
 | *Pile-up reweighting* |
 | PRW_DATASF |
 | *Luminosity* |
-| Luminosity |
+| LUMINOSITY |

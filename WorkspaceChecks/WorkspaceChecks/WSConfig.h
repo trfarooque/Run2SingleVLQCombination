@@ -11,7 +11,10 @@ public:
     std::string file_name;
     std::string ws_name;
     std::string data_name;
-    std::string output_folder;
+    std::string output_xml_folder;
+    std::string output_ws_folder;
+    std::string output_xml_name;
+    std::string output_ws_name;
     bool abort_on_error;
     bool decorr_all;
   };
