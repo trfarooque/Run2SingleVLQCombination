@@ -51,28 +51,6 @@
 | MET_SoftTrk_ResoPara |
 | MET_SoftTrk_ResoPerp |
 | MET_SoftTrk_Scale |
-| *TRK* |
-| TRK_BIAS_D0_WM |
-| TRK_BIAS_QOVERP_SAGITTA_WM |
-| TRK_BIAS_Z0_WM |
-| TRK_EFF_LOOSE_GLOBAL |
-| TRK_EFF_LOOSE_IBL |
-| TRK_EFF_LOOSE_PHYSMODEL |
-| TRK_EFF_LOOSE_PP0 |
-| TRK_EFF_LOOSE_TIDE |
-| TRK_EFF_TIGHT_GLOBAL |
-| TRK_EFF_TIGHT_IBL |
-| TRK_EFF_TIGHT_PHYSMODEL |
-| TRK_EFF_TIGHT_PP0 |
-| TRK_FAKE_RATE_LOOSE |
-| TRK_FAKE_RATE_LOOSE_ROBUST |
-| TRK_FAKE_RATE_LOOSE_TIDE |
-| TRK_FAKE_RATE_TIGHT |
-| TRK_FAKE_RATE_TIGHT_TIDE |
-| TRK_RES_D0_DEAD |
-| TRK_RES_D0_MEAS |
-| TRK_RES_Z0_DEAD |
-| TRK_RES_Z0_MEAS |
 | * Large R-jets * | 
 | LARGERJET_Medium_JET_Comb_Baseline_Kin |
 | LARGERJET_Medium_JET_Comb_Modelling_Kin |
@@ -85,7 +63,7 @@
 | *WEIGHTS* |
 | *Electrons* |
 | EL_SF_ID |
-| EL_SF_Isol |
+| EL_SF_Iso |
 | EL_SF_Reco |
 | EL_SF_Trigger |
 | *Muons* |
@@ -100,19 +78,19 @@
 | MU_SF_Trigger_STAT |
 | MU_SF_Trigger_SYST |
 | *b-tagging* |
-| TRK_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| TRK_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| TRK_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| TRK_FT_EFF_extrapolation |
-| TRK_FT_EFF_extrapolation_from_charm |
-| PF_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| PF_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| PF_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| PF_FT_EFF_extrapolation |
-| PF_FT_EFF_extrapolation_from_charm |
+| TRK_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| TRK_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| TRK_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| TRK_<WP>_FT_EFF_extrapolation |
+| TRK_<WP>_FT_EFF_extrapolation_from_charm |
+| PF_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| PF_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| PF_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| PF_<WP>_FT_EFF_extrapolation |
+| PF_<WP>_FT_EFF_extrapolation_from_charm |
 | *JVT efficiency* |
 | JET_JvtEfficiency |
 | *Pile-up reweighting* |
 | PRW_DATASF |
 | *Luminosity* |
-| Luminosity |
+| LUMINOSITY |

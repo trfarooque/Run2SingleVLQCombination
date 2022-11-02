@@ -66,12 +66,21 @@ void WSConfig::init(){
 void WSConfig::dump_files(){
   //Master file (contains all)
   std::ofstream o_master_file;
-  gSystem -> mkdir( m_opt.output_folder.c_str(), true );
-  o_master_file.open ( m_opt.output_folder + "/combination.xml" );
+  gSystem -> mkdir( m_opt.output_xml_folder.c_str(), true );
+  gSystem -> mkdir( m_opt.output_ws_folder.c_str(), true );
+  o_master_file.open ( m_opt.output_xml_folder + "/" + m_opt.output_xml_name );
 
   //Writing the header of the master file
   o_master_file << "<!DOCTYPE Combination  SYSTEM 'Combination.dtd'> " << std::endl;
   o_master_file << std::endl;
+  o_master_file << "<Combination WorkspaceName=\"combWS\" " << std::endl;
+  o_master_file << "   ModelConfigName=\"ModelConfig\" " << std::endl;
+  o_master_file << "   DataName=\"combData\"" << std::endl;
+  o_master_file << "   OutputFile=\"" + m_opt.output_ws_folder + "/" +  m_opt.output_ws_name + "\">"<< std::endl;
+  o_master_file << "   <POIList Combined=\"mu_signal[1~-100,100]\"/>" << std::endl;
+  o_master_file << " " << std::endl;
+
+  /*
   o_master_file << "<Combination> " << std::endl;
   o_master_file << "  <Channel Name=\"combined\" IsCombined=\"true\" Mass=\"125.09\"> " << std::endl;
   o_master_file << "    <File Name=\"./combined.root\"/> " << std::endl;
@@ -81,21 +90,23 @@ void WSConfig::dump_files(){
   o_master_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
   o_master_file << "  </Channel>" << std::endl;
   o_master_file << " " << std::endl;
+  */
 
   for( const auto &ch : m_channels ){
     const std::string channel_name = string_utils::replace_string(ch.first," ","");
     const Channel channel_info = ch.second;
 
     std::ofstream o_channel_file;
-    o_channel_file.open ( m_opt.output_folder + "/" + channel_name + ".xml" );
+    o_channel_file.open ( m_opt.output_xml_folder + "/" + channel_name + ".xml" );
 
     //Including the channel in the master file
-    o_master_file << "  <Channel Name=\"" + channel_name + "_binned\">" << std::endl;
-    o_master_file << "    <File Name=\"" + channel_info.workspace_path + "\"/>" << std::endl;
-    o_master_file << "    <Workspace Name=\"combined\"/>" << std::endl;
-    o_master_file << "    <ModelConfig Name=\"ModelConfig\"/>" << std::endl;
-    o_master_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
-    o_master_file << "    <ModelData Name=\"" << m_opt.data_name << "\"/>" << std::endl;
+    o_master_file << "  <Channel Name=\"" + channel_name + "_binned\"" << std::endl;
+    o_master_file << "     InputFile=\"" + channel_info.workspace_path + "\"" << std::endl;
+    o_master_file << "     WorkspaceName=\"combined\"" << std::endl;
+    o_master_file << "     ModelConfigName=\"ModelConfig\"" << std::endl;
+    o_master_file << "     DataName=\"" << m_opt.data_name << "\">" << std::endl;
+    o_master_file << "    <POIList Input=\"mu_signal\"/>" << std::endl;
+
     o_master_file << "    <RenameMap>" << std::endl;
 
     //Writting the information in the channel files
