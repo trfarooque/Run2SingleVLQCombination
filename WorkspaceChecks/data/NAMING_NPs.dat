@@ -67,16 +67,16 @@
 | EL_SF_Reco |
 | EL_SF_Trigger |
 | *Muons* |
-| MU_SF_ID_STAT |
-| MU_SF_ID_SYST |
-| MU_SF_ID_STAT_LOWPT |
-| MU_SF_ID_SYST_LOWPT |
-| MU_SF_Isol_STAT |
-| MU_SF_Isol_SYST |
-| MU_SF_TTVA_STAT |
-| MU_SF_TTVA_SYST |
-| MU_SF_Trigger_STAT |
-| MU_SF_Trigger_SYST |
+| MU_EFF_RECO_STAT |
+| MU_EFF_RECO_SYS |
+| MU_EFF_RECO_STAT_LOWPT |
+| MU_EFF_RECO_SYS_LOWPT |
+| MU_EFF_ISO_STAT |
+| MU_EFF_ISO_SYS |
+| MU_EFF_TTVA_STAT |
+| MU_EFF_TTVA_SYS |
+| MU_EFF_TrigStatUncertainty |
+| MU_EFF_TrigSystUncertainty |
 | *b-tagging* |
 | TRK_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
 | TRK_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
@@ -90,6 +90,7 @@
 | PF_<WP>_FT_EFF_extrapolation_from_charm |
 | *JVT efficiency* |
 | JET_JvtEfficiency |
+| JET_FJvtEfficiency |
 | *Pile-up reweighting* |
 | PRW_DATASF |
 | *Luminosity* |
