@@ -4,7 +4,7 @@ import os
 def DummyHistMaker(List_of_Real_Files, List_of_Dummy_Files): 
     ## List_of_Real_Files: A list of files with full path on the machine that needs to be copied. It should be a file containing histograms only
     ## List_of_Dummy_Files: A list of files with full path on the machine with the same hists as in the real files
-    for ii, _f in enumerate(List_of_Files):
+    for ii, _f in enumerate(List_of_Real_Files):
         if ii == 0:
             fbase = ROOT.TFile(_f)
             List_of_Hists = fbase.GetListOfKeys()
@@ -21,5 +21,5 @@ def DummyHistMaker(List_of_Real_Files, List_of_Dummy_Files):
             hist_new.SetBinError(hist_new.GetNbinsX()+1, 1e-5)
             fnew.cd()
             hist_new.Write()
-        print("New Dummy File {} created".format(_f))
+        print("New Dummy File {} created".format(List_of_Dummy_Files[ii]))
 

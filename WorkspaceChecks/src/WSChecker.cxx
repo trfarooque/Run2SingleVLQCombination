@@ -269,9 +269,9 @@ bool WSChecker::check_sample_names(){
 
     while( (comp1 = (RooProduct*) funcIter1.Next()) ) {
       TString compname(comp1->GetName());
-      // std::cout<<compname<<std::endl;
+      //std::cout<<compname<<std::endl;
       compname.ReplaceAll("L_x_","").ReplaceAll(tt->GetName(),"").ReplaceAll("_overallSyst_x_StatUncert","");
-      compname.ReplaceAll("_overallSyst_x_HistSyst","").ReplaceAll("_overallSyst_x_Exp","").ReplaceAll("_","");
+      compname.ReplaceAll("_overallSyst_x_HistSyst","").ReplaceAll("_overallSyst_x_Exp","").ReplaceAll("_shapes","").ReplaceAll("_","");
       if(compname.Contains((TRegexp)sigex))
 	compname = compname(compname.Index((TRegexp)sigex), 12);
       set_samples.insert( (std::string) compname );
