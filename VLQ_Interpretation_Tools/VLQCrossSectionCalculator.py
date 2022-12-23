@@ -37,7 +37,7 @@ XSUncertainty_map_ScaleDown_SingleWb = {700.:1.4, 800.:1.4, 900.:1.5, 1000.:1.0,
 
 def interpolator(x1, y1, x2, y2, x):
     if x1==x2:
-        print "Input x values are same. Cannot interpolate. Returning (y1+y2)/2."
+        print( "Input x values are same. Cannot interpolate. Returning (y1+y2)/2.")
         return (y1+y2)/2.0
     if float(x)==float(x1): return y1
     elif float(x)==float(x2): return y2
@@ -93,7 +93,7 @@ def PNWA(proc, mass, GM):
         Bs = { 1000:  0.0, 1200: 20.616, 1400: 9.290, 1600: 7.936, 1800: 8.072, 2000: 8.456, 2200:  9.896 }
         x0 = { 1000:  0.0, 1200:  0.047, 1400: 0.030, 1600: 0.026, 1800: 0.023, 2000: 0.021, 2200:  0.022 }
     else:
-        print "ERROR: proc",proc,"is not a valid process! (returning 0)"
+        print( "ERROR: proc",proc,"is not a valid process! (returning 0)")
         return 0;
 
     ### Determine known mass below and above requested mass that has a PNWA fucntion

@@ -1,0 +1,381 @@
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Including external constraints:
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Preparing parameters of interest: mu_signal
+[2022-12-20 16:13:26] [thread 13960] [info] 	 ---> Set first POI to mu_signal
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Summary of POI setup in the likelihood model:
+  1) 0x5f63c70 RooRealVar:: mu_signal = 0  L(-100 - 100)  "mu_signal"
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0LTex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0Tex1Lin0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0LTex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0Tex1Lin0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0LTex1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0Tex1Lin1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin1Tin0Lex1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0LTex1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0Tex1Lin1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin1Tin0Lex1Hin0Vex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin1Lex0Tex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin0Lex1Tex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin2LTin0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin1Lex0Tex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin0Lex1Tex0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin2LTin0Hex1Vin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin1Lex0VTex1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin0Lex1VTex1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin2VLTin1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin0Lex1VTex1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin0fjex1Lin0VTex0Hex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin0fjex1Lin0VTex0Hex_model_SPT_HTZT_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_MONOTOP_TCR_model_SPT_MONOTOP_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_MONOTOP_VCR_model_SPT_MONOTOP_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR0b1f_model_SPT_MONOTOP_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR1b1f_model_SPT_MONOTOP_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_2l_CR1_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_2l_CR2_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_2l_CR3_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_2l_SR_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_3l_pt_Z_cr1_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_3l_pt_Z_cr2_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_3l_pt_Z_cr3_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Set binned likelihood for: SPT_OSML_3l_pt_Z_sr_model_SPT_OSML_binned
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Starting limit setting...
+[2022-12-20 16:13:26] [thread 13960] [info] 	 Building NLL...
+[2022-12-20 16:13:29] [thread 13960] [info] 	 NLL built in 0.0401667 min (cpu), 0.0402596 min (real)
+[2022-12-20 16:13:29] [thread 13960] [info] 	 Creating asimov data at mu = 0, profiling at mu = 0
+Real time 0:07:11, CP time 431.350
+Real time 0:07:11, CP time 431.350
+[2022-12-20 16:20:44] [thread 13960] [info] 	 Building NLL...
+[2022-12-20 16:20:45] [thread 13960] [info] 	 NLL built in 0.023 min (cpu), 0.0233251 min (real)
+[2022-12-20 16:20:46] [thread 13960] [info] 	 ------------------------
+[2022-12-20 16:20:46] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_0_with_constr
+Real time 0:01:43, CP time 103.100
+Real time 0:01:43, CP time 103.100
+[2022-12-20 16:22:31] [thread 13960] [info] 	 Initial guess:  0.169405
+[2022-12-20 16:22:31] [thread 13960] [info] 	 Sigma(obs):     0.0863171
+[2022-12-20 16:22:31] [thread 13960] [info] 	 Sigma(mu,0):    0.0863171
+[2022-12-20 16:22:31] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:22:31] [thread 13960] [info] 	 qmu95:          3.83606
+[2022-12-20 16:22:31] [thread 13960] [info] 	 qmu:            134.217
+[2022-12-20 16:22:31] [thread 13960] [info] 	 pmu:            0
+[2022-12-20 16:22:31] [thread 13960] [info] 	 1-pb:           1
+[2022-12-20 16:22:31] [thread 13960] [info] 	 CLs:            0.5
+[2022-12-20 16:22:31] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:22:31] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_0_with_constr
+Real time 0:00:52, CP time 51.980
+Real time 0:00:52, CP time 51.980
+[2022-12-20 16:23:23] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Previous guess: 0.169405
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Sigma(obs):     0.0542158
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Sigma(mu,0):    0.0542158
+[2022-12-20 16:23:23] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:23:23] [thread 13960] [info] 	 pmu:            0.00089012
+[2022-12-20 16:23:23] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:23:23] [thread 13960] [info] 	 CLs:            0.00178024
+[2022-12-20 16:23:23] [thread 13960] [info] 	 qmu95:          2.82958
+[2022-12-20 16:23:23] [thread 13960] [info] 	 qmu:            9.76336
+[2022-12-20 16:23:23] [thread 13960] [info] 	 qmuA0:          9.76336
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Precision:      0.000532017
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Correction:     -0.0630015
+[2022-12-20 16:23:23] [thread 13960] [info] 	 New guess:      0.106403
+[2022-12-20 16:23:23] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:23:23] [thread 13960] [info] 	 Starting iteration 1 of nll_combPdf_asimovData_0_with_constr
+Real time 0:00:37, CP time 37.010
+Real time 0:00:37, CP time 37.010
+[2022-12-20 16:24:00] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Previous guess: 0.106403
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Sigma(obs):     0.0503357
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Sigma(mu,0):    0.0503357
+[2022-12-20 16:24:00] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:24:00] [thread 13960] [info] 	 pmu:            0.017263
+[2022-12-20 16:24:00] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:24:00] [thread 13960] [info] 	 CLs:            0.034526
+[2022-12-20 16:24:00] [thread 13960] [info] 	 qmu95:          3.56813
+[2022-12-20 16:24:00] [thread 13960] [info] 	 qmu:            4.46846
+[2022-12-20 16:24:00] [thread 13960] [info] 	 qmuA0:          4.46846
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Precision:      0.000493942
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Correction:     -0.00761508
+[2022-12-20 16:24:00] [thread 13960] [info] 	 New guess:      0.0987883
+[2022-12-20 16:24:00] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:24:00] [thread 13960] [info] 	 Starting iteration 2 of nll_combPdf_asimovData_0_with_constr
+Real time 0:07:23, CP time 443.690
+Real time 0:07:23, CP time 443.690
+[2022-12-20 16:31:24] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Previous guess: 0.0987883
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Sigma(obs):     0.0498786
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Sigma(mu,0):    0.0498786
+[2022-12-20 16:31:24] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:31:24] [thread 13960] [info] 	 pmu:            0.0238194
+[2022-12-20 16:31:24] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:31:24] [thread 13960] [info] 	 CLs:            0.0476389
+[2022-12-20 16:31:24] [thread 13960] [info] 	 qmu95:          3.80029
+[2022-12-20 16:31:24] [thread 13960] [info] 	 qmu:            3.92268
+[2022-12-20 16:31:24] [thread 13960] [info] 	 qmuA0:          3.92268
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Precision:      0.000489456
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Correction:     -0.000897179
+[2022-12-20 16:31:24] [thread 13960] [info] 	 New guess:      0.0978911
+[2022-12-20 16:31:24] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:31:24] [thread 13960] [info] 	 Starting iteration 3 of nll_combPdf_asimovData_0_with_constr
+Real time 0:07:15, CP time 435.380
+Real time 0:07:15, CP time 435.380
+[2022-12-20 16:38:40] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Previous guess: 0.0978911
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Sigma(obs):     0.0498209
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Sigma(mu,0):    0.0498209
+[2022-12-20 16:38:40] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:38:40] [thread 13960] [info] 	 pmu:            0.0247151
+[2022-12-20 16:38:40] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:38:40] [thread 13960] [info] 	 CLs:            0.0494303
+[2022-12-20 16:38:40] [thread 13960] [info] 	 qmu95:          3.83147
+[2022-12-20 16:38:40] [thread 13960] [info] 	 qmu:            3.86068
+[2022-12-20 16:38:40] [thread 13960] [info] 	 qmuA0:          3.86068
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Precision:      0.00048889
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Correction:     -0.000113242
+[2022-12-20 16:38:40] [thread 13960] [info] 	 New guess:      0.0977779
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_0_with_constr: 0.0977779
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Finished in 4 iterations.
+[2022-12-20 16:38:40] [thread 13960] [info] 	 ------------------------
+[2022-12-20 16:38:40] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_0_with_constr
+Real time 0:07:18, CP time 438.080
+Real time 0:07:18, CP time 438.080
+[2022-12-20 16:45:58] [thread 13960] [info] 	 Initial guess:  0.100007
+[2022-12-20 16:45:58] [thread 13960] [info] 	 Sigma(obs):     0.0499475
+[2022-12-20 16:45:58] [thread 13960] [info] 	 Sigma(mu,0):    0.0499475
+[2022-12-20 16:45:58] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:45:58] [thread 13960] [info] 	 qmu95:          3.99538
+[2022-12-20 16:45:58] [thread 13960] [info] 	 qmu:            3.99193
+[2022-12-20 16:45:58] [thread 13960] [info] 	 pmu:            0.0228594
+[2022-12-20 16:45:58] [thread 13960] [info] 	 1-pb:           0.498299
+[2022-12-20 16:45:58] [thread 13960] [info] 	 CLs:            0.0455638
+[2022-12-20 16:45:58] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:45:58] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_0_with_constr
+Real time 0:00:41, CP time 41.130
+Real time 0:00:41, CP time 41.130
+[2022-12-20 16:46:39] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Previous guess: 0.100007
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Sigma(obs):     0.0498683
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Sigma(mu,0):    0.0498683
+[2022-12-20 16:46:39] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:46:39] [thread 13960] [info] 	 pmu:            0.0224588
+[2022-12-20 16:46:39] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:46:39] [thread 13960] [info] 	 CLs:            0.0449176
+[2022-12-20 16:46:39] [thread 13960] [info] 	 qmu95:          3.98898
+[2022-12-20 16:46:39] [thread 13960] [info] 	 qmu:            4.02173
+[2022-12-20 16:46:39] [thread 13960] [info] 	 qmuA0:          4.02173
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Precision:      0.000499243
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Correction:     -0.000158609
+[2022-12-20 16:46:39] [thread 13960] [info] 	 New guess:      0.0998485
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_0_with_constr: 0.0998485
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Finished in 1 iterations.
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Found N * sigma = 2 * 0.0499243
+[2022-12-20 16:46:39] [thread 13960] [info] 	 Creating asimov data at mu = 0.0998485, profiling at mu = 0.0998485
+[2022-12-20 16:46:40] [thread 13960] [info] 	 Building NLL...
+[2022-12-20 16:46:42] [thread 13960] [info] 	 NLL built in 0.0223333 min (cpu), 0.0223344 min (real)
+[2022-12-20 16:46:42] [thread 13960] [info] 	 ------------------------
+[2022-12-20 16:46:42] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_0.099849_with_constr
+Real time 0:00:42, CP time 42.180
+Real time 0:00:42, CP time 42.180
+[2022-12-20 16:47:24] [thread 13960] [info] 	 Initial guess:  0.191201
+[2022-12-20 16:47:24] [thread 13960] [info] 	 Sigma(obs):     0.0549702
+[2022-12-20 16:47:24] [thread 13960] [info] 	 Sigma(mu,0):    0.0549702
+[2022-12-20 16:47:24] [thread 13960] [info] 	 muhat:          0.0998485
+[2022-12-20 16:47:24] [thread 13960] [info] 	 qmu95:          2.76189
+[2022-12-20 16:47:24] [thread 13960] [info] 	 qmu:            11.0271
+[2022-12-20 16:47:24] [thread 13960] [info] 	 pmu:            0.000448959
+[2022-12-20 16:47:24] [thread 13960] [info] 	 1-pb:           0.437398
+[2022-12-20 16:47:24] [thread 13960] [info] 	 CLs:            0.000798004
+[2022-12-20 16:47:24] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:47:24] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_0.099849_with_constr
+Real time 0:00:39, CP time 39.950
+Real time 0:00:39, CP time 39.950
+Real time 0:00:40, CP time 40.050
+Real time 0:00:40, CP time 40.050
+[2022-12-20 16:48:47] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0.099849_with_constr
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Previous guess: 0.191201
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Sigma(obs):     0.0590645
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Sigma(mu,0):    0.0554692
+[2022-12-20 16:48:47] [thread 13960] [info] 	 muhat:          0.0998485
+[2022-12-20 16:48:47] [thread 13960] [info] 	 pmu:            0.0609724
+[2022-12-20 16:48:47] [thread 13960] [info] 	 1-pb:           0.0286953
+[2022-12-20 16:48:47] [thread 13960] [info] 	 CLs:            0.0627737
+[2022-12-20 16:48:47] [thread 13960] [info] 	 qmu95:          2.76615
+[2022-12-20 16:48:47] [thread 13960] [info] 	 qmu:            2.39216
+[2022-12-20 16:48:47] [thread 13960] [info] 	 qmuA0:          11.8817
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Precision:      0.000989257
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Correction:     0.00665
+[2022-12-20 16:48:47] [thread 13960] [info] 	 New guess:      0.197851
+[2022-12-20 16:48:47] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:48:47] [thread 13960] [info] 	 Starting iteration 1 of nll_combPdf_asimovData_0.099849_with_constr
+Real time 0:00:28, CP time 28.050
+Real time 0:00:28, CP time 28.050
+Real time 0:07:35, CP time 455.250
+Real time 0:07:35, CP time 455.250
+[2022-12-20 16:56:50] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0.099849_with_constr
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Previous guess: 0.197851
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Sigma(obs):     0.0594849
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Sigma(mu,0):    0.0558867
+[2022-12-20 16:56:50] [thread 13960] [info] 	 muhat:          0.0998485
+[2022-12-20 16:56:50] [thread 13960] [info] 	 pmu:            0.0497253
+[2022-12-20 16:56:50] [thread 13960] [info] 	 1-pb:           0.0291988
+[2022-12-20 16:56:50] [thread 13960] [info] 	 CLs:            0.0512208
+[2022-12-20 16:56:50] [thread 13960] [info] 	 qmu95:          2.75421
+[2022-12-20 16:56:50] [thread 13960] [info] 	 qmu:            2.71433
+[2022-12-20 16:56:50] [thread 13960] [info] 	 qmuA0:          12.5332
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Precision:      0.000992892
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Correction:     0.000727088
+[2022-12-20 16:56:50] [thread 13960] [info] 	 New guess:      0.198578
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_0.099849_with_constr: 0.198578
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Finished in 2 iterations.
+[2022-12-20 16:56:50] [thread 13960] [info] 	 ------------------------
+[2022-12-20 16:56:50] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_0_with_constr
+Real time 0:00:48, CP time 48.350
+Real time 0:00:48, CP time 48.350
+[2022-12-20 16:57:39] [thread 13960] [info] 	 Initial guess:  0.0462441
+[2022-12-20 16:57:39] [thread 13960] [info] 	 Sigma(obs):     0.0462335
+[2022-12-20 16:57:39] [thread 13960] [info] 	 Sigma(mu,0):    0.0462335
+[2022-12-20 16:57:39] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:57:39] [thread 13960] [info] 	 qmu95:          0.999499
+[2022-12-20 16:57:39] [thread 13960] [info] 	 qmu:            1.16476
+[2022-12-20 16:57:39] [thread 13960] [info] 	 pmu:            0.139546
+[2022-12-20 16:57:39] [thread 13960] [info] 	 1-pb:           0.532729
+[2022-12-20 16:57:39] [thread 13960] [info] 	 CLs:            0.298641
+[2022-12-20 16:57:39] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:57:39] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_0_with_constr
+Real time 0:00:33, CP time 33.350
+Real time 0:00:33, CP time 33.350
+[2022-12-20 16:58:12] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0_with_constr
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Previous guess: 0.0462441
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Sigma(obs):     0.0460362
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Sigma(mu,0):    0.0460362
+[2022-12-20 16:58:12] [thread 13960] [info] 	 muhat:          0
+[2022-12-20 16:58:12] [thread 13960] [info] 	 pmu:            0.157565
+[2022-12-20 16:58:12] [thread 13960] [info] 	 1-pb:           0.5
+[2022-12-20 16:58:12] [thread 13960] [info] 	 CLs:            0.31513
+[2022-12-20 16:58:12] [thread 13960] [info] 	 qmu95:          0.990165
+[2022-12-20 16:58:12] [thread 13960] [info] 	 qmu:            1.00905
+[2022-12-20 16:58:12] [thread 13960] [info] 	 qmuA0:          1.00905
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Precision:      0.000230234
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Correction:     -0.000197401
+[2022-12-20 16:58:12] [thread 13960] [info] 	 New guess:      0.0460467
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_0_with_constr: 0.0460467
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Finished in 1 iterations.
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Found N * sigma = 1 * 0.0460467
+[2022-12-20 16:58:12] [thread 13960] [info] 	 Creating asimov data at mu = 0.0460467, profiling at mu = 0.0460467
+[2022-12-20 16:58:13] [thread 13960] [info] 	 Building NLL...
+[2022-12-20 16:58:15] [thread 13960] [info] 	 NLL built in 0.028 min (cpu), 0.0281319 min (real)
+[2022-12-20 16:58:15] [thread 13960] [info] 	 ------------------------
+[2022-12-20 16:58:15] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_0.046047_with_constr
+Real time 0:00:41, CP time 41.110
+Real time 0:00:41, CP time 41.110
+[2022-12-20 16:58:57] [thread 13960] [info] 	 Initial guess:  0.135894
+[2022-12-20 16:58:57] [thread 13960] [info] 	 Sigma(obs):     0.0515401
+[2022-12-20 16:58:57] [thread 13960] [info] 	 Sigma(mu,0):    0.0515401
+[2022-12-20 16:58:57] [thread 13960] [info] 	 muhat:          0.0460467
+[2022-12-20 16:58:57] [thread 13960] [info] 	 qmu95:          3.0359
+[2022-12-20 16:58:57] [thread 13960] [info] 	 qmu:            5.93806
+[2022-12-20 16:58:57] [thread 13960] [info] 	 pmu:            0.00740865
+[2022-12-20 16:58:57] [thread 13960] [info] 	 1-pb:           0.4208
+[2022-12-20 16:58:57] [thread 13960] [info] 	 CLs:            0.0127912
+[2022-12-20 16:58:57] [thread 13960] [info] 	 ----------------------
+[2022-12-20 16:58:57] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_0.046047_with_constr
+Real time 0:00:40, CP time 40.060
+Real time 0:00:40, CP time 40.060
+Real time 0:00:41, CP time 41.530
+Real time 0:00:41, CP time 41.530
+[2022-12-20 17:00:21] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0.046047_with_constr
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Previous guess: 0.135894
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Sigma(obs):     0.0538978
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Sigma(mu,0):    0.0522136
+[2022-12-20 17:00:21] [thread 13960] [info] 	 muhat:          0.0460467
+[2022-12-20 17:00:21] [thread 13960] [info] 	 pmu:            0.0477584
+[2022-12-20 17:00:21] [thread 13960] [info] 	 1-pb:           0.174724
+[2022-12-20 17:00:21] [thread 13960] [info] 	 CLs:            0.0578696
+[2022-12-20 17:00:21] [thread 13960] [info] 	 qmu95:          3.05794
+[2022-12-20 17:00:21] [thread 13960] [info] 	 qmu:            2.77885
+[2022-12-20 17:00:21] [thread 13960] [info] 	 qmuA0:          6.77379
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Precision:      0.000698181
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Correction:     0.0037426
+[2022-12-20 17:00:21] [thread 13960] [info] 	 New guess:      0.139636
+[2022-12-20 17:00:21] [thread 13960] [info] 	 ----------------------
+[2022-12-20 17:00:21] [thread 13960] [info] 	 Starting iteration 1 of nll_combPdf_asimovData_0.046047_with_constr
+Real time 0:07:43, CP time 463.730
+Real time 0:07:43, CP time 463.730
+Real time 0:07:22, CP time 442.470
+Real time 0:07:22, CP time 442.470
+[2022-12-20 17:15:28] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_0.046047_with_constr
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Previous guess: 0.139636
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Sigma(obs):     0.0542274
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Sigma(mu,0):    0.0524912
+[2022-12-20 17:15:28] [thread 13960] [info] 	 muhat:          0.0460467
+[2022-12-20 17:15:28] [thread 13960] [info] 	 pmu:            0.0421853
+[2022-12-20 17:15:28] [thread 13960] [info] 	 1-pb:           0.175071
+[2022-12-20 17:15:28] [thread 13960] [info] 	 CLs:            0.051138
+[2022-12-20 17:15:28] [thread 13960] [info] 	 qmu95:          3.02113
+[2022-12-20 17:15:28] [thread 13960] [info] 	 qmu:            2.97863
+[2022-12-20 17:15:28] [thread 13960] [info] 	 qmuA0:          7.07659
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Precision:      0.000701174
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Correction:     0.000598468
+[2022-12-20 17:15:28] [thread 13960] [info] 	 New guess:      0.140235
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_0.046047_with_constr: 0.140235
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Finished in 2 iterations.
+[2022-12-20 17:15:28] [thread 13960] [info] 	 ------------------------
+[2022-12-20 17:15:28] [thread 13960] [info] 	 Getting limit for nll: nll_combPdf_asimovData_mu0_with_constr
+Real time 0:00:28, CP time 28.210
+Real time 0:00:28, CP time 28.210
+Real time 0:00:40, CP time 40.170
+Real time 0:00:40, CP time 40.170
+[2022-12-20 17:16:36] [thread 13960] [info] 	 Initial guess:  0.0977675
+[2022-12-20 17:16:36] [thread 13960] [info] 	 Sigma(obs):     0.0497213
+[2022-12-20 17:16:36] [thread 13960] [info] 	 Sigma(mu,0):    0.0497213
+[2022-12-20 17:16:36] [thread 13960] [info] 	 muhat:          0.000284308
+[2022-12-20 17:16:36] [thread 13960] [info] 	 qmu95:          3.82857
+[2022-12-20 17:16:36] [thread 13960] [info] 	 qmu:            3.86719
+[2022-12-20 17:16:36] [thread 13960] [info] 	 pmu:            0.0246194
+[2022-12-20 17:16:36] [thread 13960] [info] 	 1-pb:           0.500084
+[2022-12-20 17:16:36] [thread 13960] [info] 	 CLs:            0.0492471
+[2022-12-20 17:16:36] [thread 13960] [info] 	 ----------------------
+[2022-12-20 17:16:36] [thread 13960] [info] 	 Starting iteration 0 of nll_combPdf_asimovData_mu0_with_constr
+Real time 0:00:39, CP time 39.930
+Real time 0:00:39, CP time 39.930
+Real time 0:07:26, CP time 446.720
+Real time 0:07:26, CP time 446.720
+[2022-12-20 17:24:43] [thread 13960] [info] 	 NLL:            nll_combPdf_asimovData_mu0_with_constr
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Previous guess: 0.0977675
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Sigma(obs):     0.0495794
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Sigma(mu,0):    0.0498099
+[2022-12-20 17:24:43] [thread 13960] [info] 	 muhat:          0.000284308
+[2022-12-20 17:24:43] [thread 13960] [info] 	 pmu:            0.0246373
+[2022-12-20 17:24:43] [thread 13960] [info] 	 1-pb:           0.501354
+[2022-12-20 17:24:43] [thread 13960] [info] 	 CLs:            0.0494084
+[2022-12-20 17:24:43] [thread 13960] [info] 	 qmu95:          3.8356
+[2022-12-20 17:24:43] [thread 13960] [info] 	 qmu:            3.86596
+[2022-12-20 17:24:43] [thread 13960] [info] 	 qmuA0:          3.85263
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Precision:      0.000488212
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Correction:     -0.000125127
+[2022-12-20 17:24:43] [thread 13960] [info] 	 New guess:      0.0976424
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Found limit for nll nll_combPdf_asimovData_mu0_with_constr: 0.0976424
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Finished in 1 iterations.
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Guess for bands
+[2022-12-20 17:24:43] [thread 13960] [info] 	 +2sigma: 0.182423
+[2022-12-20 17:24:43] [thread 13960] [info] 	 +1sigma: 0.136079
+[2022-12-20 17:24:43] [thread 13960] [info] 	 -1sigma: 0.0704544
+[2022-12-20 17:24:43] [thread 13960] [info] 	 -2sigma: 0.0524799
+[2022-12-20 17:24:43] [thread 13960] [info] 	 --------------------------------
+[2022-12-20 17:24:43] [thread 13960] [info] 	          Final result           
+[2022-12-20 17:24:43] [thread 13960] [info] 	 --------------------------------
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Correct bands
+[2022-12-20 17:24:43] [thread 13960] [info] 	 +2sigma: 0.198578
+[2022-12-20 17:24:43] [thread 13960] [info] 	 +1sigma: 0.140235
+[2022-12-20 17:24:43] [thread 13960] [info] 	 -1sigma: 0.0704544
+[2022-12-20 17:24:43] [thread 13960] [info] 	 -2sigma: 0.0524799
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Median:   0.0977779
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Observed: 0.0976424
+[2022-12-20 17:24:43] [thread 13960] [info] 	 --------------------------------
+[2022-12-20 17:24:43] [thread 13960] [info] 	 Finished with 24 calls to minimize (nll)
+Real time 1:11:17, CP time 4275.350
+[2022-12-20 17:24:43] [thread 13960] [info] 	 All fits done in 71.2558 min (cpu), 71.287 min (real)

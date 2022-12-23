@@ -1,0 +1,40 @@
+<!--
+This xml file created automatically on: 
+2022-7-21
+-->
+<!DOCTYPE Combination  SYSTEM 'HistFactorySchema.dtd'>
+
+<Combination OutputFilePrefix="BONLY_NEW_SPT_HTZT_WT16K050__/RooStats/BONLY_NEW_SPT_HTZT_WT16K050__" >
+
+
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin1bex1fjin0LTex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin1bex1fjin0Tex1Lin0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin2bex1fjin0LTex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin2bex1fjin0Tex1Lin0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin3bex1fjin0LTex1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin3bex1fjin0Tex1Lin1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin3bex1fjin1Tin0Lex1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin4bin1fjin0LTex1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin4bin1fjin0Tex1Lin1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin4bin1fjin1Tin0Lex1Hin0Vex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin1bex1fjin1Lex0Tex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin1bex1fjin0Lex1Tex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin1bex1fjin2LTin0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin2bex1fjin1Lex0Tex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin2bex1fjin0Lex1Tex0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin2bex1fjin2LTin0Hex1Vin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin3bex1fjin1Lex0VTex1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin3bex1fjin0Lex1VTex1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin3bex1fjin2VLTin1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin4bin1fjin0Lex1VTex1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep3_5jwin4bin0fjex1Lin0VTex0Hex.xml</Input>
+  <Input>./BONLY_NEW_SPT_HTZT_WT16K050__/RooStats//BONLY_NEW_SPT_HTZT_WT16K050___SPT_HTZT_c1lep6jin4bin0fjex1Lin0VTex0Hex.xml</Input>
+
+  <Measurement Name="BONLY_NEW_SPT_HTZT_WT16K050__" Lumi="1" LumiRelErr="0.1" ExportOnly="True"  >
+    <POI>mu_WTZt mu_WTHt</POI>  
+    <ParamSetting Const="True">Lumi</ParamSetting>
+  </Measurement> 
+
+</Combination>

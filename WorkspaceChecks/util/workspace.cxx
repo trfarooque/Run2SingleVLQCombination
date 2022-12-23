@@ -13,13 +13,16 @@ int main( int argc, char **argv ){
   //
   bool do_checks = false;
   bool do_config_dump = false;
+  bool do_trexf_dump = false;
   bool abort_on_error = true;
   bool decorr_all = false;
   std::string file_path = "";
   std::string workspace_name = "combined";
   std::string data_name = "obsData";
-  std::string output_xml_folder = "output/";
-  std::string output_ws_folder = "output/";
+  std::string input_ws_folder = "";
+  std::string output_trexf_folder = "data/trexf/";
+  std::string output_xml_folder = "data/xml/combination/";
+  std::string output_ws_folder = "data/workspaces/combination/";
   std::string output_xml_name = "combination.xml";
   std::string output_ws_name = "combined.root";
 
@@ -33,12 +36,15 @@ int main( int argc, char **argv ){
     if(argument=="file_path") file_path = value;
     else if(argument=="workspace_name") workspace_name = value;
     else if(argument=="data_name") data_name = value;
+    else if(argument=="input_ws_folder") input_ws_folder = value;
+    else if(argument=="output_trexf_folder") output_trexf_folder = value;
     else if(argument=="output_xml_folder") output_xml_folder = value;
     else if(argument=="output_ws_folder") output_ws_folder = value;
     else if(argument=="output_xml_name") output_xml_name = value;
     else if(argument=="output_ws_name") output_ws_name = value;
     else if(argument=="do_checks") do_checks = string_utils::bool_value(value);
     else if(argument=="do_config_dump") do_config_dump = string_utils::bool_value(value);
+    else if(argument=="do_trexf_dump") do_trexf_dump = string_utils::bool_value(value);
     else if(argument=="abort_on_error") abort_on_error = string_utils::bool_value(value);
     else if(argument=="decorr_all") decorr_all = string_utils::bool_value(value);
     else {
@@ -56,10 +62,10 @@ int main( int argc, char **argv ){
     messages::print_error( __func__, __FILE__, __LINE__, "The file doesn't seem to exist. Please check.");
     abort();
   }
-  if(workspace_name!="combined"){
-    messages::print_error( __func__, __FILE__, __LINE__, "The workspace name is required to be \"combined\".");
-    if(abort_on_error)abort();
-  }
+  //if(workspace_name!="combined"){
+  //  messages::print_error( __func__, __FILE__, __LINE__, "The workspace name is required to be \"combined\".");
+  //  if(abort_on_error)abort();
+  //}
 
   if(do_checks){
     WSChecker::Options checker_options;
@@ -77,12 +83,16 @@ int main( int argc, char **argv ){
     return 1;
   }
 
-  if(do_config_dump){
+  if(do_config_dump || do_trexf_dump){
     WSConfig::Options config_options;
     config_options.file_name = file_path;
     config_options.ws_name = workspace_name;
     config_options.data_name = data_name;
     config_options.abort_on_error = abort_on_error;
+    config_options.do_config_dump = do_config_dump;
+    config_options.do_trexf_dump = do_trexf_dump;
+    config_options.input_ws_folder = input_ws_folder;
+    config_options.output_trexf_folder = output_trexf_folder;
     config_options.output_xml_folder = output_xml_folder;
     config_options.output_ws_folder = output_ws_folder;
     config_options.output_xml_name = output_xml_name;

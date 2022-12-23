@@ -1,0 +1,22 @@
+<!DOCTYPE Organization  SYSTEM 'Organization.dtd'>
+<Organization 
+    InFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/input_workspaces/SPT_MONOTOP_combined_M16K050_combined_SPT_MONOTOP_combined_M16K050_model.root" 
+    OutFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_MONOTOP_TS_M16K050.root"
+        ModelName="SPT_MONOTOP_TS"
+        POINames="mu_signal"
+        WorkspaceName="combined"
+        ModelConfigName="ModelConfig"
+        DataName="asimovData"
+        >
+  <Item Name="sc_TS_WTZt[0.326]"/>
+  <Item Name="sc_TS_ZTZt[0.0315]"/>
+  <Item Name="mu_signal[1,-100,100]"/>
+
+  <Item Name="expr::mu_sc_TS_WTZt('@0*@1', sc_TS_WTZt, mu_signal)" />
+  <Item Name="expr::mu_sc_TS_ZTZt('@0*@1', sc_TS_ZTZt, mu_signal)" />
+  <Map Name="EDIT::NEWPDF(OLDPDF, 
+	     mu_WTZt=mu_sc_TS_WTZt,
+	     mu_ZTZt=mu_sc_TS_ZTZt)" />
+</Organization>
+
+

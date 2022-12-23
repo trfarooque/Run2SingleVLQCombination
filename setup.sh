@@ -2,3 +2,4 @@
 
 setupATLAS
 asetup StatAnalysis,0.0.4
+export VLQCOMBDIR=$PWD
