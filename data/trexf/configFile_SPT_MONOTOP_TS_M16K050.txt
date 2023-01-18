@@ -1,0 +1,321 @@
+Job: SPT_MONOTOP_TS_M16K050_MU0_ASIMOV
+Label: TS_M16K050
+ReadFrom: HIST
+ImageFormat: png
+HistoChecks: NOCRASH
+
+  Systematic:    COMB_Flat20Smoothed_JMR
+
+  Systematic:    COMB_MCData_JMR
+
+  Systematic:    COMB_MCLargeR_JMR
+
+  Systematic:    COMB_MCME_JMR
+
+  Systematic:    COMB_MCPS_JMR
+
+  Systematic:    COMB_MCRAD_JMR
+
+  Systematic:    COMB_MCSmallJET_JMR
+
+  Systematic:    COMB_OutsideCalib_JMR
+
+  Systematic:    COMB_SHAPE_JMR
+
+  Systematic:    COMB_Smoothing_JMR
+
+  Systematic:    COMB_Stat_JMR
+
+  Systematic:    JET_BJES_Response
+
+  Systematic:    JET_EffectiveNP_Detector1
+
+  Systematic:    JET_EffectiveNP_Detector2
+
+  Systematic:    JET_EffectiveNP_Mixed1
+
+  Systematic:    JET_EffectiveNP_Mixed2
+
+  Systematic:    JET_EffectiveNP_Mixed3
+
+  Systematic:    JET_EffectiveNP_Modelling1
+
+  Systematic:    JET_EffectiveNP_Modelling2
+
+  Systematic:    JET_EffectiveNP_Modelling3
+
+  Systematic:    JET_EffectiveNP_Modelling4
+
+  Systematic:    JET_EffectiveNP_R10_Mixed4
+
+  Systematic:    JET_EffectiveNP_Statistical1
+
+  Systematic:    JET_EffectiveNP_Statistical2
+
+  Systematic:    JET_EffectiveNP_Statistical3
+
+  Systematic:    JET_EffectiveNP_Statistical4
+
+  Systematic:    JET_EffectiveNP_Statistical5
+
+  Systematic:    JET_EffectiveNP_Statistical6
+
+  Systematic:    JET_EtaIntercalibration_Modelling
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_2018data
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_highE
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_negEta
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_posEta
+
+  Systematic:    JET_EtaIntercalibration_TotalStat
+
+  Systematic:    JET_Flavor_Composition
+
+  Systematic:    JET_Flavor_Response
+
+  Systematic:    JET_JER_AllOthers
+
+  Systematic:    JET_JER_DataVsMC_MC16
+
+  Systematic:    JET_JER_DataVsMC_R10_MC16
+
+  Systematic:    JET_JER_EffectiveNP_1
+
+  Systematic:    JET_JER_EffectiveNP_10
+
+  Systematic:    JET_JER_EffectiveNP_11
+
+  Systematic:    JET_JER_EffectiveNP_12restTerm
+
+  Systematic:    JET_JER_EffectiveNP_2
+
+  Systematic:    JET_JER_EffectiveNP_3
+
+  Systematic:    JET_JER_EffectiveNP_4
+
+  Systematic:    JET_JER_EffectiveNP_5
+
+  Systematic:    JET_JER_EffectiveNP_6
+
+  Systematic:    JET_JER_EffectiveNP_7
+
+  Systematic:    JET_JER_EffectiveNP_8
+
+  Systematic:    JET_JER_EffectiveNP_9
+
+  Systematic:    JET_JER_dijet_R10_closure
+
+  Systematic:    JET_JER_dijet_R10_jesEffNP1
+
+  Systematic:    JET_JER_dijet_R10_jesEffNP3
+
+  Systematic:    JET_JER_dijet_R10_jesEffNP4
+
+  Systematic:    JET_JER_dijet_R10_jesEtaIntMod
+
+  Systematic:    JET_JER_dijet_R10_jesFlavComp
+
+  Systematic:    JET_JER_dijet_R10_jesFlavResp
+
+  Systematic:    JET_JER_dijet_R10_mcgenerator
+
+  Systematic:    JET_JER_dijet_R10_selection
+
+  Systematic:    JET_JER_dijet_R10_stat
+
+  Systematic:    JET_JvtEfficiency
+
+  Systematic:    JET_Pileup_OffsetMu
+
+  Systematic:    JET_Pileup_OffsetNPV
+
+  Systematic:    JET_Pileup_PtTerm
+
+  Systematic:    JET_PunchThrough_MC16
+
+  Systematic:    JET_SingleParticle_HighPt
+
+  Systematic:    LUMINOSITY
+
+  Systematic:    MET_SoftTrk_ResoPara
+
+  Systematic:    MET_SoftTrk_ResoPerp
+
+  Systematic:    MET_SoftTrk_Scale
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_0
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_1
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_2
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_3
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_4
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_5
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_6
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_7
+
+  Systematic:    PF_77_FT_EFF_Eigen_B_8
+
+  Systematic:    PF_77_FT_EFF_Eigen_C_0
+
+  Systematic:    PF_77_FT_EFF_Eigen_C_1
+
+  Systematic:    PF_77_FT_EFF_Eigen_C_2
+
+  Systematic:    PF_77_FT_EFF_Eigen_C_3
+
+  Systematic:    PF_77_FT_EFF_Eigen_Light_0
+
+  Systematic:    PF_77_FT_EFF_Eigen_Light_1
+
+  Systematic:    PF_77_FT_EFF_Eigen_Light_2
+
+  Systematic:    PF_77_FT_EFF_Eigen_Light_3
+
+  Systematic:    PF_77_FT_EFF_extrapolation
+
+  Systematic:    PF_77_FT_EFF_extrapolation_from_charm
+
+  Systematic:    PRW_DATASF
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOPBARTCHAN_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOPSCHAN_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOPTCHAN_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOPWTCHAN_DRDS
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOPWTCHAN_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_FSR
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_ISR
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_PDF
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_muF
+
+  Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_muR
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBARV_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_V
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_top
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_Pileup_RhoTopology
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_ME
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_Shower
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_FSR
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_ISR
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_PDF
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_muF
+
+  Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_muR
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_qsf_WJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_qsf_ZJETS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_MC_XS
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF13000
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF25300
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF270000
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_bNorm
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_cNorm
+
+  Systematic:    SPT_MONOTOP_BKGNP_VV_weight_muR05_muF05_to_muR2_muF2
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__0
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__1
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__10
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__11
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__12
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__13
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__14
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__15
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__16
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__17
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__2
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__3
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__4
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__5
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__6
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__7
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__8
+
+  Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__9

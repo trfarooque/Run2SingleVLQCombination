@@ -3,11 +3,11 @@
 <Combination WorkspaceName="combWS" 
    ModelConfigName="ModelConfig" 
    DataName="combData"
-   OutputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination//data/workspaces/combined_workspaces//TS_M16K050_combined.root">
+   OutputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/combined_workspaces//TS_M16K050_combined.root">
    <POIList Combined="mu_signal[1~-100,100]"/>
  
   <Channel Name="SPT_HTZT_binned"
-     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_HTZT_TS_M16K050.root"
+     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces//SPT_HTZT_TS_M16K050.root"
      WorkspaceName="combined"
      ModelConfigName="ModelConfig"
      DataName="asimovData">
@@ -722,7 +722,7 @@
     </RenameMap>
   </Channel>
   <Channel Name="SPT_MONOTOP_binned"
-     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_MONOTOP_TS_M16K050.root"
+     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces//SPT_MONOTOP_TS_M16K050.root"
      WorkspaceName="combined"
      ModelConfigName="ModelConfig"
      DataName="asimovData">
@@ -902,7 +902,7 @@
     </RenameMap>
   </Channel>
   <Channel Name="SPT_OSML_binned"
-     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_OSML_TS_M16K050.root"
+     InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces//SPT_OSML_TS_M16K050.root"
      WorkspaceName="combWS"
      ModelConfigName="ModelConfig"
      DataName="asimovData">

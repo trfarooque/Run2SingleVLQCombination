@@ -1,0 +1,394 @@
+
+[1mRooFit v3.60 -- Developed by Wouter Verkerke and David Kirkby[0m 
+                Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
+                All rights reserved, please read http://roofit.sourceforge.net/license.txt
+
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Including external constraints:
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Preparing parameters of interest: mu_signal=0
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Summary of POI setup in the likelihood model
+  1) 0x39194a0 RooRealVar:: mu_signal = 0 C  L(-100 - 100)  "mu_signal"
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Starting fit...
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR0b1f_model
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR1b1f_model
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_TCR_model
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_VCR_model
+[2022-12-23 19:11:18] [thread 21574] [info] 	 Building NLL...
+[2022-12-23 19:11:18] [thread 21574] [info] 	 NLL built in 0.002 min (cpu), 0.00216891 min (real)
+Minuit2Minimizer: Minimize with max-calls 1740000 convergence for edm < 1 strategy 1
+Minuit2Minimizer::Minuit  - Changing default options
+             StorageLevel :               0
+Info in <Minuit2>: MnSeedGenerator Initial state: FCN =       185.3528084 Edm =   1.649259649e-09 NCalls =    395
+Info in <Minuit2>: VariableMetricBuilder Start iterating until Edm is < 0.001 with call limit = 1740000
+Info in <Minuit2>: VariableMetricBuilder    0 - FCN =       185.3528084 Edm =   1.649259649e-09 NCalls =    395
+Warning in <Minuit2>: VariableMetricBuilder No improvement in line search
+Info in <Minuit2>: VariableMetricBuilder    1 - FCN =       185.3528084 Edm =   1.649259649e-09 NCalls =    399
+Info in <Minuit2>: VariableMetricBuilder After Hessian
+Info in <Minuit2>: VariableMetricBuilder    2 - FCN =       185.3528084 Edm =   7.670148083e-14 NCalls =  15771
+Minuit2Minimizer : Valid minimum - status = 0
+FVAL  = 185.352808411618184
+Edm   = 7.67014808263997058e-14
+Nfcn  = 15771
+SPT_MONOTOP_BKGNF_TTBAR	  = 0.848023	 +/-  0.217835	(limited)
+SPT_MONOTOP_BKGNF_VJETS	  = 0.826012	 +/-  0.156528	(limited)
+alpha_COMB_Flat20Smoothed_JMR	  = 0	 +/-  0.991828	(limited)
+alpha_COMB_MCData_JMR	  = 0	 +/-  0.993326	(limited)
+alpha_COMB_MCLargeR_JMR	  = 0	 +/-  0.991656	(limited)
+alpha_COMB_MCME_JMR	  = 0	 +/-  0.991687	(limited)
+alpha_COMB_MCPS_JMR	  = 0	 +/-  0.992342	(limited)
+alpha_COMB_MCRAD_JMR	  = 0	 +/-  0.991814	(limited)
+alpha_COMB_MCSmallJET_JMR	  = 0	 +/-  0.992016	(limited)
+alpha_COMB_OutsideCalib_JMR	  = 0	 +/-  0.991828	(limited)
+alpha_COMB_SHAPE_JMR	  = 0	 +/-  0.992016	(limited)
+alpha_COMB_Smoothing_JMR	  = 0	 +/-  0.991803	(limited)
+alpha_COMB_Stat_JMR	  = 0	 +/-  0.992221	(limited)
+alpha_JET_BJES_Response	  = 0	 +/-  0.991746	(limited)
+alpha_JET_EffectiveNP_Detector1	  = 0	 +/-  0.987164	(limited)
+alpha_JET_EffectiveNP_Detector2	  = 0	 +/-  0.987991	(limited)
+alpha_JET_EffectiveNP_Mixed1	  = 0	 +/-  0.98816	(limited)
+alpha_JET_EffectiveNP_Mixed2	  = 0	 +/-  0.992135	(limited)
+alpha_JET_EffectiveNP_Mixed3	  = 0	 +/-  0.989021	(limited)
+alpha_JET_EffectiveNP_Modelling1	  = 0	 +/-  0.988489	(limited)
+alpha_JET_EffectiveNP_Modelling2	  = 0	 +/-  0.98793	(limited)
+alpha_JET_EffectiveNP_Modelling3	  = 0	 +/-  0.986372	(limited)
+alpha_JET_EffectiveNP_Modelling4	  = 0	 +/-  0.988081	(limited)
+alpha_JET_EffectiveNP_R10_Mixed4	  = 0	 +/-  0.991982	(limited)
+alpha_JET_EffectiveNP_Statistical1	  = 0	 +/-  0.991902	(limited)
+alpha_JET_EffectiveNP_Statistical2	  = 0	 +/-  0.989563	(limited)
+alpha_JET_EffectiveNP_Statistical3	  = 0	 +/-  0.988413	(limited)
+alpha_JET_EffectiveNP_Statistical4	  = 0	 +/-  0.987908	(limited)
+alpha_JET_EffectiveNP_Statistical5	  = 0	 +/-  0.988874	(limited)
+alpha_JET_EffectiveNP_Statistical6	  = 0	 +/-  0.988127	(limited)
+alpha_JET_EtaIntercalibration_Modelling	  = 0	 +/-  0.980909	(limited)
+alpha_JET_EtaIntercalibration_NonClosure_2018data	  = 0	 +/-  0.99243	(limited)
+alpha_JET_EtaIntercalibration_NonClosure_highE	  = 0	 +/-  0.992028	(limited)
+alpha_JET_EtaIntercalibration_NonClosure_negEta	  = 0	 +/-  0.991905	(limited)
+alpha_JET_EtaIntercalibration_NonClosure_posEta	  = 0	 +/-  0.991999	(limited)
+alpha_JET_EtaIntercalibration_TotalStat	  = 0	 +/-  0.992044	(limited)
+alpha_JET_Flavor_Composition	  = 0	 +/-  0.968491	(limited)
+alpha_JET_Flavor_Response	  = 0	 +/-  0.99094	(limited)
+alpha_JET_JER_AllOthers	  = 0	 +/-  0.991971	(limited)
+alpha_JET_JER_DataVsMC_MC16	  = 0	 +/-  0.986293	(limited)
+alpha_JET_JER_DataVsMC_R10_MC16	  = 0	 +/-  0.992861	(limited)
+alpha_JET_JER_EffectiveNP_1	  = 0	 +/-  0.976907	(limited)
+alpha_JET_JER_EffectiveNP_10	  = 0	 +/-  0.98404	(limited)
+alpha_JET_JER_EffectiveNP_11	  = 0	 +/-  0.993081	(limited)
+alpha_JET_JER_EffectiveNP_12restTerm	  = 0	 +/-  0.991774	(limited)
+alpha_JET_JER_EffectiveNP_2	  = 0	 +/-  0.984102	(limited)
+alpha_JET_JER_EffectiveNP_3	  = 0	 +/-  0.984916	(limited)
+alpha_JET_JER_EffectiveNP_4	  = 0	 +/-  0.99117	(limited)
+alpha_JET_JER_EffectiveNP_5	  = 0	 +/-  0.985695	(limited)
+alpha_JET_JER_EffectiveNP_6	  = 0	 +/-  0.986531	(limited)
+alpha_JET_JER_EffectiveNP_7	  = 0	 +/-  0.986785	(limited)
+alpha_JET_JER_EffectiveNP_8	  = 0	 +/-  0.992983	(limited)
+alpha_JET_JER_EffectiveNP_9	  = 0	 +/-  0.981945	(limited)
+alpha_JET_JER_dijet_R10_closure	  = 0	 +/-  0.992852	(limited)
+alpha_JET_JER_dijet_R10_jesEffNP1	  = 0	 +/-  0.992194	(limited)
+alpha_JET_JER_dijet_R10_jesEffNP3	  = 0	 +/-  0.992255	(limited)
+alpha_JET_JER_dijet_R10_jesEffNP4	  = 0	 +/-  0.993017	(limited)
+alpha_JET_JER_dijet_R10_jesEtaIntMod	  = 0	 +/-  0.992816	(limited)
+alpha_JET_JER_dijet_R10_jesFlavComp	  = 0	 +/-  0.992376	(limited)
+alpha_JET_JER_dijet_R10_jesFlavResp	  = 0	 +/-  0.993092	(limited)
+alpha_JET_JER_dijet_R10_mcgenerator	  = 0	 +/-  0.991925	(limited)
+alpha_JET_JER_dijet_R10_selection	  = 0	 +/-  0.99276	(limited)
+alpha_JET_JER_dijet_R10_stat	  = 0	 +/-  0.99254	(limited)
+alpha_JET_JvtEfficiency	  = 0	 +/-  0.993066	(limited)
+alpha_JET_Pileup_OffsetMu	  = 0	 +/-  0.985984	(limited)
+alpha_JET_Pileup_OffsetNPV	  = 0	 +/-  0.990085	(limited)
+alpha_JET_Pileup_PtTerm	  = 0	 +/-  0.992125	(limited)
+alpha_JET_PunchThrough_MC16	  = 0	 +/-  0.992052	(limited)
+alpha_JET_SingleParticle_HighPt	  = 0	 +/-  0.992033	(limited)
+alpha_LUMINOSITY	  = 0	 +/-  0.993191	(limited)
+alpha_MET_SoftTrk_ResoPara	  = 0	 +/-  0.992648	(limited)
+alpha_MET_SoftTrk_ResoPerp	  = 0	 +/-  0.99285	(limited)
+alpha_MET_SoftTrk_Scale	  = 0	 +/-  0.991187	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_0	  = 0	 +/-  0.987941	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_1	  = 0	 +/-  0.985184	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_2	  = 0	 +/-  0.993231	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_3	  = 0	 +/-  0.993312	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_4	  = 0	 +/-  0.993346	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_5	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_6	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_7	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_Eigen_B_8	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_Eigen_C_0	  = 0	 +/-  0.992961	(limited)
+alpha_PF_77_FT_EFF_Eigen_C_1	  = 0	 +/-  0.993312	(limited)
+alpha_PF_77_FT_EFF_Eigen_C_2	  = 0	 +/-  0.993346	(limited)
+alpha_PF_77_FT_EFF_Eigen_C_3	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_Eigen_Light_0	  = 0	 +/-  0.993068	(limited)
+alpha_PF_77_FT_EFF_Eigen_Light_1	  = 0	 +/-  0.993336	(limited)
+alpha_PF_77_FT_EFF_Eigen_Light_2	  = 0	 +/-  0.993343	(limited)
+alpha_PF_77_FT_EFF_Eigen_Light_3	  = 0	 +/-  0.993347	(limited)
+alpha_PF_77_FT_EFF_extrapolation	  = 0	 +/-  0.991475	(limited)
+alpha_PF_77_FT_EFF_extrapolation_from_charm	  = 0	 +/-  0.992512	(limited)
+alpha_PRW_DATASF	  = 0	 +/-  0.985884	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOPBARTCHAN_MC_XS	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOPSCHAN_MC_XS	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOPTCHAN_MC_XS	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOPWTCHAN_DRDS	  = 0	 +/-  0.936478	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOPWTCHAN_MC_XS	  = 0	 +/-  0.992741	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOP_weight_FSR	  = 0	 +/-  0.950718	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOP_weight_ISR	  = 0	 +/-  0.992268	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOP_weight_PDF	  = 0	 +/-  0.992855	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOP_weight_muF	  = 0	 +/-  0.992216	(limited)
+alpha_SPT_MONOTOP_BKGNP_STOP_weight_muR	  = 0	 +/-  0.992338	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBARV_MC_XS	  = 0	 +/-  0.993068	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_V	  = 0	 +/-  0.992572	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_top	  = 0	 +/-  0.992203	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_Pileup_RhoTopology	  = 0	 +/-  0.977449	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_ME	  = 0	 +/-  0.839334	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_Shower	  = 0	 +/-  0.911459	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_FSR	  = 0	 +/-  0.981283	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_ISR	  = 0	 +/-  0.979793	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_PDF	  = 0	 +/-  0.993209	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_muF	  = 0	 +/-  0.989668	(limited)
+alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_muR	  = 0	 +/-  0.981047	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_WJETS	  = 0	 +/-  0.991494	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_ZJETS	  = 0	 +/-  0.990975	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_WJETS	  = 0	 +/-  0.992353	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_ZJETS	  = 0	 +/-  0.991113	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_WJETS	  = 0	 +/-  0.993304	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_ZJETS	  = 0	 +/-  0.992571	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_WJETS	  = 0	 +/-  0.993153	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_ZJETS	  = 0	 +/-  0.992936	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF_WJETS	  = 0	 +/-  0.993189	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF_ZJETS	  = 0	 +/-  0.987925	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_WJETS	  = 0	 +/-  0.992977	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_ZJETS	  = 0	 +/-  0.993241	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_WJETS	  = 0	 +/-  0.99298	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_ZJETS	  = 0	 +/-  0.99309	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_WJETS	  = 0	 +/-  0.971512	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_ZJETS	  = 0	 +/-  0.887559	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS	  = 0	 +/-  0.972565	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_ZJETS	  = 0	 +/-  0.986189	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_qsf_WJETS	  = 0	 +/-  0.980835	(limited)
+alpha_SPT_MONOTOP_BKGNP_VJETS_weight_qsf_ZJETS	  = 0	 +/-  0.913248	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_MC_XS	  = 0	 +/-  0.993105	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF	  = 0	 +/-  0.992994	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF13000	  = 0	 +/-  0.992868	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF25300	  = 0	 +/-  0.992301	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF270000	  = 0	 +/-  0.993315	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_bNorm	  = 0	 +/-  0.991313	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_cNorm	  = 0	 +/-  0.993145	(limited)
+alpha_SPT_MONOTOP_BKGNP_VV_weight_muR05_muF05_to_muR2_muF2	  = 0	 +/-  0.991796	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__0	  = 0	 +/-  0.993097	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__1	  = 0	 +/-  0.987306	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__10	  = 0	 +/-  0.993295	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__11	  = 0	 +/-  0.992607	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__12	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__13	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__14	  = 0	 +/-  0.993347	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__15	  = 0	 +/-  0.993342	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__16	  = 0	 +/-  0.993226	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__17	  = 0	 +/-  0.993319	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__2	  = 0	 +/-  0.982129	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__3	  = 0	 +/-  0.991322	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__4	  = 0	 +/-  0.993188	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__5	  = 0	 +/-  0.9933	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__6	  = 0	 +/-  0.992418	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__7	  = 0	 +/-  0.993345	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__8	  = 0	 +/-  0.993333	(limited)
+alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__9	  = 0	 +/-  0.993296	(limited)
+gamma_stat_SPT_MONOTOP_SR0b1f_bin_0	  = 1	 +/-  0.0733339	(limited)
+gamma_stat_SPT_MONOTOP_SR0b1f_bin_1	  = 1	 +/-  0.08265	(limited)
+gamma_stat_SPT_MONOTOP_SR0b1f_bin_2	  = 1	 +/-  0.0865926	(limited)
+gamma_stat_SPT_MONOTOP_SR0b1f_bin_3	  = 1	 +/-  0.0690095	(limited)
+gamma_stat_SPT_MONOTOP_SR1b1f_bin_0	  = 1	 +/-  0.0665478	(limited)
+gamma_stat_SPT_MONOTOP_SR1b1f_bin_1	  = 1	 +/-  0.0802109	(limited)
+gamma_stat_SPT_MONOTOP_SR1b1f_bin_2	  = 1	 +/-  0.0750472	(limited)
+gamma_stat_SPT_MONOTOP_SR1b1f_bin_3	  = 1	 +/-  0.0470446	(limited)
+gamma_stat_SPT_MONOTOP_TCR_bin_0	  = 1	 +/-  0.00454793	(limited)
+gamma_stat_SPT_MONOTOP_VCR_bin_0	  = 1	 +/-  0.00849974	(limited)
+Real time 0:00:03, CP time 3.940
+Real time 0:00:03, CP time 3.940
+[2022-12-23 19:11:22] [thread 21574] [info] 	 Starting fit with HESSE...
+Info in <Minuit2>: Minuit2Minimizer::Hesse Using max-calls 1740000
+Info in <Minuit2>: Minuit2Minimizer::Hesse Hesse is valid - matrix is accurate
+Real time 0:00:03, CP time 3.510
+Real time 0:00:07, CP time 7.450, 2 slices
+
+  RooFitResult: minimized FCN value: 185.353, estimated distance to minimum: 3.96924e-12
+                covariance matrix quality: Full, accurate covariance matrix
+                Status : MINIMIZE=0 HESSE=0 
+
+    Floating Parameter    FinalValue +/-  Error   
+  --------------------  --------------------------
+  SPT_MONOTOP_BKGNF_TTBAR    8.4802e-01 +/-  2.19e-01
+  SPT_MONOTOP_BKGNF_VJETS    8.2601e-01 +/-  1.57e-01
+  alpha_COMB_Flat20Smoothed_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_MCData_JMR    0.0000e+00 +/-  9.93e-01
+  alpha_COMB_MCLargeR_JMR    0.0000e+00 +/-  9.92e-01
+   alpha_COMB_MCME_JMR    0.0000e+00 +/-  9.92e-01
+   alpha_COMB_MCPS_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_MCRAD_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_MCSmallJET_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_OutsideCalib_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_SHAPE_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_COMB_Smoothing_JMR    0.0000e+00 +/-  9.92e-01
+   alpha_COMB_Stat_JMR    0.0000e+00 +/-  9.92e-01
+  alpha_JET_BJES_Response    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EffectiveNP_Detector1    0.0000e+00 +/-  9.87e-01
+  alpha_JET_EffectiveNP_Detector2    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_Mixed1    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_Mixed2    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EffectiveNP_Mixed3    0.0000e+00 +/-  9.89e-01
+  alpha_JET_EffectiveNP_Modelling1    0.0000e+00 +/-  9.89e-01
+  alpha_JET_EffectiveNP_Modelling2    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_Modelling3    0.0000e+00 +/-  9.86e-01
+  alpha_JET_EffectiveNP_Modelling4    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_R10_Mixed4    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EffectiveNP_Statistical1    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EffectiveNP_Statistical2    0.0000e+00 +/-  9.90e-01
+  alpha_JET_EffectiveNP_Statistical3    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_Statistical4    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EffectiveNP_Statistical5    0.0000e+00 +/-  9.89e-01
+  alpha_JET_EffectiveNP_Statistical6    0.0000e+00 +/-  9.88e-01
+  alpha_JET_EtaIntercalibration_Modelling    0.0000e+00 +/-  9.81e-01
+  alpha_JET_EtaIntercalibration_NonClosure_2018data    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EtaIntercalibration_NonClosure_highE    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EtaIntercalibration_NonClosure_negEta    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EtaIntercalibration_NonClosure_posEta    0.0000e+00 +/-  9.92e-01
+  alpha_JET_EtaIntercalibration_TotalStat    0.0000e+00 +/-  9.92e-01
+  alpha_JET_Flavor_Composition    0.0000e+00 +/-  9.68e-01
+  alpha_JET_Flavor_Response    0.0000e+00 +/-  9.91e-01
+  alpha_JET_JER_AllOthers    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_DataVsMC_MC16    0.0000e+00 +/-  9.86e-01
+  alpha_JET_JER_DataVsMC_R10_MC16    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_EffectiveNP_1    0.0000e+00 +/-  9.77e-01
+  alpha_JET_JER_EffectiveNP_10    0.0000e+00 +/-  9.84e-01
+  alpha_JET_JER_EffectiveNP_11    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_EffectiveNP_12restTerm    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_EffectiveNP_2    0.0000e+00 +/-  9.84e-01
+  alpha_JET_JER_EffectiveNP_3    0.0000e+00 +/-  9.85e-01
+  alpha_JET_JER_EffectiveNP_4    0.0000e+00 +/-  9.91e-01
+  alpha_JET_JER_EffectiveNP_5    0.0000e+00 +/-  9.86e-01
+  alpha_JET_JER_EffectiveNP_6    0.0000e+00 +/-  9.87e-01
+  alpha_JET_JER_EffectiveNP_7    0.0000e+00 +/-  9.87e-01
+  alpha_JET_JER_EffectiveNP_8    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_EffectiveNP_9    0.0000e+00 +/-  9.82e-01
+  alpha_JET_JER_dijet_R10_closure    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_dijet_R10_jesEffNP1    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_dijet_R10_jesEffNP3    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_dijet_R10_jesEffNP4    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_dijet_R10_jesEtaIntMod    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_dijet_R10_jesFlavComp    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_dijet_R10_jesFlavResp    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_dijet_R10_mcgenerator    0.0000e+00 +/-  9.92e-01
+  alpha_JET_JER_dijet_R10_selection    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JER_dijet_R10_stat    0.0000e+00 +/-  9.93e-01
+  alpha_JET_JvtEfficiency    0.0000e+00 +/-  9.93e-01
+  alpha_JET_Pileup_OffsetMu    0.0000e+00 +/-  9.86e-01
+  alpha_JET_Pileup_OffsetNPV    0.0000e+00 +/-  9.90e-01
+  alpha_JET_Pileup_PtTerm    0.0000e+00 +/-  9.92e-01
+  alpha_JET_PunchThrough_MC16    0.0000e+00 +/-  9.92e-01
+  alpha_JET_SingleParticle_HighPt    0.0000e+00 +/-  9.92e-01
+      alpha_LUMINOSITY    0.0000e+00 +/-  9.93e-01
+  alpha_MET_SoftTrk_ResoPara    0.0000e+00 +/-  9.93e-01
+  alpha_MET_SoftTrk_ResoPerp    0.0000e+00 +/-  9.93e-01
+  alpha_MET_SoftTrk_Scale    0.0000e+00 +/-  9.91e-01
+  alpha_PF_77_FT_EFF_Eigen_B_0    0.0000e+00 +/-  9.88e-01
+  alpha_PF_77_FT_EFF_Eigen_B_1    0.0000e+00 +/-  9.85e-01
+  alpha_PF_77_FT_EFF_Eigen_B_2    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_3    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_4    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_5    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_6    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_7    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_B_8    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_C_0    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_C_1    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_C_2    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_C_3    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_Light_0    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_Light_1    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_Light_2    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_Eigen_Light_3    0.0000e+00 +/-  9.93e-01
+  alpha_PF_77_FT_EFF_extrapolation    0.0000e+00 +/-  9.92e-01
+  alpha_PF_77_FT_EFF_extrapolation_from_charm    0.0000e+00 +/-  9.93e-01
+      alpha_PRW_DATASF    0.0000e+00 +/-  9.86e-01
+  alpha_SPT_MONOTOP_BKGNP_STOPBARTCHAN_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_STOPSCHAN_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_STOPTCHAN_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_STOPWTCHAN_DRDS    0.0000e+00 +/-  9.36e-01
+  alpha_SPT_MONOTOP_BKGNP_STOPWTCHAN_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_STOP_weight_FSR    0.0000e+00 +/-  9.51e-01
+  alpha_SPT_MONOTOP_BKGNP_STOP_weight_ISR    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_STOP_weight_PDF    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_STOP_weight_muF    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_STOP_weight_muR    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBARV_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_V    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_top    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_JET_Pileup_RhoTopology    0.0000e+00 +/-  9.77e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_ME    0.0000e+00 +/-  8.41e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_Shower    0.0000e+00 +/-  9.09e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_FSR    0.0000e+00 +/-  9.89e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_ISR    0.0000e+00 +/-  9.90e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_PDF    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_muF    0.0000e+00 +/-  9.89e-01
+  alpha_SPT_MONOTOP_BKGNP_TTBAR_weight_muR    0.0000e+00 +/-  9.87e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_WJETS    0.0000e+00 +/-  9.91e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_ZJETS    0.0000e+00 +/-  9.91e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_WJETS    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_ZJETS    0.0000e+00 +/-  9.91e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_WJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_ZJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_WJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_ZJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF_WJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_PDF_ZJETS    0.0000e+00 +/-  9.88e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_WJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_ZJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_WJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_ZJETS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_WJETS    0.0000e+00 +/-  9.70e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_ZJETS    0.0000e+00 +/-  8.88e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS    0.0000e+00 +/-  9.72e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_ZJETS    0.0000e+00 +/-  9.86e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_qsf_WJETS    0.0000e+00 +/-  9.80e-01
+  alpha_SPT_MONOTOP_BKGNP_VJETS_weight_qsf_ZJETS    0.0000e+00 +/-  9.13e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_MC_XS    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF13000    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF25300    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_PDF270000    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_bNorm    0.0000e+00 +/-  9.91e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_cNorm    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_BKGNP_VV_weight_muR05_muF05_to_muR2_muF2    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__0    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__1    0.0000e+00 +/-  9.87e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__10    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__11    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__12    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__13    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__14    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__15    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__16    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__17    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__2    0.0000e+00 +/-  9.87e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__3    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__4    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__5    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__6    0.0000e+00 +/-  9.92e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__7    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__8    0.0000e+00 +/-  9.93e-01
+  alpha_SPT_MONOTOP_weight_ljet_toptagging_con50__9    0.0000e+00 +/-  9.93e-01
+  gamma_stat_SPT_MONOTOP_SR0b1f_bin_0    1.0000e+00 +/-  7.33e-02
+  gamma_stat_SPT_MONOTOP_SR0b1f_bin_1    1.0000e+00 +/-  8.27e-02
+  gamma_stat_SPT_MONOTOP_SR0b1f_bin_2    1.0000e+00 +/-  8.66e-02
+  gamma_stat_SPT_MONOTOP_SR0b1f_bin_3    1.0000e+00 +/-  6.90e-02
+  gamma_stat_SPT_MONOTOP_SR1b1f_bin_0    1.0000e+00 +/-  6.66e-02
+  gamma_stat_SPT_MONOTOP_SR1b1f_bin_1    1.0000e+00 +/-  8.02e-02
+  gamma_stat_SPT_MONOTOP_SR1b1f_bin_2    1.0000e+00 +/-  7.50e-02
+  gamma_stat_SPT_MONOTOP_SR1b1f_bin_3    1.0000e+00 +/-  4.70e-02
+  gamma_stat_SPT_MONOTOP_TCR_bin_0    1.0000e+00 +/-  4.55e-03
+  gamma_stat_SPT_MONOTOP_VCR_bin_0    1.0000e+00 +/-  8.50e-03
+
+[2022-12-23 19:11:26] [thread 21574] [info] 	 Starting fit with MINOS...
+[2022-12-23 19:11:26] [thread 21574] [info] 	 Evaluating MINOS errors for all POIs...
+Real time 0:00:00, CP time 0.000
+Real time 0:00:07, CP time 7.450, 3 slices
+[2022-12-23 19:11:26] [thread 21574] [info] 	 Saving results to /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data//fits//fits_SPT_MONOTOP_TS_M16K050_MU0_ASIMOV.root
+[2022-12-23 19:11:26] [thread 21574] [info] 	 All fits done in 0.130833 min (cpu), 0.131196 min (real)
+[2022-12-23 19:11:26] [thread 21574] [info] 	   Fit Summary of POIs ([92m STATUS OK [0m)
+[2022-12-23 19:11:26] [thread 21574] [info] 	 ------------------------------------------------
+RooRealVar::mu_signal = 0 C  L(-100 - 100) 

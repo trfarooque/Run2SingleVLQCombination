@@ -72,11 +72,27 @@ void WSConfig::init(){
 void WSConfig::dump_files(){
   //Master file (contains all)
   std::ofstream o_master_file;
-  gSystem -> mkdir( m_opt.output_xml_folder.c_str(), true );
-  gSystem -> mkdir( m_opt.output_ws_folder.c_str(), true );
-  gSystem -> mkdir( m_opt.output_trexf_folder.c_str(), true );
+  std::ofstream o_master_trexf_file;
+
+  if(m_opt.do_trexf_dump){
+    gSystem -> mkdir( m_opt.output_trexf_folder.c_str(), true );
+    o_master_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_multifit_" + m_opt.output_tag + ".txt" );
+    o_master_trexf_file << "Multifit: Compare_" << m_opt.output_tag << std::endl; 
+    o_master_trexf_file << "Label: Compare_" << m_opt.output_tag << std::endl; 
+    o_master_trexf_file << "Combine: FALSE" << std::endl;
+    o_master_trexf_file << "Compare: TRUE" << std::endl;
+    o_master_trexf_file << "CmeLabel: \"13 TeV\"" << std::endl;
+    o_master_trexf_file << "LumiLabel: \"139 fb^{-1}\"" << std::endl;
+    o_master_trexf_file << "ComparePOI: FALSE" << std::endl;
+    o_master_trexf_file << "ComparePulls: TRUE" << std::endl;
+    o_master_trexf_file << "CompareLimits: FALSE" << std::endl;
+    o_master_trexf_file << "POIName: \"mu_signal\"" << std::endl;
+    o_master_trexf_file << "DebugLevel: 2" << std::endl;
+  }
 
   if(m_opt.do_config_dump){
+    gSystem -> mkdir( m_opt.output_xml_folder.c_str(), true );
+    gSystem -> mkdir( m_opt.output_ws_folder.c_str(), true );
     o_master_file.open ( m_opt.output_xml_folder + "/" + m_opt.output_xml_name );
 
     //Writing the header of the master file
@@ -165,12 +181,18 @@ void WSConfig::dump_files(){
 
     std::ofstream o_channel_trexf_file;
     if(m_opt.do_trexf_dump){
-      o_channel_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_" + channel_name + ".txt" );
+      o_channel_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" );
       o_channel_trexf_file << "Job: " << channel_info.workspace_path << std::endl; //this job name should be the same as the name of the workspace
-      o_channel_trexf_file << "Label: " << std::endl;
+      o_channel_trexf_file << "Label: " << m_opt.output_tag << std::endl;
       o_channel_trexf_file << "ReadFrom: HIST" << std::endl;
       o_channel_trexf_file << "ImageFormat: png" << std::endl;
       o_channel_trexf_file << "HistoChecks: NOCRASH" << std::endl;
+
+      //Add channel to master multifit config
+      o_master_trexf_file << "Fit: \"" << channel_name << "\"" << std::endl;
+      o_master_trexf_file << "ConfigFile: \"" << m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" << "\"" << std::endl;
+      o_master_trexf_file << "Label: \"" << channel_name << "\"" << std::endl;
+
     }
 
     TIterator* it = mc -> GetNuisanceParameters() -> createIterator();
@@ -202,9 +224,10 @@ void WSConfig::dump_files(){
 
       }
       if(m_opt.do_trexf_dump){
-	o_channel_trexf_file << "  Systematic:    " + varname << std::endl;
+	if(string_utils::contains_string(varname,"alpha_")){
+	  o_channel_trexf_file << "  Systematic:    " + string_utils::replace_string(varname,"alpha_","") << std::endl;
+	}
       }
-
     }//real var
 
     if(m_opt.do_config_dump){

@@ -19,6 +19,7 @@ public:
     std::string output_ws_folder;
     std::string output_xml_name;
     std::string output_ws_name;
+    std::string output_tag;
     bool abort_on_error;
     bool decorr_all;
   };

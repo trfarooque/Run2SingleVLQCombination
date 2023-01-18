@@ -1,0 +1,27 @@
+MultiFit: "Compare_TS_M16K050"
+Label: "Compare_TS_M16K050"
+Combine: FALSE
+Compare: TRUE
+CmeLabel: "13 TeV"
+LumiLabel: "139 fb^{-1}"
+ComparePOI: FALSE
+ComparePulls: TRUE
+CompareLimits: FALSE
+POIName: "mu_signal"
+DebugLevel: 2
+
+Fit: "SPT_HTZT"
+ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_HTZT_TS_M16K050.txt"
+Label: "SPT_HTZT"
+
+Fit: "SPT_MONOTOP"
+ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_MONOTOP_TS_M16K050.txt"
+Label: "SPT_MONOTOP"
+
+Fit: "SPT_OSML"
+ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_OSML_TS_M16K050.txt"
+Label: "SPT_OSML"
+
+Fit: "SPT_combined"
+ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_combined_TS_M16K050.txt"
+Label: "SPT_combined"

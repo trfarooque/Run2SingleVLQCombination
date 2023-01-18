@@ -1,0 +1,402 @@
+Job: SPT_HTZT_TS_M16K050_MU0_ASIMOV
+Label: TS_M16K050
+ReadFrom: HIST
+ImageFormat: png
+HistoChecks: NOCRASH
+
+
+  Systematic:    EG_RESOLUTION_ALL
+
+  Systematic:    EG_SCALE_ALL
+
+  Systematic:    EL_SF_ID
+
+  Systematic:    EL_SF_Iso
+
+  Systematic:    EL_SF_Reco
+
+  Systematic:    EL_SF_Trigger
+
+  Systematic:    JET_EffectiveNP_Detector1
+
+  Systematic:    JET_EffectiveNP_Detector2
+
+  Systematic:    JET_EffectiveNP_Mixed1
+
+  Systematic:    JET_EffectiveNP_Mixed2
+
+  Systematic:    JET_EffectiveNP_Mixed3
+
+  Systematic:    JET_EffectiveNP_Modelling1
+
+  Systematic:    JET_EffectiveNP_Modelling2
+
+  Systematic:    JET_EffectiveNP_Modelling3
+
+  Systematic:    JET_EffectiveNP_Modelling4
+
+  Systematic:    JET_EffectiveNP_Statistical1
+
+  Systematic:    JET_EffectiveNP_Statistical2
+
+  Systematic:    JET_EffectiveNP_Statistical3
+
+  Systematic:    JET_EffectiveNP_Statistical4
+
+  Systematic:    JET_EffectiveNP_Statistical5
+
+  Systematic:    JET_EffectiveNP_Statistical6
+
+  Systematic:    JET_EtaIntercalibration_Modelling
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_2018data
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_negEta
+
+  Systematic:    JET_EtaIntercalibration_NonClosure_posEta
+
+  Systematic:    JET_EtaIntercalibration_TotalStat
+
+  Systematic:    JET_FJvtEfficiency
+
+  Systematic:    JET_Flavor_Composition
+
+  Systematic:    JET_Flavor_Response
+
+  Systematic:    JET_JER_EffectiveNP_1
+
+  Systematic:    JET_JER_EffectiveNP_2
+
+  Systematic:    JET_JER_EffectiveNP_3
+
+  Systematic:    JET_JER_EffectiveNP_4
+
+  Systematic:    JET_JER_EffectiveNP_5
+
+  Systematic:    JET_JER_EffectiveNP_6
+
+  Systematic:    JET_JER_EffectiveNP_7restTerm
+
+  Systematic:    JET_JMR
+
+  Systematic:    JET_JMS
+
+  Systematic:    JET_JvtEfficiency
+
+  Systematic:    JET_Pileup_OffsetMu
+
+  Systematic:    JET_Pileup_OffsetNPV
+
+  Systematic:    JET_Pileup_PtTerm
+
+  Systematic:    JET_Pileup_RhoTopology
+
+  Systematic:    JET_PunchThrough_MC16
+
+  Systematic:    LUMINOSITY
+
+  Systematic:    MET_SoftTrk_ResoPara
+
+  Systematic:    MET_SoftTrk_ResoPerp
+
+  Systematic:    MET_SoftTrk_Scale
+
+  Systematic:    MUON_ID
+
+  Systematic:    MUON_MS
+
+  Systematic:    MUON_SAGITTA_RESBIAS
+
+  Systematic:    MUON_SCALE
+
+  Systematic:    MU_EFF_ISO_SYS
+
+  Systematic:    MU_EFF_RECO_SYS
+
+  Systematic:    MU_EFF_TrigSystUncertainty
+
+  Systematic:    SPT_HTZT_BKGNP_DRDS_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_DRDS_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_DRDS_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_DRDS_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_MULTIJET_NORM
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_Singletop_XS
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_TOPEW_XS_HJ
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_TOPEW_XS_LJ
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_VV_XS_HJHB
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_VV_XS_HJLB
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_VV_XS_LJHB
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_VV_XS_LJLB
+
+  Systematic:    SPT_HTZT_BKGNP_OTHERS_ttH_XS
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_FSR_MURF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_FSR_MURF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_FSR_MURF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_FSR_MURF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_GEN_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_GEN_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_GEN_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_GEN_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUR_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUR_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUR_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_MUR_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_VAR3C_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_VAR3C_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_VAR3C_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_ISR_VAR3C_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_PDF
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_PS_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_PS_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_PS_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_STOP_PS_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_FSR_MURF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_FSR_MURF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_FSR_MURF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_FSR_MURF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_GEN_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_GEN_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_GEN_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_GEN_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_ISR_VAR3C_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_ISR_VAR3C_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_ISR_VAR3C_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_ISR_VAR3C_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUR_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUR_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUR_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_MUR_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_PDF
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_PS_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_PS_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_PS_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_PS_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARBB_XS
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_FSR_MURF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_FSR_MURF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_FSR_MURF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_FSR_MURF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_GEN_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_GEN_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_GEN_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_GEN_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_ISR_VAR3C_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_ISR_VAR3C_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_ISR_VAR3C_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_ISR_VAR3C_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUR_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUR_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUR_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_MUR_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_PDF
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_PS_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_PS_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_PS_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_PS_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARCC_XS
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_FSR_MURF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_FSR_MURF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_FSR_MURF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_FSR_MURF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_GEN_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_GEN_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_GEN_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_GEN_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_ISR_VAR3C_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_ISR_VAR3C_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_ISR_VAR3C_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_ISR_VAR3C_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUF_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUF_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUF_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUF_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUR_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUR_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUR_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_MUR_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_PDF
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_PS_HJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_PS_HJ-g2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_PS_LJ-1boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBARLIGHT_PS_LJ-2boost
+
+  Systematic:    SPT_HTZT_BKGNP_TTBAR_XS
+
+  Systematic:    SPT_HTZT_BKGNP_TTWT_RWSYST_3JEX
+
+  Systematic:    SPT_HTZT_BKGNP_TTWT_RWSYST_4JEX
+
+  Systematic:    SPT_HTZT_BKGNP_TTWT_RWSYST_5JEX
+
+  Systematic:    SPT_HTZT_BKGNP_TTWT_RWSYST_6JEX
+
+  Systematic:    SPT_HTZT_BKGNP_TTWT_RWSYST_7JIN
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_MURF
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_RWSYST
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_XS_1B
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_XS_2B
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_XS_3B
+
+  Systematic:    SPT_HTZT_BKGNP_VJETS_XS_4B
+
+  Systematic:    SPT_HTZT_MET_TRIGGER_1L
+
+  Systematic:    TRK_77_FT_EFF_Eigen_B_0
+
+  Systematic:    TRK_77_FT_EFF_Eigen_B_1
+
+  Systematic:    TRK_77_FT_EFF_Eigen_B_2
+
+  Systematic:    TRK_77_FT_EFF_Eigen_B_3
+
+  Systematic:    TRK_77_FT_EFF_Eigen_B_4
+
+  Systematic:    TRK_77_FT_EFF_Eigen_C_0
+
+  Systematic:    TRK_77_FT_EFF_Eigen_C_1
+
+  Systematic:    TRK_77_FT_EFF_Eigen_C_2
+
+  Systematic:    TRK_77_FT_EFF_Eigen_C_3
+
+  Systematic:    TRK_77_FT_EFF_Eigen_Light_0
+
+  Systematic:    TRK_77_FT_EFF_Eigen_Light_1
+
+  Systematic:    TRK_77_FT_EFF_Eigen_Light_2
+
+  Systematic:    TRK_77_FT_EFF_Eigen_Light_3
+
+  Systematic:    TRK_77_FT_EFF_extrapolation
+
+  Systematic:    TRK_77_FT_EFF_extrapolation_from_charm
