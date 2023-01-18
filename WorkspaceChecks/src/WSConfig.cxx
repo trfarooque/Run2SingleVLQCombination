@@ -114,7 +114,8 @@ void WSConfig::dump_files(){
     if(m_opt.do_config_dump){
       //Including the channel in the master file
       o_master_file << "  <Channel Name=\"" + channel_name + "_binned\"" << std::endl;
-      o_master_file << "     InputFile=\"" + m_opt.input_ws_folder + "/" + channel_info.workspace_path + ".root\"" << std::endl;
+      //o_master_file << "     InputFile=\"" + m_opt.input_ws_folder + "/" + channel_info.workspace_path + ".root\"" << std::endl;
+      o_master_file << "     InputFile=\"" + channel_info.workspace_path + "\"" << std::endl;
       o_master_file << "     WorkspaceName=\"" << channel_info.workspace_name << "\"" << std::endl;
       o_master_file << "     ModelConfigName=\"ModelConfig\"" << std::endl;
       o_master_file << "     DataName=\"" << m_opt.data_name << "\">" << std::endl;
@@ -135,7 +136,8 @@ void WSConfig::dump_files(){
     }
 
     //Getting all the necessary objects
-    TFile *f = TFile::Open( (m_opt.input_ws_folder + "/" + channel_info.workspace_path +".root").c_str(), "READ" );
+    //TFile *f = TFile::Open( (m_opt.input_ws_folder + "/" + channel_info.workspace_path +".root").c_str(), "READ" );
+    TFile *f = TFile::Open(channel_info.workspace_path.c_str(), "READ" );
     RooWorkspace *ws = (RooWorkspace*)(f -> Get( channel_info.workspace_name.c_str() ));
     if(!ws){
       messages::print_error( __func__, __FILE__, __LINE__, "No workspace found in file ! Aborting !");
