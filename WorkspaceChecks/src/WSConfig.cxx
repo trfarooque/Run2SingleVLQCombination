@@ -77,7 +77,7 @@ void WSConfig::dump_files(){
   if(m_opt.do_trexf_dump){
     gSystem -> mkdir( m_opt.output_trexf_folder.c_str(), true );
     o_master_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_multifit_" + m_opt.output_tag + ".txt" );
-    o_master_trexf_file << "Multifit: Compare_" << m_opt.output_tag << std::endl; 
+    o_master_trexf_file << "MultiFit: Compare_" << m_opt.output_tag << std::endl; 
     o_master_trexf_file << "Label: Compare_" << m_opt.output_tag << std::endl; 
     o_master_trexf_file << "Combine: FALSE" << std::endl;
     o_master_trexf_file << "Compare: TRUE" << std::endl;
@@ -88,6 +88,8 @@ void WSConfig::dump_files(){
     o_master_trexf_file << "CompareLimits: FALSE" << std::endl;
     o_master_trexf_file << "POIName: \"mu_signal\"" << std::endl;
     o_master_trexf_file << "DebugLevel: 2" << std::endl;
+    o_master_trexf_file << "NPCategories: Jets,Electrons,Muons,b_tagging,SPT_ALLHAD_BKGNP,SPT_OSML_BKGNP,SPT_HTZT_BKGNP,SPT_TYWB_BKGNP,SPT_MONOTOP_BKGNP,Bkgd_norm,Others"<<std::endl;
+    o_master_trexf_file << std::endl;
   }
 
   if(m_opt.do_config_dump){
@@ -187,11 +189,13 @@ void WSConfig::dump_files(){
       o_channel_trexf_file << "ReadFrom: HIST" << std::endl;
       o_channel_trexf_file << "ImageFormat: png" << std::endl;
       o_channel_trexf_file << "HistoChecks: NOCRASH" << std::endl;
+      o_channel_trexf_file << std::endl;
 
       //Add channel to master multifit config
       o_master_trexf_file << "Fit: \"" << channel_name << "\"" << std::endl;
       o_master_trexf_file << "ConfigFile: \"" << m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" << "\"" << std::endl;
       o_master_trexf_file << "Label: \"" << channel_name << "\"" << std::endl;
+      o_master_trexf_file << std::endl;
 
     }
 
@@ -225,7 +229,49 @@ void WSConfig::dump_files(){
       }
       if(m_opt.do_trexf_dump){
 	if(string_utils::contains_string(varname,"alpha_")){
-	  o_channel_trexf_file << "  Systematic:    " + string_utils::replace_string(varname,"alpha_","") << std::endl;
+	  std::string varname_NP = string_utils::replace_string(varname,"alpha_","");
+
+	  o_channel_trexf_file << "  Systematic:    " + varname_NP << std::endl;
+  	  if(string_utils::contains_string(varname_NP,"JET_") || string_utils::contains_string(varname_NP,"COMB_")){
+	    o_channel_trexf_file << "  Category: Jets" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"EL_") || string_utils::contains_string(varname_NP,"EG_")){
+	    o_channel_trexf_file << "  Category: Electrons" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"MU_") || string_utils::contains_string(varname_NP,"MUON_")){
+	    o_channel_trexf_file << "  Category: Muons" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"FT_EFF_")){
+	    o_channel_trexf_file << "  Category: b_tagging" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"BKGNP_")){
+
+	    if(string_utils::contains_string(varname_NP,"SPT_ALLHAD")){
+	      o_channel_trexf_file << "  Category: SPT_ALLHAD_BKGNP" << std::endl;
+	    }
+	    else if(string_utils::contains_string(varname_NP,"SPT_OSML")){
+	      o_channel_trexf_file << "  Category: SPT_OSML_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_HTZT")){
+	      o_channel_trexf_file << "  Category: SPT_HTZT_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_TYWB")){
+	      o_channel_trexf_file << "  Category: SPT_TYWB_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_MONOTOP")){
+	      o_channel_trexf_file << "  Category: SPT_MONOTOP_BKGNP" << std::endl;
+	    }
+
+	  }//Channel-specific
+  	  else if(string_utils::contains_string(varname_NP,"BKGNF_")){
+	    o_channel_trexf_file << "  Category: Bkgd_norm" << std::endl;
+	  }//Background norm factors
+	  else{
+	    o_channel_trexf_file << "  Category: Others" << std::endl;
+	  }
+
+	  o_channel_trexf_file << std::endl;
+
 	}
       }
     }//real var

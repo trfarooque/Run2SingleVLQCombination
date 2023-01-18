@@ -5,317 +5,476 @@ ImageFormat: png
 HistoChecks: NOCRASH
 
   Systematic:    COMB_Flat20Smoothed_JMR
+  Category: Jets
 
   Systematic:    COMB_MCData_JMR
+  Category: Jets
 
   Systematic:    COMB_MCLargeR_JMR
+  Category: Jets
 
   Systematic:    COMB_MCME_JMR
+  Category: Jets
 
   Systematic:    COMB_MCPS_JMR
+  Category: Jets
 
   Systematic:    COMB_MCRAD_JMR
+  Category: Jets
 
   Systematic:    COMB_MCSmallJET_JMR
+  Category: Jets
 
   Systematic:    COMB_OutsideCalib_JMR
+  Category: Jets
 
   Systematic:    COMB_SHAPE_JMR
+  Category: Jets
 
   Systematic:    COMB_Smoothing_JMR
+  Category: Jets
 
   Systematic:    COMB_Stat_JMR
+  Category: Jets
 
   Systematic:    JET_BJES_Response
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Detector1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Detector2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling4
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_R10_Mixed4
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical4
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical5
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical6
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_Modelling
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_2018data
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_highE
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_negEta
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_posEta
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_TotalStat
+  Category: Jets
 
   Systematic:    JET_Flavor_Composition
+  Category: Jets
 
   Systematic:    JET_Flavor_Response
+  Category: Jets
 
   Systematic:    JET_JER_AllOthers
+  Category: Jets
 
   Systematic:    JET_JER_DataVsMC_MC16
+  Category: Jets
 
   Systematic:    JET_JER_DataVsMC_R10_MC16
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_1
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_10
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_11
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_12restTerm
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_2
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_3
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_4
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_5
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_6
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_7
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_8
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_9
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_closure
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesEffNP1
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesEffNP3
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesEffNP4
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesEtaIntMod
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesFlavComp
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_jesFlavResp
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_mcgenerator
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_selection
+  Category: Jets
 
   Systematic:    JET_JER_dijet_R10_stat
+  Category: Jets
 
   Systematic:    JET_JvtEfficiency
+  Category: Jets
 
   Systematic:    JET_Pileup_OffsetMu
+  Category: Jets
 
   Systematic:    JET_Pileup_OffsetNPV
+  Category: Jets
 
   Systematic:    JET_Pileup_PtTerm
+  Category: Jets
 
   Systematic:    JET_PunchThrough_MC16
+  Category: Jets
 
   Systematic:    JET_SingleParticle_HighPt
+  Category: Jets
 
   Systematic:    LUMINOSITY
+  Category: Others
 
   Systematic:    MET_SoftTrk_ResoPara
+  Category: Others
 
   Systematic:    MET_SoftTrk_ResoPerp
+  Category: Others
 
   Systematic:    MET_SoftTrk_Scale
+  Category: Others
 
   Systematic:    PF_77_FT_EFF_Eigen_B_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_4
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_5
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_6
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_7
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_8
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_extrapolation
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_extrapolation_from_charm
+  Category: b_tagging
 
   Systematic:    PRW_DATASF
+  Category: Others
 
   Systematic:    SPT_MONOTOP_BKGNP_STOPBARTCHAN_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOPSCHAN_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOPTCHAN_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOPWTCHAN_DRDS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOPWTCHAN_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_FSR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_ISR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_PDF
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_muF
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_STOP_weight_muR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBARV_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_V
+  Category: Jets
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_LargeR_TopologyUncertainty_top
+  Category: Jets
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_JET_Pileup_RhoTopology
+  Category: Jets
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_ME
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_Shower
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_FSR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_ISR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_PDF
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_muF
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_TTBAR_weight_muR
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF13000_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF25300_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF269000_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF270000_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_PDF_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_bNorm_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_cNorm_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_ckkw_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_qsf_WJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VJETS_weight_qsf_ZJETS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_MC_XS
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF13000
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF25300
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_PDF270000
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_bNorm
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_cNorm
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_BKGNP_VV_weight_muR05_muF05_to_muR2_muF2
+  Category: SPT_MONOTOP_BKGNP
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__0
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__1
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__10
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__11
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__12
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__13
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__14
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__15
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__16
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__17
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__2
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__3
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__4
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__5
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__6
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__7
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__8
+  Category: Others
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__9
+  Category: Others
+
