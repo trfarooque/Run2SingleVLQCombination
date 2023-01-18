@@ -118,7 +118,14 @@ do_checks=FALSE \
 abort_on_error=FALSE '''.format(VLQCOMBDIR, WSListFile, sigtag)
     # print(cmd)
     code = os.system(cmd)
+    return "{}/data_devloc/xml/combination/combination.xml".format(VLQCOMBDIR) if code == 0 else False
+
+def Combine(CombConfig, LogFile="log_combine.txt"):
+    os.system("cp templates/Combination.dtd {}".format('/'.join(CombConfig.split('/')[:-1])))
+    code = os.system("manager -w combine -x {} 2>&1 |tee {}".format(CombConfig, LogFile))
     return True if code == 0 else False
+                     
+
 
 
 if __name__ == "__main__":
@@ -145,8 +152,15 @@ if __name__ == "__main__":
         ws_list += wsinfo + '\n'
         if not ScaleWS(ConfigName = "{}/{}_scaling_{}.xml".format(ALL_ANACODES[anacode]['ScaledConfigDir'], anacode, sigtag), LogFile="log_{}.txt".format(anacode)):
             print(colored("Scaling WS failed for " + anacode + " at M = {}, K= {}, and BRW = {}".format(mass, kappa, BRW), color = "black", on_color="on_red"))
+            continue
     f = open("wsList.txt", "w")
     f.write(ws_list)
     f.close()
     print("WS List is available at " + colored('wsList.txt', color = "black", on_color="on_green"))
-    GetCombWS(WSListFile = "wsList.txt", sigtag=sigtag)
+    CombConfig = GetCombWS(WSListFile = "wsList.txt", sigtag=sigtag)
+    if not CombConfig:
+        print(colored("Generating Combination Config failed for M = {}, K= {}, and BRW = {}".format(mass, kappa, BRW), color = "black", on_color="on_red"))
+        sys.exit(1)
+    if not Combine(CombConfig, LogFile="log_combine.txt"):
+        print(colored("Combination failed for M = {}, K= {}, and BRW = {}".format(mass, kappa, BRW), color = "black", on_color="on_red"))
+        sys.exit(1)

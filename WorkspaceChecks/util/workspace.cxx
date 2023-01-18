@@ -104,7 +104,7 @@ int main( int argc, char **argv ){
     WSConfig config( config_options );
     config.init();
     config.dump_files();
-    return 1;
+    return 0;
   }
-  return 1;
+  return 0;
 }
