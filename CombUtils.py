@@ -48,6 +48,7 @@ class VLQCombinationConfig:
         self.AsimovConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/asimov/' + self.AnaCode + '/'
         self.CombinedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/combined_workspaces/' + self.AnaCode + '/'
         self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/combination/' + self.AnaCode + '/'
+        self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/fitted_workspaces/' + self.AnaCode + '/'
         if makePaths:
             self.makePaths()
         if not self.checkPaths():
@@ -63,6 +64,7 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.AsimovConfigDir))
         os.system(mkdir.format(self.CombinedWSDir))
         os.system(mkdir.format(self.CombinationConfigDir))
+        os.system(mkdir.format(self.FittedWSDir))
 
     def checkPaths(self):
         if not (os.path.exists(self.InWSDir) or self.isCombined):
@@ -85,6 +87,9 @@ class VLQCombinationConfig:
             return False
         if not os.path.exists(self.CombinationConfigDir):
             print(colored("Directory for Asimov config {} not found!".format(self.CombinationConfigDir), color = "black", on_color="on_red"))
+            return False
+        if not os.path.exists(self.FittedWSDir):
+            print(colored("Fitted WS directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
             return False
         
         return True
@@ -208,17 +213,17 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         code = os.system("manager -w combine -x {} 2>&1 |tee {}".format(ConfigName, LogFile))
         return True if code == 0 else False
 
-    def getAsimovWSPath(self, mass, kappa, brw):
+    def getAsimovWSPath(self, mass, kappa, brw, mu=0):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_asimov_{}.root".format(self.AsimovWSDir, self.AnaCode, sigtag)
+        return "{}/{}_asimov_mu{}_{}.root".format(self.AsimovWSDir, self.AnaCode, int(mu*100), sigtag)
         
-    def getAsimovConfigPath(self, mass, kappa, brw):
+    def getAsimovConfigPath(self, mass, kappa, brw, mu=0):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_asimov_{}.xml".format(self.AsimovConfigDir, self.AnaCode, sigtag)
+        return "{}/{}_asimov_mu{}_{}.xml".format(self.AsimovConfigDir, self.AnaCode, int(mu*100), sigtag)
 
-    def getAsimovConfig(self, mass, kappa, brw):
+    def getAsimovConfig(self, mass, kappa, brw, mu=0):
         if self.isCombined:
             InFilePath = self.getCombinedWSPath(mass, kappa, brw)
         else:
@@ -227,8 +232,8 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         if not os.path.exists(InFilePath):
             return False
 
-        OutFilePath = self.getAsimovWSPath(mass, kappa, brw)
-        OutConfigPath = self.getAsimovConfigPath(mass, kappa, brw)
+        OutFilePath = self.getAsimovWSPath(mass, kappa, brw, mu)
+        OutConfigPath = self.getAsimovConfigPath(mass, kappa, brw, mu)
         str_to_print='''<!DOCTYPE Asimov  SYSTEM 'asimovUtil.dtd'>  
     <Asimov 
         InputFile="{}" 
@@ -236,20 +241,49 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         POI="mu_signal" 
         >
       <Action Name="Prepare" Setup="" Action="nominalNuis:nominalGlobs"/>
-      <Action Name="asimovData_mu0" Setup="mu_signal=0" Action="genasimov:nominalGlobs"/>
-    </Asimov>'''.format(InFilePath, OutFilePath)
+      <Action Name="asimovData_mu{}" Setup="mu_signal={}" Action="genasimov:nominalGlobs"/>
+    </Asimov>'''.format(InFilePath, OutFilePath, int(mu*100), mu)
         f = open(OutConfigPath, 'w')
         f.write(str_to_print)
         f.close()
         return True
         #return [AnaChannel, OutConfigPath, WSName, 'combData' if AnaChannel == 'SPT_COMBINED' else 'asimovData']
 
-    def getAsimovWS(self, mass, kappa, brw, DataName='combData', LogFile="log.txt"):
-        ConfigName = self.getAsimovConfigPath(mass, kappa, brw)
+    def getAsimovWS(self, mass, kappa, brw, mu=0, LogFile="log.txt"):
+        ConfigName = self.getAsimovConfigPath(mass, kappa, brw, mu)
+        DataName = 'asimovData' if not self.isCombined else 'combData'
         if not os.path.exists(ConfigName):
             return False
         os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         code = os.system('quickAsimov -x {} -w {} -m ModelConfig -d {}  2>&1 |tee {}'.format(ConfigName, self.WSName, DataName, LogFile))
+        return True if code == 0 else False
+
+
+    def getFittedWSPath(self, mass, kappa, brw, mu=0, isAsimov=True):
+        sigtag = getSigTag(mass, kappa, brw)
+        mktag = getMKTag(mass, kappa)
+        if isAsimov:
+            return "{}/{}_fitted_asimov_mu{}_{}.root".format(self.FittedWSDir, self.AnaCode, int(mu*100), sigtag)
+        else:
+            return "{}/{}_fitted_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag)
+        
+ 
+    def getFittedWS(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
+        # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
+        DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
+        InWS = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
+               else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
+                     else self.getScaledWSPath(mass, kappa, brw))
+        cmd = '''quickFit -w {} -f {} -d {}  -o {} \
+--savefitresult 1 --hesse 1 --minos 1 {} 2>&1 |tee {}'''.format(self.WSName,
+                                                                InWS,
+                                                                DSName,
+                                                                self.getFittedWSPath(mass, kappa, brw, mu, isAsimov), 
+                                                                '-p mu_signal=0' if isAsimov else '',
+                                                                LogFile)
+        #print(cmd)
+        code = os.system(cmd)
+        print("Exit Code: {}".format(code))
         return True if code == 0 else False
 
 
