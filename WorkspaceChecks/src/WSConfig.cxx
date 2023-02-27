@@ -208,8 +208,17 @@ void WSConfig::dump_files(){
         repname = rn_map.at(varname);
       }
       if(m_opt.do_config_dump){
+
+	std::string oldname = "";
+	if(string_utils::contains_string(varname,"alpha_")){
+	  oldname = varname+"Constraint("+varname+", nom_"+varname+")";
+	}
+	else{ 
+	  oldname = varname; 
+	}
+
 	//Master
-	o_master_file << "      <Syst OldName = \"" + varname;
+	o_master_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
 	  o_master_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
@@ -218,7 +227,7 @@ void WSConfig::dump_files(){
 	o_master_file << "\" />" << std::endl;
 
 	//Channel
-	o_channel_file << "      <Syst OldName = \"" + varname;
+	o_channel_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
 	  o_channel_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
@@ -263,17 +272,19 @@ void WSConfig::dump_files(){
 	    }
 
 	  }//Channel-specific
-  	  else if(string_utils::contains_string(varname_NP,"BKGNF_")){
-	    o_channel_trexf_file << "  Category: Bkgd_norm" << std::endl;
-	  }//Background norm factors
 	  else{
 	    o_channel_trexf_file << "  Category: Others" << std::endl;
 	  }
 
-	  o_channel_trexf_file << std::endl;
+	}//Nuisance parameters
+	else if(string_utils::contains_string(varname,"BKGNF_")){
+	  o_channel_trexf_file << "  NormFactor:    " + varname << std::endl;
+	}//Background norm factors
 
-	}
-      }
+	o_channel_trexf_file << std::endl;
+
+      }//trex dump
+
     }//real var
 
     if(m_opt.do_config_dump){

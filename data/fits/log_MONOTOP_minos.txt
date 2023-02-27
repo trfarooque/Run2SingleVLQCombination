@@ -3,17 +3,17 @@
                 Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
                 All rights reserved, please read http://roofit.sourceforge.net/license.txt
 
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Including external constraints:
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Preparing parameters of interest: mu_signal=0
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Summary of POI setup in the likelihood model
-  1) 0x39194a0 RooRealVar:: mu_signal = 0 C  L(-100 - 100)  "mu_signal"
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Starting fit...
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR0b1f_model
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR1b1f_model
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_TCR_model
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Set binned likelihood for: SPT_MONOTOP_VCR_model
-[2022-12-23 19:11:18] [thread 21574] [info] 	 Building NLL...
-[2022-12-23 19:11:18] [thread 21574] [info] 	 NLL built in 0.002 min (cpu), 0.00216891 min (real)
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Including external constraints:
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Preparing parameters of interest: mu_signal=0
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Summary of POI setup in the likelihood model
+  1) 0x455d0e0 RooRealVar:: mu_signal = 0 C  L(-100 - 100)  "mu_signal"
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Starting fit...
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR0b1f_model
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Set binned likelihood for: SPT_MONOTOP_SR1b1f_model
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Set binned likelihood for: SPT_MONOTOP_TCR_model
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Set binned likelihood for: SPT_MONOTOP_VCR_model
+[2023-02-27 14:39:53] [thread 2744] [info] 	 Building NLL...
+[2023-02-27 14:39:53] [thread 2744] [info] 	 NLL built in 0.00216667 min (cpu), 0.00218973 min (real)
 Minuit2Minimizer: Minimize with max-calls 1740000 convergence for edm < 1 strategy 1
 Minuit2Minimizer::Minuit  - Changing default options
              StorageLevel :               0
@@ -198,13 +198,13 @@ gamma_stat_SPT_MONOTOP_SR1b1f_bin_2	  = 1	 +/-  0.0750472	(limited)
 gamma_stat_SPT_MONOTOP_SR1b1f_bin_3	  = 1	 +/-  0.0470446	(limited)
 gamma_stat_SPT_MONOTOP_TCR_bin_0	  = 1	 +/-  0.00454793	(limited)
 gamma_stat_SPT_MONOTOP_VCR_bin_0	  = 1	 +/-  0.00849974	(limited)
-Real time 0:00:03, CP time 3.940
-Real time 0:00:03, CP time 3.940
-[2022-12-23 19:11:22] [thread 21574] [info] 	 Starting fit with HESSE...
+Real time 0:00:03, CP time 3.880
+Real time 0:00:03, CP time 3.880
+[2023-02-27 14:39:57] [thread 2744] [info] 	 Starting fit with HESSE...
 Info in <Minuit2>: Minuit2Minimizer::Hesse Using max-calls 1740000
 Info in <Minuit2>: Minuit2Minimizer::Hesse Hesse is valid - matrix is accurate
-Real time 0:00:03, CP time 3.510
-Real time 0:00:07, CP time 7.450, 2 slices
+Real time 0:00:03, CP time 3.750
+Real time 0:00:07, CP time 7.630, 2 slices
 
   RooFitResult: minimized FCN value: 185.353, estimated distance to minimum: 3.96924e-12
                 covariance matrix quality: Full, accurate covariance matrix
@@ -383,12 +383,12 @@ Real time 0:00:07, CP time 7.450, 2 slices
   gamma_stat_SPT_MONOTOP_TCR_bin_0    1.0000e+00 +/-  4.55e-03
   gamma_stat_SPT_MONOTOP_VCR_bin_0    1.0000e+00 +/-  8.50e-03
 
-[2022-12-23 19:11:26] [thread 21574] [info] 	 Starting fit with MINOS...
-[2022-12-23 19:11:26] [thread 21574] [info] 	 Evaluating MINOS errors for all POIs...
+[2023-02-27 14:40:01] [thread 2744] [info] 	 Starting fit with MINOS...
+[2023-02-27 14:40:01] [thread 2744] [info] 	 Evaluating MINOS errors for all POIs...
 Real time 0:00:00, CP time 0.000
-Real time 0:00:07, CP time 7.450, 3 slices
-[2022-12-23 19:11:26] [thread 21574] [info] 	 Saving results to /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data//fits//fits_SPT_MONOTOP_TS_M16K050_MU0_ASIMOV.root
-[2022-12-23 19:11:26] [thread 21574] [info] 	 All fits done in 0.130833 min (cpu), 0.131196 min (real)
-[2022-12-23 19:11:26] [thread 21574] [info] 	   Fit Summary of POIs ([92m STATUS OK [0m)
-[2022-12-23 19:11:26] [thread 21574] [info] 	 ------------------------------------------------
+Real time 0:00:07, CP time 7.630, 3 slices
+[2023-02-27 14:40:01] [thread 2744] [info] 	 Saving results to /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data//fits//fits_SPT_MONOTOP_TS_M16K050_MU0_ASIMOV.root
+[2023-02-27 14:40:01] [thread 2744] [info] 	 All fits done in 0.134333 min (cpu), 0.134974 min (real)
+[2023-02-27 14:40:01] [thread 2744] [info] 	   Fit Summary of POIs ([92m STATUS OK [0m)
+[2023-02-27 14:40:01] [thread 2744] [info] 	 ------------------------------------------------
 RooRealVar::mu_signal = 0 C  L(-100 - 100) 

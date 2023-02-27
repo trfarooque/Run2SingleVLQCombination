@@ -3,37 +3,37 @@
                 Copyright (C) 2000-2013 NIKHEF, University of California & Stanford University
                 All rights reserved, please read http://roofit.sourceforge.net/license.txt
 
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Including external constraints:
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Preparing parameters of interest: mu_signal=0
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Summary of POI setup in the likelihood model
-  1) 0x4f84900 RooRealVar:: mu_signal = 0 C  L(-100 - 100)  "mu_signal"
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Starting fit...
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0LTex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0Tex1Lin0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0LTex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0Tex1Lin0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0LTex1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0Tex1Lin1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin1Tin0Lex1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin0fjex1Lin0VTex0Hex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0LTex1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0Tex1Lin1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin1Tin0Lex1Hin0Vex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin0Lex1Tex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin1Lex0Tex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin2LTin0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin0Lex1Tex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin1Lex0Tex0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin2LTin0Hex1Vin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin0Lex1VTex1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin1Lex0VTex1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin2VLTin1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin0fjex1Lin0VTex0Hex_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin0Lex1VTex1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_model
-[2022-12-23 19:06:41] [thread 20547] [info] 	 Building NLL...
-[2022-12-23 19:06:42] [thread 20547] [info] 	 NLL built in 0.014 min (cpu), 0.0141455 min (real)
+[2023-02-27 14:35:05] [thread 402] [info] 	 Including external constraints:
+[2023-02-27 14:35:05] [thread 402] [info] 	 Preparing parameters of interest: mu_signal=0
+[2023-02-27 14:35:05] [thread 402] [info] 	 Summary of POI setup in the likelihood model
+  1) 0x4d4a9d0 RooRealVar:: mu_signal = 0 C  L(-100 - 100)  "mu_signal"
+[2023-02-27 14:35:05] [thread 402] [info] 	 Starting fit...
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0LTex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin1bex1fjin0Tex1Lin0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0LTex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin2bex1fjin0Tex1Lin0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0LTex1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin0Tex1Lin1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin3bex1fjin1Tin0Lex1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin0fjex1Lin0VTex0Hex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0LTex1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin0Tex1Lin1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep3_5jwin4bin1fjin1Tin0Lex1Hin0Vex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin0Lex1Tex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin1Lex0Tex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin1bex1fjin2LTin0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin0Lex1Tex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin1Lex0Tex0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin2bex1fjin2LTin0Hex1Vin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin0Lex1VTex1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin1Lex0VTex1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin3bex1fjin2VLTin1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin0fjex1Lin0VTex0Hex_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin0Lex1VTex1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Set binned likelihood for: SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_model
+[2023-02-27 14:35:05] [thread 402] [info] 	 Building NLL...
+[2023-02-27 14:35:06] [thread 402] [info] 	 NLL built in 0.0138333 min (cpu), 0.0139072 min (real)
 Minuit2Minimizer: Minimize with max-calls 8210000 convergence for edm < 1 strategy 1
 Minuit2Minimizer::Minuit  - Changing default options
              StorageLevel :               0
@@ -753,13 +753,13 @@ gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin_bin_3	  = 1	 +/-  0.099262	(
 gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin1Lex0VTex1Hin_bin_4	  = 1	 +/-  0.193194	(limited)
 gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_bin_0	  = 1	 +/-  0.0895427	(limited)
 gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_bin_1	  = 1	 +/-  0.0711768	(limited)
-Real time 0:00:59, CP time 59.020
-Real time 0:00:59, CP time 59.020
-[2022-12-23 19:07:42] [thread 20547] [info] 	 Starting fit with HESSE...
+Real time 0:01:00, CP time 59.940
+Real time 0:01:00, CP time 59.940
+[2023-02-27 14:36:06] [thread 402] [info] 	 Starting fit with HESSE...
 Info in <Minuit2>: Minuit2Minimizer::Hesse Using max-calls 8210000
 Info in <Minuit2>: Minuit2Minimizer::Hesse Hesse is valid - matrix is accurate
-Real time 0:00:57, CP time 57.400
-Real time 0:01:56, CP time 116.420, 2 slices
+Real time 0:00:58, CP time 58.030
+Real time 0:01:58, CP time 117.970, 2 slices
 
   RooFitResult: minimized FCN value: 1275.02, estimated distance to minimum: 1.04918e-13
                 covariance matrix quality: Full, accurate covariance matrix
@@ -1473,12 +1473,12 @@ Real time 0:01:56, CP time 116.420, 2 slices
   gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_bin_0    1.0000e+00 +/-  8.95e-02
   gamma_stat_SPT_HTZT_c1lep6jin4bin1fjin2VLTin1Hin_bin_1    1.0000e+00 +/-  7.12e-02
 
-[2022-12-23 19:08:39] [thread 20547] [info] 	 Starting fit with MINOS...
-[2022-12-23 19:08:39] [thread 20547] [info] 	 Evaluating MINOS errors for all POIs...
+[2023-02-27 14:37:04] [thread 402] [info] 	 Starting fit with MINOS...
+[2023-02-27 14:37:04] [thread 402] [info] 	 Evaluating MINOS errors for all POIs...
 Real time 0:00:00, CP time 0.000
-Real time 0:01:56, CP time 116.420, 3 slices
-[2022-12-23 19:08:39] [thread 20547] [info] 	 Saving results to /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data//fits//fits_SPT_HTZT_TS_M16K050_MU0_ASIMOV.root
-[2022-12-23 19:08:40] [thread 20547] [info] 	 All fits done in 1.97417 min (cpu), 1.97552 min (real)
-[2022-12-23 19:08:40] [thread 20547] [info] 	   Fit Summary of POIs ([92m STATUS OK [0m)
-[2022-12-23 19:08:40] [thread 20547] [info] 	 ------------------------------------------------
+Real time 0:01:58, CP time 117.970, 3 slices
+[2023-02-27 14:37:04] [thread 402] [info] 	 Saving results to /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data//fits//fits_SPT_HTZT_TS_M16K050_MU0_ASIMOV.root
+[2023-02-27 14:37:05] [thread 402] [info] 	 All fits done in 2.00417 min (cpu), 2.0136 min (real)
+[2023-02-27 14:37:05] [thread 402] [info] 	   Fit Summary of POIs ([92m STATUS OK [0m)
+[2023-02-27 14:37:05] [thread 402] [info] 	 ------------------------------------------------
 RooRealVar::mu_signal = 0 C  L(-100 - 100) 

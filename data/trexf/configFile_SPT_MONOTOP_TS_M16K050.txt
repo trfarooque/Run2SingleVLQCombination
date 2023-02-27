@@ -4,6 +4,10 @@ ReadFrom: HIST
 ImageFormat: png
 HistoChecks: NOCRASH
 
+  NormFactor:    SPT_MONOTOP_BKGNF_TTBAR
+
+  NormFactor:    SPT_MONOTOP_BKGNF_VJETS
+
   Systematic:    COMB_Flat20Smoothed_JMR
   Category: Jets
 
@@ -477,4 +481,14 @@ HistoChecks: NOCRASH
 
   Systematic:    SPT_MONOTOP_weight_ljet_toptagging_con50__9
   Category: Others
+
+
+
+
+
+
+
+
+
+
 
