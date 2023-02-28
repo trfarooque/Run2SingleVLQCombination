@@ -5,6 +5,10 @@
 | ttbar+cc | TTBARCC |
 | ttbar+HF | TTBARHF |
 | Single-top | STOP |
+| Single-top-t-channel| STOPTCHAN |
+| Single-top-t-bar-channel | STOPBARTCHAN |
+| Single-top-s-channel | STOPSCHAN |
+| Single-top-Wt | STOPWTCHAN |
 | Z+jets | ZJETS |
 | Z+jets+light | ZJETSLIGHT |
 | Z+jets+heavy | ZJETSHF |
@@ -30,5 +34,6 @@
 | Tribosons | VVV |
 | Multijets | MULTIJET | 
 | Multijets0L | MULTIJET0L | 
-| Multijets1L | MULTIJET1L | 
+| Multijets1L | MULTIJET1L |
+| Tzq | TZQ | 
 | Others | OTHERS |

@@ -95,3 +95,15 @@
 | PRW_DATASF |
 | *Luminosity* |
 | LUMINOSITY |
+| *JMR-for-Combination* |
+| COMB_Flat20Smoothed_JMR |
+| COMB_MCData_JMR |
+| COMB_MCLargeR_JMR |
+| COMB_MCME_JMR |
+| COMB_MCPS_JMR |
+| COMB_MCRAD_JMR |
+| COMB_MCSmallJET_JMR |
+| COMB_OutsideCalib_JMR |
+| COMB_SHAPE_JMR |
+| COMB_Smoothing_JMR |
+| COMB_Stat_JMR |

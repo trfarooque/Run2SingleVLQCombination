@@ -17,8 +17,8 @@ if __name__ == "__main__":
     do_Combine = True
     do_Separate_Fitting = True
     do_Combined_Fitting = True
-    do_Separate_Limits = False #True
-    do_Combined_Limits = False #True
+    do_Separate_Limits = True
+    do_Combined_Limits = True
     do_TRExFConfigs = True # This flag will only work if either do_Combine or do_Asimov is True
     do_TRExFComp = True 
     DataLoc = 'data_devloc'
@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
     ALL_CFGs = {}
 
-    for ana in ['SPT_OSML', 'SPT_HTZT']:
+    for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
         print("Creating CombinationConfig for {}".format(ana))
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input
