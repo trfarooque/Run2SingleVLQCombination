@@ -1,5 +1,5 @@
-MultiFit: "Compare_TS_M16K050"
-Label: "Compare_TS_M16K050"
+MultiFit: Compare_TS_M16K050
+Label: Compare_TS_M16K050
 Combine: FALSE
 Compare: TRUE
 CmeLabel: "13 TeV"
@@ -9,6 +9,7 @@ ComparePulls: TRUE
 CompareLimits: FALSE
 POIName: "mu_signal"
 DebugLevel: 2
+NPCategories: Jets,Electrons,Muons,b_tagging,SPT_ALLHAD_BKGNP,SPT_OSML_BKGNP,SPT_HTZT_BKGNP,SPT_TYWB_BKGNP,SPT_MONOTOP_BKGNP,Bkgd_norm,Others
 
 Fit: "SPT_HTZT"
 ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_HTZT_TS_M16K050.txt"
@@ -25,3 +26,4 @@ Label: "SPT_OSML"
 Fit: "SPT_combined"
 ConfigFile: "/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/trexf//configFile_SPT_combined_TS_M16K050.txt"
 Label: "SPT_combined"
+

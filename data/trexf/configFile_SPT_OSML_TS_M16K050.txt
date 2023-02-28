@@ -4,290 +4,684 @@ ReadFrom: HIST
 ImageFormat: png
 HistoChecks: NOCRASH
 
+  NormFactor:    SPT_OSML_BKGNF_2l_z_hf
+
+  NormFactor:    SPT_OSML_BKGNF_2l_z_lf
+
+  NormFactor:    SPT_OSML_BKGNF_3l_mu_VV
+
+  NormFactor:    SPT_OSML_BKGNF_3l_mu_Zjets
+
+  NormFactor:    SPT_OSML_BKGNF_3l_mu_ttV
+
   Systematic:    EG_RESOLUTION_ALL
+  Category: Electrons
 
   Systematic:    EG_SCALE_ALL
+  Category: Electrons
 
   Systematic:    EL_SF_ID
+  Category: Electrons
 
   Systematic:    EL_SF_Iso
+  Category: Electrons
 
   Systematic:    EL_SF_Reco
+  Category: Electrons
 
   Systematic:    EL_SF_Trigger
+  Category: Electrons
 
   Systematic:    JET_BJES_Response
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Detector1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Detector2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Mixed3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Modelling4
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical1
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical2
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical3
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical4
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical5
+  Category: Jets
 
   Systematic:    JET_EffectiveNP_Statistical6
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_Modelling
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_2018data
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_highE
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_negEta
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_NonClosure_posEta
+  Category: Jets
 
   Systematic:    JET_EtaIntercalibration_TotalStat
+  Category: Jets
 
   Systematic:    JET_Flavor_Composition
+  Category: Jets
 
   Systematic:    JET_Flavor_Response
+  Category: Jets
 
   Systematic:    JET_JER_DataVsMC_MC16
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_1
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_2
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_3
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_4
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_5
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_6
+  Category: Jets
 
   Systematic:    JET_JER_EffectiveNP_7restTerm
+  Category: Jets
 
   Systematic:    JET_JvtEfficiency
+  Category: Jets
 
   Systematic:    JET_Pileup_OffsetMu
+  Category: Jets
 
   Systematic:    JET_Pileup_OffsetNPV
+  Category: Jets
 
   Systematic:    JET_Pileup_PtTerm
+  Category: Jets
 
   Systematic:    JET_Pileup_RhoTopology
+  Category: Jets
 
   Systematic:    JET_PunchThrough_MC16
+  Category: Jets
 
   Systematic:    JET_SingleParticle_HighPt
+  Category: Jets
 
   Systematic:    LUMINOSITY
+  Category: Others
 
   Systematic:    MET_SoftTrk_ResoPara
+  Category: Others
 
   Systematic:    MET_SoftTrk_ResoPerp
+  Category: Others
 
   Systematic:    MET_SoftTrk_Scale
+  Category: Others
 
   Systematic:    MUON_ID
+  Category: Muons
 
   Systematic:    MUON_MS
+  Category: Muons
 
   Systematic:    MUON_SAGITTA_RESBIAS
+  Category: Muons
 
   Systematic:    MUON_SAGITTA_RHO
+  Category: Muons
 
   Systematic:    MUON_SCALE
+  Category: Muons
 
   Systematic:    MU_EFF_ISO_STAT
+  Category: Muons
 
   Systematic:    MU_EFF_ISO_SYS
+  Category: Muons
 
   Systematic:    MU_EFF_RECO_STAT
+  Category: Muons
 
   Systematic:    MU_EFF_RECO_STAT_LOWPT
+  Category: Muons
 
   Systematic:    MU_EFF_RECO_SYS
+  Category: Muons
 
   Systematic:    MU_EFF_RECO_SYS_LOWPT
+  Category: Muons
 
   Systematic:    MU_EFF_TTVA_STAT
+  Category: Muons
 
   Systematic:    MU_EFF_TTVA_SYS
+  Category: Muons
 
   Systematic:    MU_EFF_TrigStatUncertainty
+  Category: Muons
 
   Systematic:    MU_EFF_TrigSystUncertainty
+  Category: Muons
 
   Systematic:    PF_77_FT_EFF_Eigen_B_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_4
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_5
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_6
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_7
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_B_8
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_C_4
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_0
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_1
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_2
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_3
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_4
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_Eigen_Light_5
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_extrapolation
+  Category: b_tagging
 
   Systematic:    PF_77_FT_EFF_extrapolation_from_charm
+  Category: b_tagging
 
   Systematic:    PRW_DATASF
+  Category: Others
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_cr1
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_cr2
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_cr3
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_sr
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_vr1
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Fakes_vr2
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_VV_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_VV_PDFVar
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_VV_XS
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_Generator_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_Generator_LF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_PDFScale_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_PDFScale_LF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_PDFVar_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_PDFVar_LF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_Reweighting_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_Zjets_Reweighting_LF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_singletop_XS
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbarV_Generator
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbarV_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbarV_PartonShower
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbarV_Radiation
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbarV_XS
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_FSR
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_ISR
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_MatrixElement
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_PDFVar
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_PartonShower
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_2l_ttbar_XS
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Fakes_cr1
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Fakes_cr2
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Fakes_cr3
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Fakes_sr
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_PDFScale_0b_norm
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_PDFScale_0b_shape
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_PDFScale_1gb_norm
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_PDFScale_1gb_shape
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_PDFVar
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_VV_Reweighting
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Zjets_Generator
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Zjets_HF
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Zjets_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_Zjets_PDFVar
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbarV_Generator
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbarV_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbarV_PartonShower
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbarV_Radiation
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbarV_Reweighting
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_FSR
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_ISR
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_MatrixElement
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_PDFScale
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_PDFVar
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_PartonShower
+  Category: SPT_OSML_BKGNP
 
   Systematic:    SPT_OSML_BKGNP_3l_ttbar_XS
+  Category: SPT_OSML_BKGNP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
