@@ -49,6 +49,7 @@ class VLQCombinationConfig:
         self.CombinedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/combined_workspaces/' + self.AnaCode + '/'
         self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/combination/' + self.AnaCode + '/'
         self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/fitted_workspaces/' + self.AnaCode + '/'
+        self.LimitsDir = self.VLQCombDir + '/' + self.DataFolder + '/Limits/' + self.AnaCode + '/'
         if makePaths:
             self.makePaths()
         if not self.checkPaths():
@@ -65,6 +66,7 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.CombinedWSDir))
         os.system(mkdir.format(self.CombinationConfigDir))
         os.system(mkdir.format(self.FittedWSDir))
+        os.system(mkdir.format(self.LimitsDir))
 
     def checkPaths(self):
         if not (os.path.exists(self.InWSDir) or self.isCombined):
@@ -90,6 +92,9 @@ class VLQCombinationConfig:
             return False
         if not os.path.exists(self.FittedWSDir):
             print(colored("Fitted WS directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
+            return False
+        if not os.path.exists(self.LimitsDir):
+            print(colored("Limits directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
             return False
         
         return True
@@ -259,7 +264,7 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         return True if code == 0 else False
 
 
-    def getFittedWSPath(self, mass, kappa, brw, mu=0, isAsimov=True):
+    def getFittedResultPath(self, mass, kappa, brw, mu=0, isAsimov=True):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
         if isAsimov:
@@ -268,22 +273,46 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
             return "{}/{}_fitted_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag)
         
  
-    def getFittedWS(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
+    def fitWS(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
         # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
-        InWS = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
-               else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
-                     else self.getScaledWSPath(mass, kappa, brw))
+        InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
+                   else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
+                         else self.getScaledWSPath(mass, kappa, brw))
         cmd = '''quickFit -w {} -f {} -d {}  -o {} \
 --savefitresult 1 --hesse 1 --minos 1 {} 2>&1 |tee {}'''.format(self.WSName,
-                                                                InWS,
+                                                                InWSPath,
                                                                 DSName,
-                                                                self.getFittedWSPath(mass, kappa, brw, mu, isAsimov), 
+                                                                self.getFittedResultPath(mass, kappa, brw, mu, isAsimov), 
                                                                 '-p mu_signal=0' if isAsimov else '',
                                                                 LogFile)
-        #print(cmd)
         code = os.system(cmd)
-        print("Exit Code: {}".format(code))
+        return True if code == 0 else False
+
+    def getLimitsPath(self, mass, kappa, brw, mu=0, isAsimov=True):
+        sigtag = getSigTag(mass, kappa, brw)
+        mktag = getMKTag(mass, kappa)
+        if isAsimov:
+            return "{}/{}_limits_asimov_mu{}_{}.root".format(self.LimitsDir, self.AnaCode, int(mu*100), sigtag)
+        else:
+            return "{}/{}_limits_{}.root".format(self.LimitsDir, self.AnaCode, sigtag)
+
+
+
+    def getLimits(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
+        # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
+        DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
+        InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
+                   else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
+                         else self.getScaledWSPath(mass, kappa, brw))
+        cmd = '''quickLimit -w {} -f {} -d {} -p mu_signal \
+-o {} 2>&1 |tee {}'''.format(self.WSName,
+                             InWSPath,
+                             DSName,
+                             self.getLimitsPath(mass, kappa, brw, mu, isAsimov),
+                             LogFile)
+
+        code = os.system(cmd)
         return True if code == 0 else False
 
 

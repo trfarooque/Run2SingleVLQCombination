@@ -17,7 +17,8 @@ if __name__ == "__main__":
     do_Combine = True
     do_Separate_Fitting = True
     do_Combined_Fitting = True
-    do_Limit = True
+    do_Separate_Limits = True
+    do_Combined_Limits = True
     InDataName = 'asimovData'
     DataLoc = 'data_devloc'
     mu = 0.0
@@ -68,7 +69,7 @@ if __name__ == "__main__":
             if do_Asimov:
                 asimovconfig = cfg.getAsimovConfig(mass, kappa, brw, mu)
                 if asimovconfig:
-                    asimov = cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_{}_{}_{}.txt".format(int(mu*100),ana,sigtag))
+                    asimov = cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_mu{}_{}_{}.txt".format(int(mu*100),ana,sigtag))
                     if not asimov:
                         print(colored("Getting Asimov WS with mu = {} could not be done for {} for {}!".format(mu, ana, sigtag), color = "black", on_color="on_red"))
                         time.sleep(5)
@@ -77,13 +78,26 @@ if __name__ == "__main__":
                     time.sleep(5)
             if do_Separate_Fitting:
                 # Will do Asimov Fitting if Asimov creation is asked
-                fit = cfg.getFittedWS(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag)) 
+                fit = cfg.fitWS(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag)) 
                 if not fit:
                     print(colored("Fitting WS could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
+                    time.sleep(5)
+                else:
+                    print(colored("Fitting WS done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_green"))
+                    time.sleep(5)
+            if do_Separate_Limits:
+                limit = cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
+                if not limit:
+                    print(colored("Limits could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
+                    time.sleep(5)
+                else:
+                    print(colored("Limit done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_green"))
                     time.sleep(5)
                 
 
         if do_Combine:
+            print(colored("Starting the Combination for {}".format(sigtag), color = "black", on_color = "on_green"))
+            time.sleep(5)
             f = open("wsList.txt", "w") ## CHECK: this filename should be a CL Input
             f.write(ws_list)
             f.close()
@@ -94,7 +108,7 @@ if __name__ == "__main__":
                                                               mass= mass,
                                                               kappa = kappa,
                                                               brw = brw,
-                                                              DataName = 'asimovData')
+                                                              DataName = InDataName)
 
             if not CombConfig:
                 print(colored("Generating Combination Config failed for {}".format(sigtag), color = "black", on_color="on_red"))
@@ -108,20 +122,34 @@ if __name__ == "__main__":
         if do_Asimov:
             asimovconfig = combination_cfg.getAsimovConfig(mass, kappa, brw, mu)
             if asimovconfig:
-                asimov = combination_cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_{}_{}.txt".format(ana,sigtag))
+                asimov = combination_cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_mu{}_{}.txt".format(ana,sigtag))
                 if not asimov:
-                    print(colored("Getting Asimov WS with mu = {} could not be done for {} for {}!".format(mu, ana, sigtag), color = "black", on_color="on_red"))
+                    print(colored("Getting Asimov WS with mu = {} could not be done for SPT_COMBINED for {}!".format(mu, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
             else:
-                print(colored("Getting Asimov Config with mu = {} could not be done for {} for {}!".format(mu, ana, sigtag), color = "black", on_color="on_red"))
+                print(colored("Getting Asimov Config with mu = {} could not be done for SPT_COMBINED for {}!".format(mu, sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
 
         if do_Combined_Fitting:
              # Will do Asimov Fitting if Asimov creation is asked
-            fit = cfg.getFittedWS(mass, kappa, brw, mu, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag))
+            fit = combination_cfg.fitWS(mass, kappa, brw, mu, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag))
             if not fit:
-                print(colored("Fitting WS could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
+                print(colored("Fitting WS could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
+            else:
+                print(colored("Fitting WS done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_green"))
+                time.sleep(5)
+
+        if do_Combined_Limits:
+            limit = combination_cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
+            if not limit:
+                print(colored("Limits could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
+                time.sleep(5)
+                sys.exit(1)
+            else:
+                print(colored("Limit done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_green"))
+                time.sleep(5)
+
 
 
 
