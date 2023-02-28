@@ -50,6 +50,7 @@ class VLQCombinationConfig:
         self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/combination/' + self.AnaCode + '/'
         self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/fitted_workspaces/' + self.AnaCode + '/'
         self.LimitsDir = self.VLQCombDir + '/' + self.DataFolder + '/Limits/' + self.AnaCode + '/'
+        # self.TRExFConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/trexf/configs/'  # this directory is NOT split across different folders for different channels
         if makePaths:
             self.makePaths()
         if not self.checkPaths():
@@ -67,6 +68,7 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.CombinationConfigDir))
         os.system(mkdir.format(self.FittedWSDir))
         os.system(mkdir.format(self.LimitsDir))
+        # os.system(mkdir.format(self.TRExFConfigDir))
 
     def checkPaths(self):
         if not (os.path.exists(self.InWSDir) or self.isCombined):
@@ -94,8 +96,11 @@ class VLQCombinationConfig:
             print(colored("Fitted WS directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
             return False
         if not os.path.exists(self.LimitsDir):
-            print(colored("Limits directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
+            print(colored("Limits directory {} not found!".format(self.LimitsDir), color = "black", on_color="on_red"))
             return False
+        # if not os.path.exists(self.TRExFConfigDir):
+        #     print(colored("Limits directory {} not found!".format(self.TRExFConfigDir), color = "black", on_color="on_red"))
+        #     return False
         
         return True
 
@@ -315,6 +320,61 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         code = os.system(cmd)
         return True if code == 0 else False
 
+def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, isAsimov= True):
+    if not os.path.exists(WSListFile):
+        return False
+    DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else "obsData" 
+    cmd = '''{}/WorkspaceChecks/bin/workspace.exe \
+file_path={} \
+output_trexf_folder={} \
+output_tag={} \
+do_trexf_dump=TRUE do_checks=FALSE abort_on_error=FALSE \
+data_name="{}"
+'''.format(VLQCOMBDIR, WSListFile, ConfDir, 
+           ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag, 
+           DSName)
+    code = os.system(cmd)
+    return True if code == 0 else False
+
+def getTRExFFitFile(in_log, out_fname):
+    if not os.path.exists(in_log):
+        return False
+    if not os.path.exists('/'.join(out_fname.split('/')[:-1])):
+        return False
+    cmd = "perl {}/make_TRExNPfile.perl {} {}".format(VLQCOMBDIR, in_log, out_fname)
+    code = os.system(cmd)
+    return True if code == 0 else False
+
+def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, isAsimov=True):
+    tag_flag = ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag # part of the confid file's name
+    files = [ (ConfDir + '/' + f) for f in os.listdir(ConfDir) if (tag_flag in f and '.txt' in f) ]
+    trex_dirs = []
+    print('\n'.join(files))
+    for fname in files:
+        if "multifit" in fname:
+            continue
+        f = open(fname)
+        for line in f:
+            if "Job: " in line:
+                dirname = line.strip().split(':')[1].strip() # name of the directory should be the same as the workspace
+                os.system("mkdir -p {}/{}/Fits/".format(ConfDir, dirname)) # the directory is in the same place as the config 
+                trex_dirs.append(dirname)
+                break
+        f.close()
+
+    for dirname in trex_dirs:
+        if "multifit" in dirname:
+            continue
+        code = os.system("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir)) # copy the already created fit file from LogDir to the  TRExF's Fits/ dir
+        if code != 0:
+            return False
+    return True
+
+
+                         
+        
+                
+    
 
 
 #####################################################################################

@@ -150,9 +150,13 @@ void WSConfig::dump_files(){
       messages::print_error( __func__, __FILE__, __LINE__, "No ModelConfig object found in workspace ! Aborting !");
       abort();
     }
-    RooAbsData *data = ws -> data( m_opt.data_name.c_str() );
+    RooAbsData *data;
+    if((std::strcmp(channel_name.c_str(), "SPT_COMBINED") == 0) && (m_opt.data_name.find("asimov") == std::string::npos))
+      data = ws -> data( "combData" );
+    else
+      data = ws -> data( m_opt.data_name.c_str() );
     if(!data){
-      messages::print_error( __func__, __FILE__, __LINE__, "No "+m_opt.data_name+" object found in workspace ! Aborting !");
+      messages::print_error( __func__, __FILE__, __LINE__, "No "+m_opt.data_name+" (or combData)  object found in workspace ! Aborting !");
       abort();
     }
     RooSimultaneous *simPdf = (RooSimultaneous*)(mc->GetPdf());
@@ -186,7 +190,9 @@ void WSConfig::dump_files(){
     std::ofstream o_channel_trexf_file;
     if(m_opt.do_trexf_dump){
       o_channel_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" );
-      o_channel_trexf_file << "Job: " << channel_info.workspace_path << std::endl; //this job name should be the same as the name of the workspace
+      std::vector < std::string > vec_path = string_utils::split_string( channel_info.workspace_path, '/' );
+      //o_channel_trexf_file << "Job: " << channel_info.workspace_path << std::endl; //this job name should be the same as the name of the workspace
+      o_channel_trexf_file << "Job: " << string_utils::replace_string(vec_path[vec_path.size() - 1], ".root", "") << std::endl; //this job name should be the same as the name of the workspace
       o_channel_trexf_file << "Label: " << m_opt.output_tag << std::endl;
       o_channel_trexf_file << "ReadFrom: HIST" << std::endl;
       o_channel_trexf_file << "ImageFormat: png" << std::endl;
