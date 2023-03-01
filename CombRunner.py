@@ -7,27 +7,130 @@ from termcolor import colored
 from CombUtils import *
 from itertools import *
 import time
+from optparse import OptionParser
 
 
 if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("--data-loc", 
+                      dest="dataloc",
+                      help='location of data',
+                      default='1600')
+    parser.add_option("--masses", 
+                      dest="masses",
+                      help='Provide a comma separated list of masses with GeV units (e.g. 1200,1600)',
+                      default='1600')
+    parser.add_option("--kappas", dest="kappas",
+                      help='Provide a comma separated list of kappas (e.g. 0.3,0.5)',
+                      default='0.5')
+    parser.add_option("--brws", dest="brws",
+                      help='Provide a comma separated list of T > Wb BRs (e.g. 0.0,0.5)',
+                      default='0.5')
+    parser.add_option("--no-scaling", 
+                      dest="doscaling",
+                      help='set if scaling input workspaces is not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-asimov", 
+                      dest="doasimov",
+                      help='set if real data is to be used instead of asimov',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--mu", dest="mu",
+                      help='Choice of mu for asimov dataset',
+                      default='0.0')
+    parser.add_option("--no-combine", 
+                      dest="docombine",
+                      help='set if combination of workspaces is not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-separate-fitting", 
+                      dest="dosepfit",
+                      help='set if independent fitting of workspaces is not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-combined-fitting", 
+                      dest="docombfit",
+                      help='set if fitting of combined workspaces is not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-separate-limits", 
+                      dest="doseplims",
+                      help='set if independent limits are not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-combined-limits", 
+                      dest="docomblims",
+                      help='set if combined limits not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-trexf-configs", 
+                      dest="dotrexfcfgs",
+                      help='set if TRExFitter Configs are not required',
+                      action='store_false',
+                      default=True)
+    parser.add_option("--no-trexf-comp", 
+                      dest="dotrexfcomp",
+                      help='set if TRExFitter Comps are not required',
+                      action='store_false',
+                      default=True)
+
+
+    (options, args) = parser.parse_args()
 
     ## The following will be taken from CL Input
-    do_Scaling = True
-    do_Asimov = True
-    do_Combine = True
-    do_Separate_Fitting = True
-    do_Combined_Fitting = True
-    do_Separate_Limits = True
-    do_Combined_Limits = True
-    do_TRExFConfigs = True # This flag will only work if either do_Combine or do_Asimov is True
-    do_TRExFComp = True 
-    DataLoc = 'data_devloc'
-    mu = 0.0
-
+    do_Scaling = bool(options.doscaling)
+    do_Asimov = bool(options.doasimov)
+    do_Combine = bool(options.docombine)
+    do_Separate_Fitting = bool(options.dosepfit)
+    do_Combined_Fitting = bool(options.docombfit)
+    do_Separate_Limits =  bool(options.doseplims)
+    do_Combined_Limits =  bool(options.docomblims)
+    do_TRExFConfigs = bool(options.dotrexfcfgs) # This flag will only work if either do_Combine or do_Asimov is True
+    do_TRExFComp =  bool(options.dotrexfcomp) 
+    DataLoc = str(options.dataloc)
+    mu = float(options.mu)
+    masses = list(map(float, str(options.masses).split(',')))
+    kappas = list(map(float, str(options.kappas).split(',')))
+    BRWs = list(map(float, str(options.brws).split(',')))
 
     InDataName = 'asimovData' if do_Asimov else "obsData"
     if do_TRExFComp:
         do_TRExFConfigs = True
+
+    print('''
+Options set for this Job:
+
+do_Scaling = {}
+do_Asimov = {}
+do_Combine = {}
+do_Separate_Fitting = {}
+do_Combined_Fitting = {}
+do_Separate_Limits = {}
+do_Combined_Limits = {}
+do_TRExFConfigs = {}
+do_TRExFComp = {}
+DataLoc = {}
+mu = {}
+masses = {}
+kappas = {}
+BRWs = {}
+'''.format(
+    do_Scaling,
+    do_Asimov,
+    do_Combine,
+    do_Separate_Fitting,
+    do_Combined_Fitting,
+    do_Separate_Limits,
+    do_Combined_Limits,
+    do_TRExFConfigs,
+    do_TRExFComp,
+    DataLoc,
+    mu,
+    masses,
+    kappas,
+    BRWs
+))
 
     TRExFConfDir = VLQCOMBDIR + '/' + DataLoc + '/trexf/'
     if not os.path.exists(TRExFConfDir):
@@ -39,9 +142,6 @@ if __name__ == "__main__":
 
 
     
-    masses = [1600.]
-    kappas = [0.5]
-    BRWs = [0.5]
 
     ALL_CFGs = {}
 

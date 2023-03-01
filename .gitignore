@@ -2,3 +2,10 @@
 *pyc
 *root
 *exe
+dummy*
+data_devloc
+input_workspaces
+log*
+__pycache__
+ws*
+reset.sh
