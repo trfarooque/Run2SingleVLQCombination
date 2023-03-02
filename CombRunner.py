@@ -282,7 +282,7 @@ BRWs = {}
                 time.sleep(5)
 
         if do_Combined_Limits:
-            limit = combination_cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
+            limit = combination_cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_SPT_COMBINED_{}.txt".format(sigtag))
             if not limit:
                 print(colored("Limits could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
