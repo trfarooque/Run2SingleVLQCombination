@@ -37,7 +37,7 @@ XSUncertainty_map_ScaleDown_SingleWb = {700.:1.4, 800.:1.4, 900.:1.5, 1000.:1.0,
 
 def interpolator(x1, y1, x2, y2, x):
     if x1==x2:
-        print( "Input x values are same. Cannot interpolate. Returning (y1+y2)/2.")
+        print("Input x values are same. Cannot interpolate. Returning (y1+y2)/2.")
         return (y1+y2)/2.0
     if float(x)==float(x1): return y1
     elif float(x)==float(x2): return y2
@@ -93,7 +93,7 @@ def PNWA(proc, mass, GM):
         Bs = { 1000:  0.0, 1200: 20.616, 1400: 9.290, 1600: 7.936, 1800: 8.072, 2000: 8.456, 2200:  9.896 }
         x0 = { 1000:  0.0, 1200:  0.047, 1400: 0.030, 1600: 0.026, 1800: 0.023, 2000: 0.021, 2200:  0.022 }
     else:
-        print( "ERROR: proc",proc,"is not a valid process! (returning 0)")
+        print("ERROR: proc",proc,"is not a valid process! (returning 0)")
         return 0;
 
     ### Determine known mass below and above requested mass that has a PNWA fucntion
@@ -107,25 +107,35 @@ def PNWA(proc, mass, GM):
                 break
 
 
-    ### Define the funtional forms for PNWA
-    # ... for W and Z decays and H decays with Gamma/M < x0:
-    PNWAfunction = lambda mass, GM : 1.0 +  As[int(mass)]*GM + Bs[int(mass)]*GM**2
-    # ... for H decays with Gamma/M >= x0:
-    PNWAfunction2 = lambda mass, GM : 1.0 - As[int(mass)]*( 1.0 - exp( -Bs[int(mass)]*(GM - x0[mass]) ) )
+    _A = interpolator(mlow, As[mlow], mhigh, As[mhigh], mass)
+    _B = interpolator(mlow, Bs[mlow], mhigh, Bs[mhigh], mass)
+    if "H" in proc:
+        _x0 = interpolator(mlow, x0[mlow], mhigh, x0[mhigh], mass)
 
-    ### Get PNWA value for mlow
-    if "H" in proc and GM >= x0[mlow] :
-        flow = PNWAfunction2(mlow,GM)
-    else :
-        flow = PNWAfunction(mlow,GM)
+    # ### Define the funtional forms for PNWA
+    # # ... for W and Z decays and H decays with Gamma/M < x0:
+    # PNWAfunction = lambda mass, GM : 1.0 +  As[int(mass)]*GM + Bs[int(mass)]*GM**2
+    # # ... for H decays with Gamma/M >= x0:
+    # PNWAfunction2 = lambda mass, GM : 1.0 - As[int(mass)]*( 1.0 - exp( -Bs[int(mass)]*(GM - x0[mass]) ) )
 
-    ### Get PNWA value for mhigh
-    if "H" in proc and GM >= x0[mhigh] :
-        fhigh = PNWAfunction2(mhigh,GM)
-    else :
-        fhigh = PNWAfunction(mhigh,GM)
+    # ### Get PNWA value for mlow
+    # if "H" in proc and GM >= x0[mlow] :
+    #     flow = PNWAfunction2(mlow,GM)
+    # else :
+    #     flow = PNWAfunction(mlow,GM)
 
-    return interpolator(mlow, flow, mhigh, fhigh, mass)
+    # ### Get PNWA value for mhigh
+    # if "H" in proc and GM >= x0[mhigh] :
+    #     fhigh = PNWAfunction2(mhigh,GM)
+    # else :
+    #     fhigh = PNWAfunction(mhigh,GM)
+    if "H" not in proc:
+        return 1.0 + _A*GM + _B*GM**2
+    elif GM < _x0:
+        return 1.0 +_A*_B*GM -(_A*_B/_x0)*GM**2
+    else:
+        return 1.0 - _A*(1 - exp(-_B*(GM - _x0)))
+    #return interpolator(mlow, flow, mhigh, fhigh, mass)
 
 def XSUncertainty(mass):
     known_masses = array(sorted(XSUncertainty_map_Stat_SingleWb.keys()))
@@ -170,10 +180,12 @@ def FtFactor(proc, mass, GM):
         return 1.0
     
     if GM < 0.1:
-        As,Bs,Cs = As['low'],Bs['low'],Cs['low']
+        As_,Bs_,Cs_ = As['low'],Bs['low'],Cs['low']
+        _As, _Bs, _Cs = As['high'],Bs['high'],Cs['high']
     else:
-        As,Bs,Cs = As['high'],Bs['high'],Cs['high']
-    known_masses = array(sorted(As.keys()))
+        As_,Bs_,Cs_ = As['high'],Bs['high'],Cs['high']
+        _As, _Bs, _Cs = As['low'],Bs['low'],Cs['low']
+    known_masses = array(sorted(As_.keys()))
     if mass <= float(min(known_masses)): mlow, mhigh = float(known_masses[0]), float(known_masses[1])
     elif mass >= float(max(known_masses)): mlow, mhigh = float(known_masses[-2]), float(known_masses[-1])
     else:
@@ -184,9 +196,8 @@ def FtFactor(proc, mass, GM):
     
 
     ### GetFt value for mlow
-
-    flow = As[mlow] + Bs[mlow]*GM + Cs[mlow]*GM**2
-    fhigh = As[mhigh] + Bs[mhigh]*GM + Cs[mhigh]*GM**2
+    flow = As_[mlow] + Bs_[mlow]*GM + Cs_[mlow]*GM**2 + 0.5*((_As[mlow] + _Bs[mlow]*0.1 + _Cs[mlow]*0.1**2) - (As_[mlow] + Bs_[mlow]*0.1 + Cs_[mlow]*0.1**2))
+    fhigh = As_[mhigh] + Bs_[mhigh]*GM + Cs_[mhigh]*GM**2 + 0.5*((_As[mhigh] + _Bs[mhigh]*0.1 + _Cs[mhigh]*0.1**2) - (As_[mhigh] + Bs_[mhigh]*0.1 + Cs_[mhigh]*0.1**2))
 
     return interpolator(mlow, flow, mhigh, fhigh, mass)
 
