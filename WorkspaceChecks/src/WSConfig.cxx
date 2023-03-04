@@ -83,7 +83,10 @@ void WSConfig::dump_files(){
     o_master_trexf_file << "Compare: TRUE" << std::endl;
     o_master_trexf_file << "CmeLabel: \"13 TeV\"" << std::endl;
     o_master_trexf_file << "LumiLabel: \"139 fb^{-1}\"" << std::endl;
-    o_master_trexf_file << "ComparePOI: FALSE" << std::endl;
+    if(std::strcmp(m_opt.fittype.c_str(), "BONLY") == 0)
+      o_master_trexf_file << "ComparePOI: FALSE" << std::endl;
+    else
+      o_master_trexf_file << "ComparePOI: TRUE" << std::endl;
     o_master_trexf_file << "ComparePulls: TRUE" << std::endl;
     o_master_trexf_file << "CompareLimits: FALSE" << std::endl;
     o_master_trexf_file << "POIName: \"mu_signal\"" << std::endl;

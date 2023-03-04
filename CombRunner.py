@@ -344,7 +344,7 @@ fittype = {}
                 time.sleep(5)
             else:
                 code = os.system("cd {} && trex-fitter m configFile_multifit_{}.txt && cd -".format(TRExFConfDir, tag_flag))
-                if not code:
+                if not code == 0:
                     print(colored("TRExFitter multi-fit failed for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
 

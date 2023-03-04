@@ -36,6 +36,7 @@ where `<options>` can be chosen from the following list-
   --no-asimov           set if real data is to be used instead of asimov
   --mu	                Choice of mu for asimov dataset
   --no-combine          set if combination of workspaces is not required
+  --fit-type		Provide the fit type: BONLY or SPLUSB
   --no-separate-fitting
                         set if independent fitting of workspaces is not
                         required
