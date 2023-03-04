@@ -15,7 +15,7 @@ if __name__ == "__main__":
     parser.add_option("--data-loc", 
                       dest="dataloc",
                       help='location of data',
-                      default='1600')
+                      default='data')
     parser.add_option("--masses", 
                       dest="masses",
                       help='Provide a comma separated list of masses with GeV units (e.g. 1200,1600)',
@@ -44,6 +44,10 @@ if __name__ == "__main__":
                       help='set if combination of workspaces is not required',
                       action='store_false',
                       default=True)
+    parser.add_option("--fit-type", 
+                      dest="fittype",
+                      help='Provide the fit type: BONLY or SPLUSB',
+                      default='BONLY')
     parser.add_option("--no-separate-fitting", 
                       dest="dosepfit",
                       help='set if independent fitting of workspaces is not required',
@@ -89,6 +93,7 @@ if __name__ == "__main__":
     do_TRExFConfigs = bool(options.dotrexfcfgs) # This flag will only work if either do_Combine or do_Asimov is True
     do_TRExFComp =  bool(options.dotrexfcomp) 
     DataLoc = str(options.dataloc)
+    fittype = str(options.fittype)
     mu = float(options.mu)
     masses = list(map(float, str(options.masses).split(',')))
     kappas = list(map(float, str(options.kappas).split(',')))
@@ -97,6 +102,9 @@ if __name__ == "__main__":
     InDataName = 'asimovData' if do_Asimov else "obsData"
     if do_TRExFComp:
         do_TRExFConfigs = True
+    if fittype not in ['BONLY', 'SPLUSB']:
+        print(colored("Unrecognized Fit Type (--fit-type) option. Reverting to BONLY", color = "black", on_color="on_red"))
+        fittype = 'BONLY'
 
     print('''
 Options set for this Job:
@@ -115,6 +123,7 @@ mu = {}
 masses = {}
 kappas = {}
 BRWs = {}
+fittype = {}
 '''.format(
     do_Scaling,
     do_Asimov,
@@ -129,7 +138,8 @@ BRWs = {}
     mu,
     masses,
     kappas,
-    BRWs
+    BRWs,
+    fittype
 ))
 
     TRExFConfDir = VLQCOMBDIR + '/' + DataLoc + '/trexf/'
@@ -139,8 +149,6 @@ BRWs = {}
     FitLogDir = VLQCOMBDIR + '/' + DataLoc + '/fit_logs/'
     if not os.path.exists(FitLogDir):
         os.system("mkdir -p " + FitLogDir)
-
-
     
 
     ALL_CFGs = {}
@@ -167,7 +175,7 @@ BRWs = {}
             cfg = ALL_CFGs[ana]
 
             if do_Scaling:
-                scalingconfig = cfg.getScalingConfing(mass, kappa, brw, DataName=InDataName) ## CHECK: DataName needs to be a CL Input
+                scalingconfig = cfg.getScalingConfig(mass, kappa, brw, DataName=InDataName) ## CHECK: DataName needs to be a CL Input
                 if not scalingconfig:
                     print(colored("Scaling config could not be created for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -199,7 +207,7 @@ BRWs = {}
 
             if do_Separate_Fitting:
                 # Will do Asimov Fitting if Asimov creation is asked
-                fit = cfg.fitWS(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag)) 
+                fit = cfg.fitWS(mass, kappa, brw, mu=mu, fittype=fittype, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag)) 
                 if not fit:
                     print(colored("Fitting WS could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -210,6 +218,7 @@ BRWs = {}
             if do_TRExFComp:
                 outfname = cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if do_Asimov \
                            else cfg.getScaledWSPath(mass, kappa, brw).split('/')[-1].replace('.root', '')
+                outfname += '_' + fittype
                 comp = getTRExFFitFile(in_log = "logFitting_{}_{}.txt".format(ana, sigtag), 
                                        out_fname = FitLogDir + '/' + outfname + ".txt")
                 if not comp:
@@ -218,7 +227,7 @@ BRWs = {}
                 
 
             if do_Separate_Limits:
-                limit = cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
+                limit = cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
                 if not limit:
                     print(colored("Limits could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -264,7 +273,7 @@ BRWs = {}
 
         if do_Combined_Fitting:
              # Will do Asimov Fitting if Asimov creation is asked
-            fit = combination_cfg.fitWS(mass, kappa, brw, mu, isAsimov=do_Asimov, LogFile="logFitting_SPT_COMBINED_{}.txt".format(sigtag))
+            fit = combination_cfg.fitWS(mass, kappa, brw, mu, fittype=fittype, isAsimov=do_Asimov, LogFile="logFitting_SPT_COMBINED_{}.txt".format(sigtag))
             if not fit:
                 print(colored("Fitting WS could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
@@ -275,6 +284,7 @@ BRWs = {}
         if do_TRExFComp:
             outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if do_Asimov \
                        else combination_cfg.getCombinedWSPath(mass, kappa, brw).split('/')[-1].replace('.root', '')
+            outfname += '_' + fittype
             comp = getTRExFFitFile(in_log = "logFitting_SPT_COMBINED_{}.txt".format(sigtag), 
                                    out_fname = FitLogDir + '/' + outfname + ".txt")
             if not comp:
@@ -282,7 +292,7 @@ BRWs = {}
                 time.sleep(5)
 
         if do_Combined_Limits:
-            limit = combination_cfg.getLimits(mass, kappa, brw, mu=0, isAsimov=do_Asimov, LogFile="logLimits_SPT_COMBINED_{}.txt".format(sigtag))
+            limit = combination_cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, LogFile="logLimits_SPT_COMBINED_{}.txt".format(sigtag))
             if not limit:
                 print(colored("Limits could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
@@ -314,18 +324,20 @@ BRWs = {}
                 status = getTRExFConfigs(ConfDir = TRExFConfDir, 
                                          WSListFile = "wsList4Configs.txt", 
                                          sigtag = sigtag,
-                                         mu=0, 
+                                         mu=mu, 
+                                         fittype=fittype,
                                          isAsimov= do_Asimov) ## to be continued
                 if not status:
                     print(colored("TRExF Configs could not be generated for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
 
         if do_TRExFComp:
-            tag_flag = ("asimov_mu{}_".format(int(mu*100)) if do_Asimov else "data_") + sigtag
+            tag_flag = ("asimov_mu{}_".format(int(mu*100)) if do_Asimov else "data_") + sigtag + "_" + fittype
             compdir = makeTRExFCompDirs(ConfDir = TRExFConfDir, 
                                         LogDir = FitLogDir, 
                                         sigtag = sigtag, 
-                                        mu = mu, 
+                                        mu = mu,
+                                        fittype=fittype,
                                         isAsimov = do_Asimov)
             if not compdir:
                 print(colored("TRExF Directories could not be setup for {}!".format(sigtag), color = "black", on_color="on_red"))

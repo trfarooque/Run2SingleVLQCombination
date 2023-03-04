@@ -192,7 +192,7 @@ void WSConfig::dump_files(){
       o_channel_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" );
       std::vector < std::string > vec_path = string_utils::split_string( channel_info.workspace_path, '/' );
       //o_channel_trexf_file << "Job: " << channel_info.workspace_path << std::endl; //this job name should be the same as the name of the workspace
-      o_channel_trexf_file << "Job: " << string_utils::replace_string(vec_path[vec_path.size() - 1], ".root", "") << std::endl; //this job name should be the same as the name of the workspace
+      o_channel_trexf_file << "Job: " << string_utils::replace_string(vec_path[vec_path.size() - 1], ".root", "") + "_" + m_opt.fittype << std::endl; //this job name should be the same as the name of the workspace
       o_channel_trexf_file << "Label: " << m_opt.output_tag << std::endl;
       o_channel_trexf_file << "ReadFrom: HIST" << std::endl;
       o_channel_trexf_file << "ImageFormat: png" << std::endl;

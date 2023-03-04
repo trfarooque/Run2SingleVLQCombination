@@ -119,11 +119,10 @@ class VLQCombinationConfig:
         mktag = getMKTag(mass, kappa)
         return "{}/{}_scaling_{}.xml".format(self.ScalingConfigDir, self.AnaCode, sigtag)
 
-    def getScalingConfing(self, mass, kappa, brw, DataName="asimovData"):
-
+    def getScalingConfig(self, mass, kappa, brw, DataName="asimovData"):
         InFilePath = self.getInputWSPath(mass, kappa, brw)
         if not os.path.exists(InFilePath):
-            print(colored("Input WS {} not found!".format(INFilePath), color = "black", on_color="on_red"))
+            print(colored("Input WS {} not found!".format(InFilePath), color = "black", on_color="on_red"))
             return False
     
         OutFilePath = self.getScaledWSPath(mass, kappa, brw)
@@ -269,27 +268,32 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         return True if code == 0 else False
 
 
-    def getFittedResultPath(self, mass, kappa, brw, mu=0, isAsimov=True):
+    def getFittedResultPath(self, mass, kappa, brw, mu=0, fittype='BONLY', isAsimov=True):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
         if isAsimov:
-            return "{}/{}_fitted_asimov_mu{}_{}.root".format(self.FittedWSDir, self.AnaCode, int(mu*100), sigtag)
+            return "{}/{}_fitted_asimov_mu{}_{}_{}.root".format(self.FittedWSDir, self.AnaCode, int(mu*100), sigtag, fittype)
         else:
-            return "{}/{}_fitted_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag)
+            return "{}/{}_fitted_{}_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag, fittype)
         
  
-    def fitWS(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
+    def fitWS(self, mass, kappa, brw, mu=0,  fittype='BONLY', isAsimov=True, LogFile="log.txt"):
         # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
         InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
                    else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
                          else self.getScaledWSPath(mass, kappa, brw))
+        fitarg = ' '
+        if isAsimov:
+            fitarg = '-p mu_signal={} '.format(mu) if fittype == 'BONLY' else '-p mu_signal '
+        else:
+            fitarg = '-p mu_signal=0 ' if fittype == 'BONLY' else '-p mu_signal '
         cmd = '''quickFit -w {} -f {} -d {}  -o {} \
 --savefitresult 1 --hesse 1 --minos 1 {} 2>&1 |tee {}'''.format(self.WSName,
                                                                 InWSPath,
                                                                 DSName,
-                                                                self.getFittedResultPath(mass, kappa, brw, mu, isAsimov), 
-                                                                '-p mu_signal=0' if isAsimov else '',
+                                                                self.getFittedResultPath(mass, kappa, brw, mu, fittype, isAsimov), 
+                                                                fitarg,
                                                                 LogFile)
         code = os.system(cmd)
         return True if code == 0 else False
@@ -320,7 +324,7 @@ abort_on_error=FALSE '''.format(self.VLQCombDir,
         code = os.system(cmd)
         return True if code == 0 else False
 
-def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, isAsimov= True):
+def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, fittype="BONLY", isAsimov= True):
     if not os.path.exists(WSListFile):
         return False
     DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else "obsData" 
@@ -329,10 +333,12 @@ file_path={} \
 output_trexf_folder={} \
 output_tag={} \
 do_trexf_dump=TRUE do_checks=FALSE abort_on_error=FALSE \
-data_name="{}"
+data_name="{}" \
+fittype={}
 '''.format(VLQCOMBDIR, WSListFile, ConfDir, 
-           ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag, 
-           DSName)
+           ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag + "_" +  fittype, 
+           DSName,
+           fittype)
     code = os.system(cmd)
     return True if code == 0 else False
 
@@ -345,8 +351,8 @@ def getTRExFFitFile(in_log, out_fname):
     code = os.system(cmd)
     return True if code == 0 else False
 
-def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, isAsimov=True):
-    tag_flag = ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag # part of the confid file's name
+def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=True):
+    tag_flag = ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag + "_" + fittype # part of the confid file's name
     files = [ (ConfDir + '/' + f) for f in os.listdir(ConfDir) if (tag_flag in f and '.txt' in f) ]
     trex_dirs = []
     print('\n'.join(files))

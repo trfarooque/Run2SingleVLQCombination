@@ -26,6 +26,7 @@ int main( int argc, char **argv ){
   std::string output_xml_name = "combination.xml";
   std::string output_ws_name = "combined.root";
   std::string output_tag = "";
+  std::string fittype = "BONLY";
 
   //
   // Get the user's command options
@@ -44,6 +45,7 @@ int main( int argc, char **argv ){
     else if(argument=="output_xml_name") output_xml_name = value;
     else if(argument=="output_ws_name") output_ws_name = value;
     else if(argument=="output_tag") output_tag = value;
+    else if(argument=="fittype") fittype = value;
     else if(argument=="do_checks") do_checks = string_utils::bool_value(value);
     else if(argument=="do_config_dump") do_config_dump = string_utils::bool_value(value);
     else if(argument=="do_trexf_dump") do_trexf_dump = string_utils::bool_value(value);
@@ -101,6 +103,7 @@ int main( int argc, char **argv ){
     config_options.output_ws_name = output_ws_name;
     config_options.output_tag = output_tag;
     config_options.decorr_all = decorr_all;
+    config_options.fittype = fittype;
     WSConfig config( config_options );
     config.init();
     config.dump_files();
