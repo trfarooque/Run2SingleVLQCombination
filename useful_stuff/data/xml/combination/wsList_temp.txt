@@ -1,2 +1,0 @@
-SPT_HTZT : /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_HTZT_TS_M16K050.root
-SPT_MONOTOP : /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_MONOTOP_TS_M16K050.root
