@@ -51,8 +51,8 @@ class VLQCombinationConfig:
         self.CombinedWSSubDir = 'workspaces/combined_workspaces'
         self.CombinationConfigSubDir = 'xml/combination'
         self.FittedWSSubDir = 'workspaces/fitted_workspaces'
-        self.LimitSubDir = 'Limits'
-        self.LogSubDir = 'Logs'
+        self.LimitSubDir = 'limits'
+        self.LogSubDir = 'logs'
         
         self.setPaths()
         
@@ -149,24 +149,24 @@ class VLQCombinationConfig:
         mktag = getMKTag(mass, kappa)
         return "{}/{}_combined_{}.root".format(self.InWSDir, self.AnaCode, mktag)
 
-    def getScaledWSPath(self, mass, kappa, brw):
+    def getScaledWSPath(self, mass, kappa, brw, datatag):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_scaled_{}.root".format(self.ScaledWSDir, self.AnaCode, sigtag)
+        return "{}/{}_scaled_{}_{}.root".format(self.ScaledWSDir, self.AnaCode, sigtag, datatag)
         
-    def getScalingConfigPath(self, mass, kappa, brw):
+    def getScalingConfigPath(self, mass, kappa, brw, datatag):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_scaling_{}.xml".format(self.ScalingConfigDir, self.AnaCode, sigtag)
+        return "{}/{}_scaling_{}_{}.xml".format(self.ScalingConfigDir, self.AnaCode, sigtag, datatag)
 
-    def getScalingConfig(self, mass, kappa, brw, DataName="asimovData"):
+    def getScalingConfig(self, mass, kappa, brw, datatag):
         InFilePath = self.getInputWSPath(mass, kappa, brw)
         if not os.path.exists(InFilePath):
             print(colored("Input WS {} not found!".format(InFilePath), color = "black", on_color="on_red"))
             return False
-    
-        OutFilePath = self.getScaledWSPath(mass, kappa, brw)
-        OutConfigPath = self.getScalingConfigPath(mass, kappa, brw)
+        DataName = "obsData" if datatag == "data" else "asimovData"
+        OutFilePath = self.getScaledWSPath(mass, kappa, brw, datatag)
+        OutConfigPath = self.getScalingConfigPath(mass, kappa, brw, datatag)
 
         sigtag = getSigTag(mass, kappa, brw)
         AnaChannel = self.AnaCode
@@ -206,33 +206,39 @@ class VLQCombinationConfig:
         f = open(OutConfigPath, 'w')
         f.write(str_to_print)
         f.close()
-        print("Config written to {}".format(colored(OutConfigPath, color = "black", on_color="on_green")))
-        return True # "{}  :  {}  :  {}".format(AnaChannel, OutFilePath, WSName)
+        print("Config written to {}".format(colored(OutConfigPath, color = "green")))
+        return True
 
-    def scaleWS(self, mass, kappa, brw, LogFile="log.txt"):
-        ConfigName = self.getScalingConfigPath(mass, kappa, brw)
+    def scaleWS(self, mass, kappa, brw, datatag, LogFile="log.txt"):
+        sigtag = getSigTag(mass, kappa, brw)
+        ConfigName = self.getScalingConfigPath(mass, kappa, brw, datatag)
         if not os.path.exists(ConfigName):
             return False
         os.system("cp {}/dtd/Organization.dtd {}".format(os.getenv('VLQCOMBDIR'),self.ScalingConfigDir))
-        code = os.system('manager -w edit -x {} 2>&1 |tee {}'.format(ConfigName, LogFile))
+        code = os.system('manager -w edit -x {} > {} 2>&1'.format(ConfigName, LogFile))
+        if code == 0:
+            print("Workspace scaling done for {}".format(colored(sigtag, color = "green")))
+        else:
+            print(colored("Workspace scaling failed for {}. Check Log: {}".format(sigtag, LogFile), color = "black", on_color="on_red"))
         return True if code == 0 else False    
 
-    def getCombinationConfigPath(self, mass, kappa, brw):
+    def getCombinationConfigPath(self, mass, kappa, brw, datatag):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_combination_{}.xml".format(self.CombinationConfigDir, self.AnaCode, sigtag)
+        return "{}/{}_combination_{}_{}.xml".format(self.CombinationConfigDir, self.AnaCode, sigtag, datatag)
 
-    def getCombinedWSPath(self, mass, kappa, brw):
+    def getCombinedWSPath(self, mass, kappa, brw, datatag):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        return "{}/{}_combined_{}.root".format(self.CombinedWSDir, self.AnaCode, sigtag)
+        return "{}/{}_combined_{}_{}.root".format(self.CombinedWSDir, self.AnaCode, sigtag, datatag)
 
-    def getCombinationConfig(self, WSListFile, mass, kappa, brw, DataName = 'asimovData'):
+    def getCombinationConfig(self, WSListFile, mass, kappa, brw, mu = 0.0, DataName = 'asimovData'):
         
         if not os.path.exists(WSListFile):
             return False
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
+        datatag = "data" if 'asimov' not in DataName else "asimov_mu{}".format(int(mu*100))
         #cmd = '''{0}/WorkspaceChecks/bin/workspace.exe \ self.VLQCombDir, 
         cmd = '''workspace \
         file_path={0} \
@@ -246,20 +252,19 @@ class VLQCombinationConfig:
         abort_on_error=FALSE '''.format(WSListFile, 
                                         DataName, 
                                         self.CombinationConfigDir,
-                                        self.getCombinationConfigPath(mass, kappa, brw).split('/')[-1],
+                                        self.getCombinationConfigPath(mass, kappa, brw, datatag).split('/')[-1],
                                         self.CombinedWSDir,
-                                        self.getCombinedWSPath(mass, kappa, brw).split('/')[-1])
-    # print(cmd)
+                                        self.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1])
         code = os.system(cmd)
         return True if code == 0 else None
 
 
-    def combineWS(self, mass, kappa, brw, LogFile="log_combine.txt"):
-        ConfigName = self.getCombinationConfigPath(mass, kappa, brw)
+    def combineWS(self, mass, kappa, brw, datatag, LogFile="log_combine.txt"):
+        ConfigName = self.getCombinationConfigPath(mass, kappa, brw, datatag)
         if not os.path.exists(ConfigName):
             return False
         os.system("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir))
-        code = os.system("manager -w combine -x {} 2>&1 |tee {}".format(ConfigName, LogFile))
+        code = os.system("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile))
         return True if code == 0 else False
 
     def getAsimovWSPath(self, mass, kappa, brw, mu=0):
@@ -273,10 +278,11 @@ class VLQCombinationConfig:
         return "{}/{}_asimov_mu{}_{}.xml".format(self.AsimovConfigDir, self.AnaCode, int(mu*100), sigtag)
 
     def getAsimovConfig(self, mass, kappa, brw, mu=0):
+        datatag = 'asimov_mu{}'.format(int(mu*100))
         if self.isCombined:
-            InFilePath = self.getCombinedWSPath(mass, kappa, brw)
+            InFilePath = self.getCombinedWSPath(mass, kappa, brw, datatag)
         else:
-            InFilePath = self.getScaledWSPath(mass, kappa, brw)
+            InFilePath = self.getScaledWSPath(mass, kappa, brw, datatag)
         
         if not os.path.exists(InFilePath):
             return False
@@ -296,7 +302,6 @@ class VLQCombinationConfig:
         f.write(str_to_print)
         f.close()
         return True
-        #return [AnaChannel, OutConfigPath, WSName, 'combData' if AnaChannel == 'SPT_COMBINED' else 'asimovData']
 
     def getAsimovWS(self, mass, kappa, brw, mu=0, LogFile="log.txt"):
         ConfigName = self.getAsimovConfigPath(mass, kappa, brw, mu)
@@ -304,32 +309,31 @@ class VLQCombinationConfig:
         if not os.path.exists(ConfigName):
             return False
         os.system("cp {}/dtd/asimovUtil.dtd {}".format(os.getenv('VLQCOMBDIR'),self.AsimovConfigDir))
-        code = os.system('quickAsimov -x {} -w {} -m ModelConfig -d {}  2>&1 |tee {}'.format(ConfigName, self.WSName, DataName, LogFile))
+        code = os.system('quickAsimov -x {} -w {} -m ModelConfig -d {} > {} 2>&1'.format(ConfigName, self.WSName, DataName, LogFile))
         return True if code == 0 else False
 
 
     def getFittedResultPath(self, mass, kappa, brw, mu=0, fittype='BONLY', isAsimov=True):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        if isAsimov:
-            return "{}/{}_fitted_asimov_mu{}_{}_{}.root".format(self.FittedWSDir, self.AnaCode, int(mu*100), sigtag, fittype)
-        else:
-            return "{}/{}_fitted_{}_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag, fittype)
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
+        return "{}/{}_fitted_{}_{}_{}.root".format(self.FittedWSDir, self.AnaCode, sigtag, datatag, fittype)
         
  
     def fitWS(self, mass, kappa, brw, mu=0,  fittype='BONLY', isAsimov=True, LogFile="log.txt"):
         # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
         InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
-                   else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
-                         else self.getScaledWSPath(mass, kappa, brw))
+                   else (self.getCombinedWSPath(mass, kappa, brw, datatag) if self.isCombined \
+                         else self.getScaledWSPath(mass, kappa, brw, datatag))
         fitarg = ' '
         if isAsimov:
             fitarg = '-p mu_signal={} '.format(mu) if fittype == 'BONLY' else '-p mu_signal '
         else:
             fitarg = '-p mu_signal=0 ' if fittype == 'BONLY' else '-p mu_signal '
         cmd = '''quickFit -w {} -f {} -d {}  -o {} \
---savefitresult 1 --hesse 1 --minos 1 {} 2>&1 |tee {}'''.format(self.WSName,
+--savefitresult 1 --hesse 1 --minos 1 {} > {} 2>&1 '''.format(self.WSName,
                                                                 InWSPath,
                                                                 DSName,
                                                                 self.getFittedResultPath(mass, kappa, brw, mu, fittype, isAsimov), 
@@ -341,19 +345,17 @@ class VLQCombinationConfig:
     def getLimitsPath(self, mass, kappa, brw, mu=0, isAsimov=True):
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
-        if isAsimov:
-            return "{}/{}_limits_asimov_mu{}_{}.root".format(self.LimitDir, self.AnaCode, int(mu*100), sigtag)
-        else:
-            return "{}/{}_limits_{}.root".format(self.LimitDir, self.AnaCode, sigtag)
-
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
+        return "{}/{}_limits_{}_{}.root".format(self.LimitDir, self.AnaCode, sigtag, datatag)
 
 
     def getLimits(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
         # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
         InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
-                   else (self.getCombinedWSPath(mass, kappa, brw) if self.isCombined \
-                         else self.getScaledWSPath(mass, kappa, brw))
+                   else (self.getCombinedWSPath(mass, kappa, brw, datatag) if self.isCombined \
+                         else self.getScaledWSPath(mass, kappa, brw, datatag))
         cmd = '''quickLimit -w {} -f {} -d {} -p mu_signal \
 -o {} 2>&1 |tee {}'''.format(self.WSName,
                              InWSPath,
@@ -368,6 +370,7 @@ def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, fittype="BONLY", isAsimov
     if not os.path.exists(WSListFile):
         return False
     DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else "obsData" 
+    datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
     #cmd = '''{}/WorkspaceChecks/bin/workspace.exe \ VLQCOMBDIR, 
     cmd = '''workspace \
 file_path={} \
@@ -376,10 +379,11 @@ output_tag={} \
 do_trexf_dump=TRUE do_checks=FALSE abort_on_error=FALSE \
 data_name="{}" \
 fittype={}
-'''.format(WSListFile, ConfDir, 
-           ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag + "_" +  fittype, 
+'''.format(WSListFile, ConfDir,
+           sigtag + "_" + datatag + "_" + fittype,
            DSName,
            fittype)
+    print(cmd)
     code = os.system(cmd)
     return True if code == 0 else False
 
@@ -393,7 +397,8 @@ def getTRExFFitFile(in_log, out_fname):
     return True if code == 0 else False
 
 def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=True):
-    tag_flag = ("asimov_mu{}_".format(int(mu*100)) if isAsimov else "data_") + sigtag + "_" + fittype # part of the confid file's name
+    datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
+    tag_flag = sigtag + "_" + datatag + "_" + fittype
     files = [ (ConfDir + '/' + f) for f in os.listdir(ConfDir) if (tag_flag in f and '.txt' in f) ]
     trex_dirs = []
     print('\n'.join(files))
