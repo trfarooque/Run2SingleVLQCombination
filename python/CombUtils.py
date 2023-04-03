@@ -1,9 +1,8 @@
 import sys, os
-sys.path.append(os.getenv("VLQCOMBDIR") + "/VLQ_Interpretation_Tools")
-
+from termcolor import colored
 from VLQCouplingCalculator import VLQCouplingCalculator as vlq
 from VLQCrossSectionCalculator import *
-from termcolor import colored
+
 
 ALL_ANACODES = ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP', 'SPT_ALLHAD', 'SPT_TYWB', 'SPT_COMBINED']
 #VLQCOMBDIR = os.getenv("VLQCOMBDIR") 
@@ -33,30 +32,50 @@ def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
 
 
 class VLQCombinationConfig:
-    def __init__(self, AnaCode, DataFolder = 'data', WSName = 'combined', VLQCombDir = INPUTDIR, makePaths = False):
+    def __init__(self, AnaCode, DataFolder = 'data', WSName = 'combined', VLQCombDir = INPUTDIR, makePaths = False, checkPaths = False):
         if AnaCode not in ALL_ANACODES:
             raise Exception("Unknown Analysis Code!")
         else:
             self.AnaCode = AnaCode
         self.isCombined = True if self.AnaCode == 'SPT_COMBINED' else False
+
         self.VLQCombDir = VLQCombDir
         self.DataFolder = DataFolder
         self.WSName = WSName
-        self.InWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/input_workspaces/' + self.AnaCode + '/'
-        self.ScaledWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/scaled_workspaces/' + self.AnaCode + '/'
-        self.ScalingConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/scaling/' + self.AnaCode + '/'
-        self.AsimovWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/asimov_workspaces/' + self.AnaCode + '/'
-        self.AsimovConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/asimov/' + self.AnaCode + '/'
-        self.CombinedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/combined_workspaces/' + self.AnaCode + '/'
-        self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/xml/combination/' + self.AnaCode + '/'
-        self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/workspaces/fitted_workspaces/' + self.AnaCode + '/'
-        self.LimitsDir = self.VLQCombDir + '/' + self.DataFolder + '/Limits/' + self.AnaCode + '/'
+        
+        self.InWSSubDir = 'workspaces/input_workspaces'
+        self.ScaledWSSubDir = 'workspaces/scaled_workspaces'
+        self.ScalingConfigSubDir = 'xml/scaling'
+        self.AsimovWSSubDir = 'workspaces/asimov_workspaces'
+        self.AsimovConfigSubDir = 'xml/asimov'
+        self.CombinedWSSubDir = 'workspaces/combined_workspaces'
+        self.CombinationConfigSubDir = 'xml/combination'
+        self.FittedWSSubDir = 'workspaces/fitted_workspaces'
+        self.LimitSubDir = 'Limits'
+        self.LogSubDir = 'Logs'
+        
+        self.setPaths()
+        
         # self.TRExFConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/trexf/configs/'  # this directory is NOT split across different folders for different channels
         if makePaths:
             self.makePaths()
-        if not self.checkPaths():
-            raise Exception()
-    
+
+        if checkPaths:
+            if not self.checkPaths():
+                raise Exception()
+
+    def setPaths(self):
+        self.InWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.InWSSubDir + '/' +  self.AnaCode + '/'
+        self.ScaledWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.ScaledWSSubDir + '/' + self.AnaCode + '/'
+        self.ScalingConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.ScalingConfigSubDir  + '/' + self.AnaCode + '/'
+        self.AsimovWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.AsimovWSSubDir + '/' + self.AnaCode + '/'
+        self.AsimovConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.AsimovConfigSubDir  + '/' + self.AnaCode + '/'
+        self.CombinedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.CombinedWSSubDir + '/' + self.AnaCode + '/'
+        self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.CombinationConfigSubDir  + '/' + self.AnaCode + '/'
+        self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.FittedWSSubDir + '/' + self.AnaCode + '/'
+        self.LimitDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.LimitSubDir  + '/' + self.AnaCode + '/'
+        self.LogDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.LogSubDir  + '/' + self.AnaCode + '/'
+
     def makePaths(self):
         mkdir = "mkdir -p {}"
         if not self.isCombined:
@@ -68,8 +87,25 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.CombinedWSDir))
         os.system(mkdir.format(self.CombinationConfigDir))
         os.system(mkdir.format(self.FittedWSDir))
-        os.system(mkdir.format(self.LimitsDir))
+        os.system(mkdir.format(self.LimitDir))
+        os.system(mkdir.format(self.LogDir))
         # os.system(mkdir.format(self.TRExFConfigDir))
+
+    def setSubDir(self, pathdict, makePaths=False):
+        for pathname, path in pathdict.items():
+            try:
+                oldpath = getattr(self, pathname)
+            except:
+                print(colored("The variable '{}' is  not defined for the VLQCombinationConfig class".format(pathname), color = "black", on_color="on_light_yellow"))
+                continue
+            setattr(self, pathname, path)
+            if path != oldpath:
+                print(colored("The  variable '{}' has been changed from '{}' to '{}'".format(pathname, oldpath, path), color = "black", on_color="on_green"))
+
+        self.setPaths()
+        if makePaths:
+            self.makePaths()
+
 
     def checkPaths(self):
         if not (os.path.exists(self.InWSDir) or self.isCombined):
@@ -96,8 +132,11 @@ class VLQCombinationConfig:
         if not os.path.exists(self.FittedWSDir):
             print(colored("Fitted WS directory {} not found!".format(self.FittedWSDir), color = "black", on_color="on_red"))
             return False
-        if not os.path.exists(self.LimitsDir):
-            print(colored("Limits directory {} not found!".format(self.LimitsDir), color = "black", on_color="on_red"))
+        if not os.path.exists(self.LimitDir):
+            print(colored("Limits directory {} not found!".format(self.LimitDir), color = "black", on_color="on_red"))
+            return False
+        if not os.path.exists(self.LogDir):
+            print(colored("Log directory {} not found!".format(self.LogDir), color = "black", on_color="on_red"))
             return False
         # if not os.path.exists(self.TRExFConfigDir):
         #     print(colored("Limits directory {} not found!".format(self.TRExFConfigDir), color = "black", on_color="on_red"))
@@ -303,9 +342,9 @@ class VLQCombinationConfig:
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
         if isAsimov:
-            return "{}/{}_limits_asimov_mu{}_{}.root".format(self.LimitsDir, self.AnaCode, int(mu*100), sigtag)
+            return "{}/{}_limits_asimov_mu{}_{}.root".format(self.LimitDir, self.AnaCode, int(mu*100), sigtag)
         else:
-            return "{}/{}_limits_{}.root".format(self.LimitsDir, self.AnaCode, sigtag)
+            return "{}/{}_limits_{}.root".format(self.LimitDir, self.AnaCode, sigtag)
 
 
 

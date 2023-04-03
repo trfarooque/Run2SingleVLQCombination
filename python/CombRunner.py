@@ -18,6 +18,46 @@ if __name__ == "__main__":
                       dest="dataloc",
                       help='location of data',
                       default='data')
+    parser.add_option("--inws-subdir", 
+                      dest="inwssubdir",
+                      help='location of input ws sub-directories',
+                      default='workspaces/input_workspaces')
+    parser.add_option("--scaledws-subdir", 
+                      dest="scaledwssubdir",
+                      help='location of scaled ws sub-directories',
+                      default='workspaces/scaled_workspaces')
+    parser.add_option("--scalingconfig-subdir", 
+                      dest="scalingconfigsubdir",
+                      help='location of scaling config sub-directories',
+                      default='xml/scaling')
+    parser.add_option("--asimovws-subdir", 
+                      dest="asimovwssubdir",
+                      help='location of asimov ws sub-directories',
+                      default='workspaces/asimov_workspaces')
+    parser.add_option("--asimovconfig-subdir", 
+                      dest="asimovconfigsubdir",
+                      help='location of asimov config sub-directories',
+                      default='xml/asimov')
+    parser.add_option("--combinedws-subdir", 
+                      dest="combinedwssubdir",
+                      help='location of combined ws sub-directories',
+                      default='workspaces/combined_workspaces')
+    parser.add_option("--combconfig-subdir", 
+                      dest="combconfigsubdir",
+                      help='location of combination config sub-directories',
+                      default='xml/combination')
+    parser.add_option("--fittedws-subdir", 
+                      dest="fittedwssubdir",
+                      help='location of fitted ws sub-directories',
+                      default='workspaces/fitted_workspaces')
+    parser.add_option("--limit-subdir", 
+                      dest="limitsubdir",
+                      help='location of limit sub-directories',
+                      default='Limits')
+    parser.add_option("--log-subdir", 
+                      dest="logsubdir",
+                      help='location of log sub-directories',
+                      default='Limits')
     parser.add_option("--masses", 
                       dest="masses",
                       help='Provide a comma separated list of masses with GeV units (e.g. 1200,1600)',
@@ -28,12 +68,12 @@ if __name__ == "__main__":
     parser.add_option("--brws", dest="brws",
                       help='Provide a comma separated list of T > Wb BRs (e.g. 0.0,0.5)',
                       default='0.5')
-    parser.add_option("--no-scaling", 
+    parser.add_option("--skip-scaling", 
                       dest="doscaling",
                       help='set if scaling input workspaces is not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-asimov", 
+    parser.add_option("--skip-asimov", 
                       dest="doasimov",
                       help='set if real data is to be used instead of asimov',
                       action='store_false',
@@ -41,7 +81,7 @@ if __name__ == "__main__":
     parser.add_option("--mu", dest="mu",
                       help='Choice of mu for asimov dataset',
                       default='0.0')
-    parser.add_option("--no-combine", 
+    parser.add_option("--skip-combine", 
                       dest="docombine",
                       help='set if combination of workspaces is not required',
                       action='store_false',
@@ -50,32 +90,32 @@ if __name__ == "__main__":
                       dest="fittype",
                       help='Provide the fit type: BONLY or SPLUSB',
                       default='BONLY')
-    parser.add_option("--no-separate-fitting", 
+    parser.add_option("--skip-separate-fitting", 
                       dest="dosepfit",
                       help='set if independent fitting of workspaces is not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-combined-fitting", 
+    parser.add_option("--skip-combined-fitting", 
                       dest="docombfit",
                       help='set if fitting of combined workspaces is not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-separate-limits", 
+    parser.add_option("--skip-separate-limits", 
                       dest="doseplims",
                       help='set if independent limits are not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-combined-limits", 
+    parser.add_option("--skip-combined-limits", 
                       dest="docomblims",
                       help='set if combined limits not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-trexf-configs", 
+    parser.add_option("--skip-trexf-configs", 
                       dest="dotrexfcfgs",
                       help='set if TRExFitter Configs are not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--no-trexf-comp", 
+    parser.add_option("--skip-trexf-comp", 
                       dest="dotrexfcomp",
                       help='set if TRExFitter Comps are not required',
                       action='store_false',
@@ -94,8 +134,21 @@ if __name__ == "__main__":
     do_Combined_Limits =  bool(options.docomblims)
     do_TRExFConfigs = bool(options.dotrexfcfgs) # This flag will only work if either do_Combine or do_Asimov is True
     do_TRExFComp =  bool(options.dotrexfcomp) 
+
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
+    pathdict = {'InWSSubDir' : str(options.inwssubdir),
+                'ScaledWSSubDir' : str(options.scaledwssubdir),
+                'ScalingConfigSubDir' : str(options.scalingconfigsubdir),
+                'AsimovWSSubDir' : str(options.asimovwssubdir),
+                'AsimovConfigSubDir' : str(options.asimovconfigsubdir),
+                'CombinedWSSubDir' : str(options.combinedwssubdir),
+                'CombinationConfigSubDir' :str(options.combconfigsubdir),
+                'FittedWSSubDir' : str(options.fittedwssubdir),
+                'LimitSubDir' : str(options.limitsubdir),
+                'LogSubDir' : str(options.logsubdir)
+                }
+
     mu = float(options.mu)
     masses = list(map(float, str(options.masses).split(',')))
     kappas = list(map(float, str(options.kappas).split(',')))
@@ -147,11 +200,14 @@ fittype = {}
     TRExFConfDir = INPUTDIR + '/' + DataLoc + '/trexf/'
     if not os.path.exists(TRExFConfDir):
         os.system("mkdir -p " + TRExFConfDir)
-
+    
     FitLogDir = INPUTDIR + '/' + DataLoc + '/fit_logs/'
     if not os.path.exists(FitLogDir):
         os.system("mkdir -p " + FitLogDir)
     
+    WSListDir = INPUTDIR + '/' + DataLoc + '/ws_lists/'
+    if not os.path.exists(WSListDir):
+        os.system("mkdir -p " + WSListDir)
 
     ALL_CFGs = {}
 
@@ -160,13 +216,17 @@ fittype = {}
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input
                                               WSName = 'combWS' if ana == 'SPT_OSML' else 'combined',
-                                              makePaths = True)
+                                              makePaths = False,
+                                              checkPaths = False)
+        ALL_CFGs[ana].setSubDir(pathdict, makePaths = True)
 
     print("Creating CombinationConfig for SPT_COMBINED")
     combination_cfg = VLQCombinationConfig(AnaCode = 'SPT_COMBINED',
-                                              DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input                                                     
-                                              WSName = 'combWS',
-                                              makePaths = True)
+                                           DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input                                                     
+                                           WSName = 'combWS',
+                                           makePaths = True,
+                                           checkPaths = False)
+    combination_cfg.setSubDir(pathdict, makePaths = True)
 
     for (mass, kappa, brw) in product(*[masses, kappas, BRWs]):
         sigtag = getSigTag(mass, kappa, brw)
@@ -182,7 +242,8 @@ fittype = {}
                     print(colored("Scaling config could not be created for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
                     continue
-                scaling = cfg.scaleWS(mass, kappa, brw, LogFile="logScaling_{}_{}.txt".format(ana, sigtag))
+                scaling = cfg.scaleWS(mass, kappa, brw, 
+                                      LogFile="{}/logScaling_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))))
                 if not scaling:
                     print(colored("Scaled WS could not be created for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -198,7 +259,8 @@ fittype = {}
             if do_Asimov:
                 asimovconfig = cfg.getAsimovConfig(mass, kappa, brw, mu)
                 if asimovconfig:
-                    asimov = cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_mu{}_{}_{}.txt".format(int(mu*100),ana,sigtag))
+                    asimov = cfg.getAsimovWS(mass, kappa, brw, mu, 
+                                             LogFile="{}/logAsimov_mu{}_{}_{}.txt".format(cfg.LogDir, int(mu*100), ana, sigtag))
                     if not asimov:
                         print(colored("Getting Asimov WS with mu = {} could not be done for {} for {}!".format(mu, ana, sigtag), color = "black", on_color="on_red"))
                         time.sleep(5)
@@ -209,7 +271,8 @@ fittype = {}
 
             if do_Separate_Fitting:
                 # Will do Asimov Fitting if Asimov creation is asked
-                fit = cfg.fitWS(mass, kappa, brw, mu=mu, fittype=fittype, isAsimov=do_Asimov, LogFile="logFitting_{}_{}.txt".format(ana, sigtag)) 
+                fit = cfg.fitWS(mass, kappa, brw, mu=mu, fittype=fittype, isAsimov=do_Asimov, 
+                                LogFile="{}/logFitting_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))) 
                 if not fit:
                     print(colored("Fitting WS could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -221,7 +284,8 @@ fittype = {}
                 outfname = cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if do_Asimov \
                            else cfg.getScaledWSPath(mass, kappa, brw).split('/')[-1].replace('.root', '')
                 outfname += '_' + fittype
-                comp = getTRExFFitFile(in_log = "logFitting_{}_{}.txt".format(ana, sigtag), 
+                comp = getTRExFFitFile(in_log = "{}/logFitting_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag, 
+                                                                                    'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))), 
                                        out_fname = FitLogDir + '/' + outfname + ".txt")
                 if not comp:
                     print(colored("Getting TRExF comp file could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
@@ -229,7 +293,9 @@ fittype = {}
                 
 
             if do_Separate_Limits:
-                limit = cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, LogFile="logLimits_{}_{}.txt".format(ana, sigtag))
+                limit = cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, 
+                                      LogFile="{}/logLimits_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag,
+                                                                                 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))))
                 if not limit:
                     print(colored("Limits could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -241,13 +307,15 @@ fittype = {}
         if do_Combine:
             print(colored("Starting the Combination for {}".format(sigtag), color = "black", on_color = "on_green"))
             time.sleep(5)
-            f = open("wsList.txt", "w") ## CHECK: this filename should be a CL Input
+
+            wslist_fname = WSListDir + '/wsList_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
+            f = open(wslist_fname, "w") ## CHECK: this filename should be a CL Input
             f.write(ws_list)
             f.close()
-            print("WS List is available at " + colored('wsList.txt', color = "black", on_color="on_green"))
+            print("WS List is available at " + colored(wslist_fname, color = "black", on_color="on_green"))
 
 
-            CombConfig = combination_cfg.getCombinationConfig(WSListFile = "wsList.txt", 
+            CombConfig = combination_cfg.getCombinationConfig(WSListFile = wslist_fname, 
                                                               mass= mass,
                                                               kappa = kappa,
                                                               brw = brw,
@@ -256,26 +324,46 @@ fittype = {}
             if not CombConfig:
                 print(colored("Generating Combination Config failed for {}".format(sigtag), color = "black", on_color="on_red"))
                 continue
-            combined = combination_cfg.combineWS(mass, kappa, brw, LogFile="log_combine_{}.txt".format(sigtag))
+            combined = combination_cfg.combineWS(mass, kappa, brw, 
+                                                 LogFile="{}/log_combine_{}_{}.txt".format(combination_cfg.LogDir, sigtag,
+                                                                                           'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))))
             if not combined:
                 print(colored("Combination failed for {}".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
                 continue
+            else:
+                ws_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getCombinedWSPath(mass, kappa, brw), combination_cfg.WSName)
+                wslist4config_fname = WSListDir + '/wsList4config_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
+                f = open(wslist4config_fname, "w")
+                f.write(ws_list)
+                f.close()
 
         if do_Asimov:
             asimovconfig = combination_cfg.getAsimovConfig(mass, kappa, brw, mu)
             if asimovconfig:
-                asimov = combination_cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="logAsimov_mu{}_{}.txt".format(ana,sigtag))
+                asimov = combination_cfg.getAsimovWS(mass, kappa, brw, mu, LogFile="{}/logAsimov_mu{}_SPT_COMBINED_{}.txt".format(combination_cfg.LogDir, 
+                                                                                                                                  int(mu*100), sigtag))
                 if not asimov:
                     print(colored("Getting Asimov WS with mu = {} could not be done for SPT_COMBINED for {}!".format(mu, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
+                else:
+                    ws_asimov_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getAsimovWSPath(mass, kappa, brw, mu), combination_cfg.WSName)
+                    wslist4config_fname = WSListDir + '/wsAsimovList4config_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
+                    f = open(wslist4config_fname, "w")
+                    f.write(ws_asimov_list)
+                    f.close()
+
+
             else:
                 print(colored("Getting Asimov Config with mu = {} could not be done for SPT_COMBINED for {}!".format(mu, sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
 
         if do_Combined_Fitting:
              # Will do Asimov Fitting if Asimov creation is asked
-            fit = combination_cfg.fitWS(mass, kappa, brw, mu, fittype=fittype, isAsimov=do_Asimov, LogFile="logFitting_SPT_COMBINED_{}.txt".format(sigtag))
+            fit = combination_cfg.fitWS(mass, kappa, brw, mu, fittype=fittype, isAsimov=do_Asimov, 
+                                        LogFile="{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
+                                                                                              sigtag, 
+                                                                                              'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))))
             if not fit:
                 print(colored("Fitting WS could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
@@ -287,14 +375,18 @@ fittype = {}
             outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if do_Asimov \
                        else combination_cfg.getCombinedWSPath(mass, kappa, brw).split('/')[-1].replace('.root', '')
             outfname += '_' + fittype
-            comp = getTRExFFitFile(in_log = "logFitting_SPT_COMBINED_{}.txt".format(sigtag), 
+            comp = getTRExFFitFile(in_log = "{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
+                                                                                          sigtag, 
+                                                                                          'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))), 
                                    out_fname = FitLogDir + '/' + outfname + ".txt")
             if not comp:
                 print(colored("Getting TRExF comp file could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
 
         if do_Combined_Limits:
-            limit = combination_cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, LogFile="logLimits_SPT_COMBINED_{}.txt".format(sigtag))
+            limit = combination_cfg.getLimits(mass, kappa, brw, mu=mu, isAsimov=do_Asimov, 
+                                              LogFile="{}/logLimits_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, sigtag,
+                                                                                                   'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100))))
             if not limit:
                 print(colored("Limits could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
@@ -304,27 +396,32 @@ fittype = {}
                 time.sleep(5)
 
         if do_TRExFConfigs:
-            list2write = None
+            fname = ''
             if do_Asimov:
                 if not os.path.exists(combination_cfg.getAsimovWSPath(mass, kappa, brw, mu)):
                     print(colored("Asimov WS could not be found for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
+                    sys.exit(1)
                 else:
-                    ws_asimov_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getAsimovWSPath(mass, kappa, brw, mu), combination_cfg.WSName)
-                    list2write = ws_asimov_list
+                    # ws_asimov_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getAsimovWSPath(mass, kappa, brw, mu), combination_cfg.WSName)
+                    # list2write = ws_asimov_list
+                    fname = WSListDir + '/wsList4config_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
             else:
                 if not os.path.exists(combination_cfg.getCombinedWSPath(mass, kappa, brw)):
                     print(colored("Combined WS could not be found for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
+                    sys.exit(1)
                 else:
-                    ws_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getCombinedWSPath(mass, kappa, brw), combination_cfg.WSName)
-                    list2write = ws_list
-            if list2write:
-                f = open("wsList4Configs.txt", "w")
-                f.write(list2write)
-                f.close()
+                    # ws_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getCombinedWSPath(mass, kappa, brw), combination_cfg.WSName)
+                    # list2write = ws_list
+                    fname = WSListDir + '/wsAsimovList4config_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
+            if fname:
+                #wslist4configs_fname = WSListDir + '/wsList4Configs_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
+                #f = open(wslist4configs_fname, "w")
+                #f.write(list2write)
+                #f.close()
                 status = getTRExFConfigs(ConfDir = TRExFConfDir, 
-                                         WSListFile = "wsList4Configs.txt", 
+                                         WSListFile = fname, 
                                          sigtag = sigtag,
                                          mu=mu, 
                                          fittype=fittype,
