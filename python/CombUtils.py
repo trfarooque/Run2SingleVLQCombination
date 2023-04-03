@@ -383,7 +383,7 @@ fittype={}
            sigtag + "_" + datatag + "_" + fittype,
            DSName,
            fittype)
-    print(cmd)
+    # print(cmd)
     code = os.system(cmd)
     return True if code == 0 else False
 

@@ -68,6 +68,13 @@ if __name__ == "__main__":
     parser.add_option("--brws", dest="brws",
                       help='Provide a comma separated list of T > Wb BRs (e.g. 0.0,0.5)',
                       default='0.5')
+    parser.add_option("--mu", dest="mu",
+                      help='Choice of mu for asimov dataset',
+                      default='0.0')
+    parser.add_option("--fit-type", 
+                      dest="fittype",
+                      help='Provide the fit type: BONLY or SPLUSB',
+                      default='BONLY')
     parser.add_option("--use-data", 
                       dest="usedata",
                       help='set if real data is to be used, otherwise asimov will be used',
@@ -83,18 +90,11 @@ if __name__ == "__main__":
                       help='set if real data is to be used instead of asimov',
                       action='store_false',
                       default=True)
-    parser.add_option("--mu", dest="mu",
-                      help='Choice of mu for asimov dataset',
-                      default='0.0')
     parser.add_option("--skip-combine", 
                       dest="docombine",
                       help='set if combination of workspaces is not required',
                       action='store_false',
                       default=True)
-    parser.add_option("--fit-type", 
-                      dest="fittype",
-                      help='Provide the fit type: BONLY or SPLUSB',
-                      default='BONLY')
     parser.add_option("--skip-separate-fitting", 
                       dest="dosepfit",
                       help='set if independent fitting of workspaces is not required',
