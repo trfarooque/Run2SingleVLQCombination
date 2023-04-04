@@ -129,7 +129,6 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    ## The following will be taken from CL Input
     do_Scaling = bool(options.doscaling)
     do_Asimov = bool(options.doasimov)
     do_Combine = bool(options.docombine)
@@ -137,9 +136,9 @@ if __name__ == "__main__":
     do_Combined_Fitting = bool(options.docombfit)
     do_Separate_Limits =  bool(options.doseplims)
     do_Combined_Limits =  bool(options.docomblims)
-    do_TRExFConfigs = bool(options.dotrexfcfgs) # This flag will only work if either do_Combine or do_Asimov is True
     do_TRExFComp =  bool(options.dotrexfcomp) 
-    use_data = False if do_Asimov else bool(options.usedata)
+    do_TRExFConfigs = True if do_TRExFComp else bool(options.dotrexfcfgs) # This flag is overwritten when comparison plots are required
+    use_data = False if do_Asimov else bool(options.usedata) # This flag is ovrwritten when asimov workspaces are required
 
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
@@ -163,8 +162,6 @@ if __name__ == "__main__":
     InDataName = 'asimovData' if not use_data else "obsData"
     datatag = 'data' if use_data else 'asimov_mu{}'.format(int(mu*100))
 
-    if do_TRExFComp:
-        do_TRExFConfigs = True
     if fittype not in ['BONLY', 'SPLUSB']:
         print(colored("Unrecognized Fit Type (--fit-type) option. Reverting to BONLY", color = "black", on_color="on_red"))
         fittype = 'BONLY'
@@ -227,7 +224,7 @@ fittype = {}
     for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
         print("Creating CombinationConfig for {}".format(ana))
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
-                                              DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input
+                                              DataFolder = DataLoc,
                                               WSName = 'combWS' if ana == 'SPT_OSML' else 'combined',
                                               makePaths = False,
                                               checkPaths = False)
@@ -235,7 +232,7 @@ fittype = {}
 
     print("Creating CombinationConfig for SPT_COMBINED")
     combination_cfg = VLQCombinationConfig(AnaCode = 'SPT_COMBINED',
-                                           DataFolder = DataLoc, ## CHECK: Location of data needs to be a CL Input                                                     
+                                           DataFolder = DataLoc,                                                      
                                            WSName = 'combWS',
                                            makePaths = True,
                                            checkPaths = False)
@@ -299,7 +296,6 @@ fittype = {}
                     time.sleep(5)
 
             if do_Separate_Fitting:
-                # Will do Asimov Fitting if Asimov creation is asked
                 print("Fitting {} WS for {}".format(ana, colored(sigtag, color = "green")))
                 fit = cfg.fitWS(mass, 
                                 kappa, 
@@ -409,7 +405,6 @@ fittype = {}
                 time.sleep(5)
 
         if do_Combined_Fitting:
-            # Will do Asimov Fitting if Asimov creation is asked
             print("Fitting SPT_COMBINED WS for {}".format(colored(sigtag, color = "green")))
             fit = combination_cfg.fitWS(mass, 
                                         kappa, 
@@ -427,17 +422,6 @@ fittype = {}
                 print(colored("Fitting WS done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_green"))
                 time.sleep(5)
 
-        if do_TRExFComp:
-            outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if not use_data \
-                       else combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '')
-            outfname += '_' + fittype
-            comp = getTRExFFitFile(in_log = "{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
-                                                                                          sigtag, 
-                                                                                          datatag), 
-                                   out_fname = FitLogDir + '/' + outfname + ".txt")
-            if not comp:
-                print(colored("Getting TRExF comp file could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
-                time.sleep(5)
 
         if do_Combined_Limits:
             limit = combination_cfg.getLimits(mass, 
@@ -462,8 +446,6 @@ fittype = {}
                     time.sleep(5)
                     sys.exit(1)
                 else:
-                    # ws_asimov_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getAsimovWSPath(mass, kappa, brw, mu), combination_cfg.WSName)
-                    # list2write = ws_asimov_list
                     fname = WSListDir + '/wsAsimovList4TrexConfig_{}_{}.txt'.format (sigtag, datatag)
             else:
                 if not os.path.exists(combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag)):
@@ -471,27 +453,30 @@ fittype = {}
                     time.sleep(5)
                     sys.exit(1)
                 else:
-                    # ws_list += 'SPT_COMBINED  :  {}  :  {}\n'.format(combination_cfg.getCombinedWSPath(mass, kappa, brw), combination_cfg.WSName)
-                    # list2write = ws_list
                     fname = WSListDir + '/wsList4TrexConfig_{}_{}.txt'.format (sigtag, datatag)
             if fname:
-                #wslist4configs_fname = WSListDir + '/wsList4Configs_{}_{}.txt'.format (sigtag, 'data' if not do_Asimov else 'Asimov_mu{}'.format(int(mu*100)))
-                #f = open(wslist4configs_fname, "w")
-                #f.write(list2write)
-                #f.close()
-                print(fname)
                 status = getTRExFConfigs(ConfDir = TRExFConfDir, 
                                          WSListFile = fname, 
                                          sigtag = sigtag,
                                          mu = mu, 
                                          fittype = fittype,
-                                         isAsimov= not use_data) ## to be continued
+                                         isAsimov= not use_data)
                 if not status:
                     print(colored("TRExF Configs could not be generated for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
 
         if do_TRExFComp:
-            # tag_flag = ("asimov_mu{}_".format(int(mu*100)) if do_Asimov else "data_") + sigtag + "_" + fittype
+            outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if not use_data \
+                       else combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '')
+            outfname += '_' + fittype
+            comp = getTRExFFitFile(in_log = "{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
+                                                                                          sigtag, 
+                                                                                          datatag), 
+                                   out_fname = FitLogDir + '/' + outfname + ".txt")
+            if not comp:
+                print(colored("Getting TRExF comp file could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
+                time.sleep(5)
+
             tag_flag = sigtag + "_"+ datatag + "_"+ fittype
             compdir = makeTRExFCompDirs(ConfDir = TRExFConfDir, 
                                         LogDir = FitLogDir, 

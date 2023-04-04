@@ -5,7 +5,6 @@ from VLQCrossSectionCalculator import *
 
 
 ALL_ANACODES = ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP', 'SPT_ALLHAD', 'SPT_TYWB', 'SPT_COMBINED']
-#VLQCOMBDIR = os.getenv("VLQCOMBDIR") 
 INPUTDIR=os.getcwd()
 
 def getSigTag(mass, kappa, brw):
@@ -56,7 +55,6 @@ class VLQCombinationConfig:
         
         self.setPaths()
         
-        # self.TRExFConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/trexf/configs/'  # this directory is NOT split across different folders for different channels
         if makePaths:
             self.makePaths()
 
@@ -89,7 +87,6 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.FittedWSDir))
         os.system(mkdir.format(self.LimitDir))
         os.system(mkdir.format(self.LogDir))
-        # os.system(mkdir.format(self.TRExFConfigDir))
 
     def setSubDir(self, pathdict, makePaths=False):
         for pathname, path in pathdict.items():
@@ -138,9 +135,6 @@ class VLQCombinationConfig:
         if not os.path.exists(self.LogDir):
             print(colored("Log directory {} not found!".format(self.LogDir), color = "black", on_color="on_red"))
             return False
-        # if not os.path.exists(self.TRExFConfigDir):
-        #     print(colored("Limits directory {} not found!".format(self.TRExFConfigDir), color = "black", on_color="on_red"))
-        #     return False
         
         return True
 
@@ -239,7 +233,6 @@ class VLQCombinationConfig:
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
         datatag = "data" if 'asimov' not in DataName else "asimov_mu{}".format(int(mu*100))
-        #cmd = '''{0}/WorkspaceChecks/bin/workspace.exe \ self.VLQCombDir, 
         cmd = '''workspace \
         file_path={0} \
         data_name="{1}" \
@@ -321,7 +314,6 @@ class VLQCombinationConfig:
         
  
     def fitWS(self, mass, kappa, brw, mu=0,  fittype='BONLY', isAsimov=True, LogFile="log.txt"):
-        # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
         datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
         InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
@@ -350,7 +342,6 @@ class VLQCombinationConfig:
 
 
     def getLimits(self, mass, kappa, brw, mu=0, isAsimov=True, LogFile="log.txt"):
-        # os.system("cp templates/asimovUtil.dtd {}".format(self.AsimovConfigDir))
         DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
         datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
         InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
@@ -371,7 +362,6 @@ def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, fittype="BONLY", isAsimov
         return False
     DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else "obsData" 
     datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
-    #cmd = '''{}/WorkspaceChecks/bin/workspace.exe \ VLQCOMBDIR, 
     cmd = '''workspace \
 file_path={} \
 output_trexf_folder={} \
@@ -383,7 +373,6 @@ fittype={}
            sigtag + "_" + datatag + "_" + fittype,
            DSName,
            fittype)
-    # print(cmd)
     code = os.system(cmd)
     return True if code == 0 else False
 
@@ -421,8 +410,3 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
         if code != 0:
             return False
     return True
-
-
-                         
-        
-                
