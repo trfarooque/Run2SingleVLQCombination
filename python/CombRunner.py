@@ -207,6 +207,9 @@ fittype = {}
     fittype
 ))
 
+    if DataLoc.startswith('/'):
+        INPUTDIR = ''
+
     TRExFConfDir = INPUTDIR + '/' + DataLoc + '/trexf/'
     if not os.path.exists(TRExFConfDir):
         os.system("mkdir -p " + TRExFConfDir)
