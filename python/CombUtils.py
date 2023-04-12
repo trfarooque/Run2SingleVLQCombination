@@ -5,7 +5,7 @@ from VLQCrossSectionCalculator import *
 
 
 ALL_ANACODES = ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP', 'SPT_ALLHAD', 'SPT_TYWB', 'SPT_COMBINED']
-INPUTDIR=os.getcwd()
+#INPUTDIR=os.getcwd()
 
 def getSigTag(mass, kappa, brw):
     return "M{:02d}K{:03d}BRW{:02d}".format(int(mass/100), int(kappa*100), int(brw*100))
@@ -31,14 +31,14 @@ def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
 
 
 class VLQCombinationConfig:
-    def __init__(self, AnaCode, DataFolder = 'data', WSName = 'combined', VLQCombDir = INPUTDIR, makePaths = False, checkPaths = False):
+    def __init__(self, AnaCode, DataFolder = 'data', WSName = 'combined', InputDir = os.getcwd(), makePaths = False, checkPaths = False):
         if AnaCode not in ALL_ANACODES:
             raise Exception("Unknown Analysis Code!")
         else:
             self.AnaCode = AnaCode
         self.isCombined = True if self.AnaCode == 'SPT_COMBINED' else False
 
-        self.VLQCombDir = VLQCombDir
+        self.InputDir = InputDir
         self.DataFolder = DataFolder
         self.WSName = WSName
         
@@ -63,16 +63,30 @@ class VLQCombinationConfig:
                 raise Exception()
 
     def setPaths(self):
-        self.InWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.InWSSubDir + '/' +  self.AnaCode + '/'
-        self.ScaledWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.ScaledWSSubDir + '/' + self.AnaCode + '/'
-        self.ScalingConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.ScalingConfigSubDir  + '/' + self.AnaCode + '/'
-        self.AsimovWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.AsimovWSSubDir + '/' + self.AnaCode + '/'
-        self.AsimovConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.AsimovConfigSubDir  + '/' + self.AnaCode + '/'
-        self.CombinedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.CombinedWSSubDir + '/' + self.AnaCode + '/'
-        self.CombinationConfigDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.CombinationConfigSubDir  + '/' + self.AnaCode + '/'
-        self.FittedWSDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.FittedWSSubDir + '/' + self.AnaCode + '/'
-        self.LimitDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.LimitSubDir  + '/' + self.AnaCode + '/'
-        self.LogDir = self.VLQCombDir + '/' + self.DataFolder + '/' + self.LogSubDir  + '/' + self.AnaCode + '/'
+        self.InWSDir = self.InputDir + self.DataFolder + '/' + self.InWSSubDir + '/' +  self.AnaCode + '/'
+        self.ScaledWSDir = self.InputDir + self.DataFolder + '/' + self.ScaledWSSubDir + '/' + self.AnaCode + '/'
+        self.ScalingConfigDir = self.InputDir + self.DataFolder + '/' + self.ScalingConfigSubDir  + '/' + self.AnaCode + '/'
+        self.AsimovWSDir = self.InputDir + self.DataFolder + '/' + self.AsimovWSSubDir + '/' + self.AnaCode + '/'
+        self.AsimovConfigDir = self.InputDir + self.DataFolder + '/' + self.AsimovConfigSubDir  + '/' + self.AnaCode + '/'
+        self.CombinedWSDir = self.InputDir + self.DataFolder + '/' + self.CombinedWSSubDir + '/' + self.AnaCode + '/'
+        self.CombinationConfigDir = self.InputDir + self.DataFolder + '/' + self.CombinationConfigSubDir  + '/' + self.AnaCode + '/'
+        self.FittedWSDir = self.InputDir + self.DataFolder + '/' + self.FittedWSSubDir + '/' + self.AnaCode + '/'
+        self.LimitDir = self.InputDir + self.DataFolder + '/' + self.LimitSubDir  + '/' + self.AnaCode + '/'
+        self.LogDir = self.InputDir + self.DataFolder + '/' + self.LogSubDir  + '/' + self.AnaCode + '/'
+
+        print('InWSDir : '+self.InWSDir)
+        print('ScaledWSDir : '+self.ScaledWSDir)
+        print('ScalingConfigDir : '+self.ScalingConfigDir)
+
+        print('AsimovWSDir : '+self.AsimovWSDir)
+        print('AsimovConfigDir : '+self.AsimovConfigDir)
+        print('CombinedWSDir : '+self.CombinedWSDir)
+        print('CombinationConfigDir : '+self.CombinationConfigDir)
+
+        print('FittedWSDir : '+self.FittedWSDir)
+        print('LimitDir : '+self.LimitDir)
+        print('LogDir : '+self.LogDir)
+
 
     def makePaths(self):
         mkdir = "mkdir -p {}"

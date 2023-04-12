@@ -204,18 +204,25 @@ fittype = {}
     fittype
 ))
 
+    print ('DataLoc = '+DataLoc) 
     if DataLoc.startswith('/'):
         INPUTDIR = ''
-
-    TRExFConfDir = INPUTDIR + '/' + DataLoc + '/trexf/'
+        print('Absolute path')
+    else:
+        INPUTDIR = os.getcwd()+'/'
+    print ('INPUTDIR = '+INPUTDIR) 
+    TRExFConfDir = INPUTDIR + DataLoc + '/trexf/'
+    print( 'TRExFConfDir = '+TRExFConfDir)
     if not os.path.exists(TRExFConfDir):
         os.system("mkdir -p " + TRExFConfDir)
     
-    FitLogDir = INPUTDIR + '/' + DataLoc + '/fit_logs/'
+    FitLogDir = INPUTDIR + DataLoc + '/fit_logs/'
+    print( 'FitLogDir = '+FitLogDir)
     if not os.path.exists(FitLogDir):
         os.system("mkdir -p " + FitLogDir)
     
-    WSListDir = INPUTDIR + '/' + DataLoc + '/ws_lists/'
+    WSListDir = INPUTDIR + DataLoc + '/ws_lists/'
+    print( 'WSListDir = '+WSListDir)
     if not os.path.exists(WSListDir):
         os.system("mkdir -p " + WSListDir)
 
@@ -226,6 +233,7 @@ fittype = {}
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc,
                                               WSName = 'combWS' if ana == 'SPT_OSML' else 'combined',
+                                              InputDir = INPUTDIR,
                                               makePaths = False,
                                               checkPaths = False)
         ALL_CFGs[ana].setSubDir(pathdict, makePaths = True)
@@ -234,6 +242,7 @@ fittype = {}
     combination_cfg = VLQCombinationConfig(AnaCode = 'SPT_COMBINED',
                                            DataFolder = DataLoc,                                                      
                                            WSName = 'combWS',
+                                           InputDir = INPUTDIR,
                                            makePaths = True,
                                            checkPaths = False)
     combination_cfg.setSubDir(pathdict, makePaths = True)
