@@ -7,6 +7,7 @@ from VLQCouplingCalculator import VLQCouplingCalculator as vlq
 from VLQCrossSectionCalculator import *
 from termcolor import colored
 from CombUtils import *
+from RankingPlotter import *
 from itertools import *
 import time
 from optparse import OptionParser
@@ -58,6 +59,10 @@ if __name__ == "__main__":
                       dest="logsubdir",
                       help='location of log sub-directories',
                       default='logs')
+    parser.add_option("--ranking-subdir", 
+                      dest="rankingsubdir",
+                      help='location of ranking fit output sub-directories',
+                      default='ranking')
     parser.add_option("--masses", 
                       dest="masses",
                       help='Provide a comma separated list of masses with GeV units (e.g. 1200,1600)',
@@ -75,6 +80,10 @@ if __name__ == "__main__":
                       dest="fittype",
                       help='Provide the fit type: BONLY or SPLUSB',
                       default='BONLY')
+    parser.add_option("--ranking-nmerge", 
+                      dest="ranking_nmerge",
+                      help='Number of jobs to merge together when running ranking fits ',
+                      default='10')
     parser.add_option("--use-data", 
                       dest="usedata",
                       help='set if real data is to be used, otherwise asimov will be used',
@@ -115,6 +124,20 @@ if __name__ == "__main__":
                       help='set if combined limits not required',
                       action='store_false',
                       default=True)
+    parser.add_option("--do-separate-ranking-fits", 
+                      dest="doseparaterankingfits",
+                      help='set if you want to run ranking plot fits for individual workspaces',
+                      action='store_true',
+                      default=False)
+    parser.add_option("--do-combined-ranking-fits", 
+                      dest="docombinedrankingfits",
+                      help='set if you want to run ranking plot fits for combined workspaces',
+                      action='store_true',
+                      default=False)
+    parser.add_option("--ranking-includeGammas", 
+                      dest="ranking_includeGammas",
+                      help='Include gamma parameters in ranking fits',
+                      default=False)
     parser.add_option("--skip-trexf-configs", 
                       dest="dotrexfcfgs",
                       help='set if TRExFitter Configs are not required',
@@ -125,6 +148,16 @@ if __name__ == "__main__":
                       help='set if TRExFitter Comps are not required',
                       action='store_false',
                       default=True)
+    parser.add_option("--do-separate-ranking-plots", 
+                      dest="doseparaterankingplots",
+                      help='set if you want to make ranking plots for individual workspaces. NOTE: Ranking fits must have already been run',
+                      action='store_true',
+                      default=False)
+    parser.add_option("--do-combined-ranking-plots", 
+                      dest="docombinedrankingplots",
+                      help='set if you want to make ranking plots for combined workspaces. NOTE: Ranking fits must have already been run',
+                      action='store_true',
+                      default=False)
 
 
     (options, args) = parser.parse_args()
@@ -136,9 +169,14 @@ if __name__ == "__main__":
     do_Combined_Fitting = bool(options.docombfit)
     do_Separate_Limits =  bool(options.doseplims)
     do_Combined_Limits =  bool(options.docomblims)
+    do_Separate_Ranking_Fits = bool(options.doseparaterankingfits)
+    do_Combined_Ranking_Fits = bool(options.docombinedrankingfits)
     do_TRExFComp =  bool(options.dotrexfcomp) 
     do_TRExFConfigs = True if do_TRExFComp else bool(options.dotrexfcfgs) # This flag is overwritten when comparison plots are required
-    use_data = False if do_Asimov else bool(options.usedata) # This flag is ovrwritten when asimov workspaces are required
+    do_Separate_Ranking_Plots = bool(options.doseparaterankingplots)
+    do_Combined_Ranking_Plots = bool(options.docombinedrankingplots)
+    use_data = False if do_Asimov else bool(options.usedata) # This flag is overwritten when asimov workspaces are required
+    ranking_includeGammas = bool(options.ranking_includeGammas)
 
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
@@ -151,14 +189,15 @@ if __name__ == "__main__":
                 'CombinationConfigSubDir' :str(options.combconfigsubdir),
                 'FittedWSSubDir' : str(options.fittedwssubdir),
                 'LimitSubDir' : str(options.limitsubdir),
-                'LogSubDir' : str(options.logsubdir)
+                'LogSubDir' : str(options.logsubdir),
+                'RankingSubDir' : str(options.rankingsubdir)
                 }
 
     mu = float(options.mu)
     masses = list(map(float, str(options.masses).split(',')))
     kappas = list(map(float, str(options.kappas).split(',')))
     BRWs = list(map(float, str(options.brws).split(',')))
-
+    ranking_nmerge = int(options.ranking_nmerge)
     InDataName = 'asimovData' if not use_data else "obsData"
     datatag = 'data' if use_data else 'asimov_mu{}'.format(int(mu*100))
 
@@ -177,15 +216,21 @@ do_Separate_Fitting = {}
 do_Combined_Fitting = {}
 do_Separate_Limits = {}
 do_Combined_Limits = {}
-do_TRExFConfigs = {}
+do_Separate_Ranking_Fits = {}
+do_Combined_Ranking_Fits = {}
 do_TRExFComp = {}
+do_TRExFConfigs = {}
+do_Separate_Ranking_Plots = {}
+do_Combined_Ranking_Plots = {}
+use_data = {}
 DataLoc = {}
+fittype = {}
 mu = {}
 masses = {}
 kappas = {}
 BRWs = {}
-fittype = {}
-'''.format(
+'''
+.format(
     not use_data,
     do_Scaling,
     do_Asimov,
@@ -194,15 +239,19 @@ fittype = {}
     do_Combined_Fitting,
     do_Separate_Limits,
     do_Combined_Limits,
-    do_TRExFConfigs,
+    do_Separate_Ranking_Fits,
+    do_Combined_Ranking_Fits,
     do_TRExFComp,
+    do_TRExFConfigs,
+    do_Separate_Ranking_Plots,
+    do_Combined_Ranking_Plots,
+    use_data,
     DataLoc,
+    fittype,
     mu,
     masses,
     kappas,
-    BRWs,
-    fittype
-))
+    BRWs))
 
     print ('DataLoc = '+DataLoc) 
     if DataLoc.startswith('/'):
@@ -220,15 +269,19 @@ fittype = {}
     print( 'FitLogDir = '+FitLogDir)
     if not os.path.exists(FitLogDir):
         os.system("mkdir -p " + FitLogDir)
-    
+
     WSListDir = INPUTDIR + DataLoc + '/ws_lists/'
     print( 'WSListDir = '+WSListDir)
     if not os.path.exists(WSListDir):
         os.system("mkdir -p " + WSListDir)
 
+    for key,value in pathdict.items():
+        print(key + ' : ' + value)    
+
     ALL_CFGs = {}
 
-    for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
+    for ana in ['SPT_MONOTOP']:
+    #for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
         print("Creating CombinationConfig for {}".format(ana))
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc,
@@ -312,7 +365,7 @@ fittype = {}
                                 mu = mu, 
                                 fittype = fittype, 
                                 isAsimov = not use_data,
-                                LogFile="{}/logFitting_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag, datatag)) 
+                                LogFile="{}/logFitting_{}_{}_{}_{}.txt".format(cfg.LogDir, ana, sigtag, datatag,fittype)) 
                 if not fit:
                     print(colored("Fitting WS could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
@@ -324,15 +377,29 @@ fittype = {}
                 outfname = cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if not use_data \
                            else cfg.getScaledWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '')
                 outfname += '_' + fittype
-                comp = getTRExFFitFile(in_log = "{}/logFitting_{}_{}_{}.txt".format(cfg.LogDir, 
-                                                                                    ana, 
-                                                                                    sigtag, 
-                                                                                    datatag), 
-                                       out_fname = FitLogDir + '/' + outfname + ".txt")
+                #comp = getTRExFFitFile(in_fname = "{}/logFitting_{}_{}_{}.txt".format(cfg.LogDir, 
+                #                                                                    ana, 
+                #                                                                    sigtag, 
+                #                                                                    datatag), 
+                #                       out_fname = FitLogDir + '/' + outfname + ".txt")
+
+                comp = getTRExFFitFile( in_fname = cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
+                                        out_fname = FitLogDir + '/' + outfname + ".txt", fromLog = False)
                 if not comp:
                     print(colored("Getting TRExF comp file could not be done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
-                
+
+                code = plotCorrelationMatrix(wsFile = cfg.getAsimovWSPath(mass, kappa, brw, mu) if not use_data \
+                                             else cfg.getScaledWSPath(mass, kappa, brw, datatag), 
+                                             fitResultFile = 
+                                             cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
+                                             outputPath = FitLogDir, 
+                                             wsName = cfg.WSName, 
+                                             plotName = "Correlations_"+outfname)
+
+                if not code:
+                    print(colored("Correlation matrix could not be plotted for {} for {}!".format(ana, sigtag), color = "black", on_color="on_red"))
+                    time.sleep(5)
 
             if do_Separate_Limits:
                 limit = cfg.getLimits(mass, 
@@ -421,9 +488,9 @@ fittype = {}
                                         mu, 
                                         fittype = fittype, 
                                         isAsimov = not use_data, 
-                                        LogFile="{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
-                                                                                              sigtag, 
-                                                                                              datatag))
+                                        LogFile="{}/logFitting_SPT_COMBINED_{}_{}_{}.txt".format(combination_cfg.LogDir, 
+                                                                                                 sigtag, 
+                                                                                                 datatag,fittype))
             if not fit:
                 print(colored("Fitting WS could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
@@ -475,15 +542,31 @@ fittype = {}
                     time.sleep(5)
 
         if do_TRExFComp:
-            outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') if not use_data \
+            outfname = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '') \
+                       if not use_data \
                        else combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '')
             outfname += '_' + fittype
-            comp = getTRExFFitFile(in_log = "{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
-                                                                                          sigtag, 
-                                                                                          datatag), 
-                                   out_fname = FitLogDir + '/' + outfname + ".txt")
+            comp = getTRExFFitFile(in_fname = combination_cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
+                                   out_fname = FitLogDir + '/' + outfname + ".txt", fromLog = False)
+
+            #comp = getTRExFFitFile(in_fname = "{}/logFitting_SPT_COMBINED_{}_{}.txt".format(combination_cfg.LogDir, 
+            #                                                                              sigtag, 
+            #                                                                              datatag), 
+            #                       out_fname = FitLogDir + '/' + outfname + ".txt")
             if not comp:
                 print(colored("Getting TRExF comp file could not be done for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
+                time.sleep(5)
+
+            code = plotCorrelationMatrix(wsFile = combination_cfg.getAsimovWSPath(mass, kappa, brw, mu) \
+                                         if not use_data \
+                                         else combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag),
+                                         fitResultFile = 
+                                         combination_cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
+                                         outputPath = FitLogDir, 
+                                         wsName = combination_cfg.WSName, 
+                                         plotName = "Correlations_"+outfname)
+            if not code:
+                print(colored("Correlation matrix could not be plotted for SPT_COMBINED for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
 
             tag_flag = sigtag + "_"+ datatag + "_"+ fittype
@@ -501,4 +584,34 @@ fittype = {}
                 if not code == 0:
                     print(colored("TRExFitter multi-fit failed for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
+
+        if( do_Separate_Ranking_Fits or do_Separate_Ranking_Plots ):
+            #get the paths from combutils
+            ranking_path = cfg.getRankingPath(mass, kappa, brw, mu=mu, isAsimov=not use_data)
+
+            dsName = "obsData" if use_data else "asimovData_mu{}".format(int(mu*100))
+            wsPath = cfg.getScaledWSPath(mass, kappa, brw, datatag) if use_data \
+                     else cfg.getAsimovWSPath(mass, kappa, brw, mu)
+            
+            outfname = cfg.getScaledWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '') if use_data \
+                       else cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '')
+            outfname += '_' + fittype
+            fitFileName = FitLogDir + '/' + outfname + ".txt"
+            
+            #define the ranking plotter
+            ranking_plotter = RankingPlotter(wsPath, cfg.WSName, dsName, fitFileName, \
+                                             ranking_path, ranking_nmerge, ranking_includeGammas)
+            if(do_Separate_Ranking_Fits):
+                ranking_plotter.ReadFitResultTextFile()
+                print("Launching ranking fits")
+                ranking_plotter.LaunchRankingFits(True)
+                print("Launched ranking fits")
+            if(do_Separate_Ranking_Plots):
+                ranking_plotter.ReadFitResultTextFile()
+                ranking_plotter.WriteTRexFRankingFile()
+            
+            
+        if do_Combined_Ranking_Fits:
+
+            print('TO BE COMPLETED')
 

@@ -33,7 +33,7 @@ std::string ReplaceString(const std::string& inputStr, const std::string& orig, 
 
 }
 
-const double minCorr=0.20;
+const double minCorr=0.199;
 
 int num_NF=0;
 int num_NP=0;
@@ -78,8 +78,8 @@ void makeParamList(const bool useGammas=false){
 
   for (auto variable : varList){
     std::string varName = variable->GetName();
-
-    if( (varName.find("mu_") != std::string::npos) && (varName.find("mu_signal") == std::string::npos) ){
+    if(varName.find("_In") == varName.size()-3) continue; //ignore these arguments in combined WS
+    if( (varName.find("BKGNF_") != std::string::npos) || (varName.find("mu_signal") != std::string::npos) ){
       NFList.push_back(varName);
       FullParamList.push_back(varName);
       num_NF++;
@@ -105,7 +105,6 @@ void makeParamList(const bool useGammas=false){
 
 void makeReducedParamList(double _minCorr){
 
-  //fitResult
   //Loop over the parameters and find their correlations with every other parameter
   //If any of the correlations exceed the minimum threshold, retain this parameter in the reduced list
 
@@ -119,7 +118,8 @@ void makeReducedParamList(double _minCorr){
 
       const std::string& jname = FullParamList.at(j);
       const double corr = fitResult->correlation(iname.c_str(), jname.c_str());
-      if(corr > _minCorr){
+
+      if(fabs(corr) > _minCorr){
 	ReducedParamList.push_back(iname);
 	num_RedParam++;
 	break;
@@ -168,6 +168,7 @@ void makeCorrMatrix(const std::string& plotName){
   canvas->SetGrid();
   canvas->cd();
   CorrelationMatrix->Draw("coltext");
+  std::cout << "Writing to file : " << plotName+".png" << std::endl;
   canvas->SaveAs((plotName+".png").c_str());
 
   return;
@@ -178,28 +179,74 @@ void makeCorrMatrix(const std::string& plotName){
 void printUsage(){
 
   std::cout << "Usage: " << std::endl;
-  std::cout << " makeCorrMatrix <workspace file name> <fit file name> <workspace name>(optional) <fit result name (optional)>"
+  std::cout << " makeCorrMatrix --wsFile=<path to workspace file> --fitResultFile=<path to fit result> \
+--outputPath=<output directory path> --plotName=<name of output plot>(optional) \
+--wsName=<workspace name>(optional) <fit result name (optional)>"
 	    << std::endl;
   std::cout << " default arguments:" << std::endl;
-  std::cout << " workspace name: combined" << std::endl;
-  std::cout << " fit result name: fitResult" << std::endl;
+  std::cout << " wsName: combined" << std::endl;
+  std::cout << " fitResultName: fitResult" << std::endl;
+  std::cout << " plotName: CorrelationMatrix" << std::endl;
    
   return;
 }
 
-
 int main(int argc, char** argv){
 
-  if(argc < 3){
-    std::cerr << "ERROR: makeCorrMatrix needs at least 2 arguments" << std::endl;
+  if(argc > 0)
+  if(argc < 4){
+    std::cerr << "ERROR: Insufficient number of arguments to makeCorrMatrix" << std::endl;
     printUsage();
+    abort();
   } 
-  std::string wsFileName = argv[1];
-  std::string fitFileName = argv[2];
-  std::string wsName = (argc > 3) ? argv[3] : "combined";
-  std::string fitName = (argc > 4) ? argv[4] : "fitResult";
 
-  Init(wsFileName, fitFileName, wsName, fitName); 
+  std::string wsFileName = "";
+  std::string fitResultFileName = "";
+  std::string outputPath = "";
+  std::string plotName = "CorrelationMatrix";
+  std::string wsName = "combined";
+  std::string fitResultName = "fitResult";
+
+  //====================================
+  for(int i = 1; i<argc; i++){
+
+    std::string opt(argv[i]);
+    std::string argument,value;
+    size_t pos = opt.find("=");
+    if(pos == std::string::npos){//the sign = is not found, skip the argument with a warning message                              
+      std::cout << "<!> Argument has no '=' sign, skipping : " << opt << std::endl;
+      continue;
+    }
+    argument = opt.substr(0, pos);
+    std::transform(argument.begin(), argument.end(), argument.begin(), toupper);//convert to upper case                           
+    value=opt.erase(0, pos + 1);
+
+    if(argument=="--WSFILE"){ wsFileName = value; }
+    else if(argument=="--FITRESULTFILE"){ fitResultFileName = value; }
+    else if(argument=="--WSNAME"){ wsName = value; }
+    else if(argument=="--FITRESULTNAME"){ fitResultName = value; }
+    else if(argument=="--OUTPUTPATH"){ outputPath = value; }
+    else if(argument=="--PLOTNAME"){ plotName = value; }
+    else{ std::cerr << "Unknown argument : " << argument << "... Skipping." << std::endl; }
+  }
+
+  if(wsFileName == ""){
+    std::cerr << "Missing argument --wsFile" << std::endl;
+    abort();
+  }
+  if(fitResultFileName == ""){
+    std::cerr << "Missing argument --fitResultFile" << std::endl;
+    abort();
+  }
+  if(outputPath == ""){
+    std::cerr << "Missing argument --outputPath" << std::endl;
+    abort();
+  }
+  
+
+  //====================================
+
+  Init(wsFileName, fitResultFileName, wsName, fitResultName); 
 
   gStyle->SetOptStat(0);
   gStyle->SetPalette(87);
@@ -207,16 +254,18 @@ int main(int argc, char** argv){
   gStyle->SetTextFont(42);
 
   makeParamList(/*useGammas*/ false);
-  makeReducedParamList(/*_minCorr*/ minCorr);
 
   std::cout << " num_NF : " << num_NF << std::endl;
   std::cout << " num_NP : " << num_NP << std::endl;
   std::cout << " num_Gamma : " << num_Gamma << std::endl;
 
+  makeReducedParamList(/*_minCorr*/ minCorr);
+
   std::cout << " num_Param : " << num_Param << std::endl;
   std::cout << " num_RedParam : " << num_RedParam << std::endl;
 
-  makeCorrMatrix("correlation_matrix_OSML");
+  std::cout << "Making correlation matrix plot: " << outputPath+"/"+plotName << std::endl;
+  makeCorrMatrix(outputPath+"/"+plotName);
 
   return 0;
 

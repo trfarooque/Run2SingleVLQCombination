@@ -2,7 +2,8 @@ import sys, os
 from termcolor import colored
 from VLQCouplingCalculator import VLQCouplingCalculator as vlq
 from VLQCrossSectionCalculator import *
-
+import ROOT
+#from ROOT import *
 
 ALL_ANACODES = ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP', 'SPT_ALLHAD', 'SPT_TYWB', 'SPT_COMBINED']
 #INPUTDIR=os.getcwd()
@@ -52,6 +53,7 @@ class VLQCombinationConfig:
         self.FittedWSSubDir = 'workspaces/fitted_workspaces'
         self.LimitSubDir = 'limits'
         self.LogSubDir = 'logs'
+        self.RankingSubDir = 'ranking'
         
         self.setPaths()
         
@@ -73,7 +75,8 @@ class VLQCombinationConfig:
         self.FittedWSDir = self.InputDir + self.DataFolder + '/' + self.FittedWSSubDir + '/' + self.AnaCode + '/'
         self.LimitDir = self.InputDir + self.DataFolder + '/' + self.LimitSubDir  + '/' + self.AnaCode + '/'
         self.LogDir = self.InputDir + self.DataFolder + '/' + self.LogSubDir  + '/' + self.AnaCode + '/'
-
+        self.RankingDir = self.InputDir + self.DataFolder + '/' + self.RankingSubDir  + '/' + self.AnaCode + '/'
+        '''
         print('InWSDir : '+self.InWSDir)
         print('ScaledWSDir : '+self.ScaledWSDir)
         print('ScalingConfigDir : '+self.ScalingConfigDir)
@@ -86,7 +89,8 @@ class VLQCombinationConfig:
         print('FittedWSDir : '+self.FittedWSDir)
         print('LimitDir : '+self.LimitDir)
         print('LogDir : '+self.LogDir)
-
+        print('RankingDir : '+self.RankingDir)
+        '''
 
     def makePaths(self):
         mkdir = "mkdir -p {}"
@@ -101,6 +105,7 @@ class VLQCombinationConfig:
         os.system(mkdir.format(self.FittedWSDir))
         os.system(mkdir.format(self.LimitDir))
         os.system(mkdir.format(self.LogDir))
+        os.system(mkdir.format(self.RankingDir))
 
     def setSubDir(self, pathdict, makePaths=False):
         for pathname, path in pathdict.items():
@@ -148,6 +153,9 @@ class VLQCombinationConfig:
             return False
         if not os.path.exists(self.LogDir):
             print(colored("Log directory {} not found!".format(self.LogDir), color = "black", on_color="on_red"))
+            return False
+        if not os.path.exists(self.RankingDir):
+            print(colored("Ranking fit directory {} not found!".format(self.RankingDir), color = "black", on_color="on_red"))
             return False
         
         return True
@@ -371,6 +379,20 @@ class VLQCombinationConfig:
         code = os.system(cmd)
         return True if code == 0 else False
 
+    def getRankingPath(self, mass, kappa, brw, mu=0, isAsimov=True):
+
+        DSName = "asimovData_mu{}".format(int(mu*100)) if isAsimov else ("obsData" if not self.isCombined else "combData")
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
+        InWSPath = self.getAsimovWSPath(mass, kappa, brw, mu) if isAsimov \
+                   else (self.getCombinedWSPath(mass, kappa, brw, datatag) if self.isCombined \
+                         else self.getScaledWSPath(mass, kappa, brw, datatag))
+    
+        sigtag = getSigTag(mass, kappa, brw)
+        mktag = getMKTag(mass, kappa)
+        datatag = "data" if not isAsimov else "asimov_mu{}".format(int(mu*100))
+        return "{}/{}_{}_{}/".format(self.RankingDir, self.AnaCode, sigtag, datatag)
+
+
 def getTRExFConfigs(ConfDir, WSListFile, sigtag, mu=0, fittype="BONLY", isAsimov= True):
     if not os.path.exists(WSListFile):
         return False
@@ -390,13 +412,58 @@ fittype={}
     code = os.system(cmd)
     return True if code == 0 else False
 
-def getTRExFFitFile(in_log, out_fname):
-    if not os.path.exists(in_log):
+def getTRExFFitFile(in_fname, out_fname, fromLog=True):
+
+    print("in:"+in_fname)
+    print("out:"+out_fname)
+    if not os.path.exists(in_fname):
         return False
     if not os.path.exists('/'.join(out_fname.split('/')[:-1])):
         return False
+
+    return (getTRExFFitFileFromLog(in_fname, out_fname) if fromLog else getTRExFFitFileFromRoot(in_fname, out_fname))
+
+def getTRExFFitFileFromRoot(in_fname, out_fname):
+
+    #extract the list of nuisance parameters and signal strength; also extract correlation matrix
+    #safer than parsing log file, because we can reliably get the final values of 
+    infile = ROOT.TFile(in_fname)
+    fitResult = infile.Get("fitResult")
+    if not(fitResult):
+        return False
+
+    outfile = open(out_fname, 'w')
+    outfile.write('NUISANCE_PARAMETERS\n')
+    for par in fitResult.floatParsFinal():
+        line = "{}  {:g} {:+.6f} {:+.6f}\n"\
+            .format(par.GetName().replace('alpha_',''),par.getValV(),par.getErrorHi(),par.getErrorLo())
+        outfile.write(line)
+
+    outfile.write('\n\nCORRELATION_MATRIX \n')
+    corrMatrix = fitResult.correlationHist()
+    outfile.write("{:d}   {:d}\n".format(corrMatrix.GetNbinsX(),corrMatrix.GetNbinsY()))
+    for i in range(1,corrMatrix.GetNbinsX()+1):
+        for j in range(1,corrMatrix.GetNbinsY()+1):
+            outfile.write("{:g}   ".format(corrMatrix.GetBinContent(i,j)))
+    outfile.write('\n')
+
+    outfile.write('\n\nNLL \n')
+    outfile.write("{:.6f}".format(fitResult.minNll()))
+
+    #code = os.system(cmd)
+    return True #if code == 0 else False
+
+
+def getTRExFFitFileFromLog(in_log, out_fname):
+
     cmd = "perl {}/utils/make_TRExNPfile.perl {} {}".format(os.getenv("VLQCOMBDIR"), in_log, out_fname)
     code = os.system(cmd)
+    return True if code == 0 else False
+
+def plotCorrelationMatrix(wsFile, fitResultFile, outputPath, wsName, plotName):
+
+    code = os.system("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}"
+                     .format(wsFile,fitResultFile,outputPath,wsName, plotName))
     return True if code == 0 else False
 
 def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=True):
@@ -411,7 +478,8 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
         f = open(fname)
         for line in f:
             if "Job: " in line:
-                dirname = line.strip().split(':')[1].strip() # name of the directory should be the same as the workspace
+                # name of the directory should be the same as the workspace+"_"+fittype
+                dirname = line.strip().split(':')[1].strip()
                 os.system("mkdir -p {}/{}/Fits/".format(ConfDir, dirname)) # the directory is in the same place as the config 
                 trex_dirs.append(dirname)
                 break
@@ -423,4 +491,7 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
         code = os.system("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir)) # copy the already created fit file from LogDir to the  TRExF's Fits/ dir
         if code != 0:
             return False
+
     return True
+
+

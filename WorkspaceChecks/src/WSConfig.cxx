@@ -90,6 +90,7 @@ void WSConfig::dump_files(){
     o_master_trexf_file << "ComparePulls: TRUE" << std::endl;
     o_master_trexf_file << "CompareLimits: FALSE" << std::endl;
     o_master_trexf_file << "POIName: \"mu_signal\"" << std::endl;
+    o_master_trexf_file << "PlotCombCorrMatrix: TRUE" << std::endl;
     o_master_trexf_file << "DebugLevel: 2" << std::endl;
     o_master_trexf_file << "NPCategories: Jets,Electrons,Muons,b_tagging,SPT_ALLHAD_BKGNP,SPT_OSML_BKGNP,SPT_HTZT_BKGNP,SPT_TYWB_BKGNP,SPT_MONOTOP_BKGNP,Bkgd_norm,Others"<<std::endl;
     o_master_trexf_file << std::endl;

@@ -9,6 +9,8 @@ LIBS    = $(shell root-config --libs) -lHistFactory -lRooStats -lRooFit -lRooFit
 #BINS = workspace makeCorrMatrix
 #OBJS =
 
+all: workspace makeCorrMatrix
+
 workspace: $(APPDIR)/workspace.cxx $(SDIR)/*.cxx
 	@echo "Building $@ ... "
 	mkdir -p $(BINDIR)
@@ -21,7 +23,6 @@ makeCorrMatrix: $(UTILDIR)/makeCorrMatrix.cxx
 	$(CXX) $(CCFLAGS) $< $(INCLUDE) $(LIBS) -o $(BINDIR)/$@
 	@echo "Done"
 
-all: workspace makeCorrMatrix
 
 clean:
 	rm -f bin/*
