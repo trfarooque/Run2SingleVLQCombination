@@ -109,7 +109,11 @@ class RankingPlotter:
     #### Main code that loops over NP list and makes/launches ranking fit scripts ####
     def LaunchRankingFits(self, do_run=False):
 
-        tarballPath = os.getenv('VLQCOMBDIR')
+        #Tar the code directory to send to batch
+        codePath = os.getenv('VLQCOMBDIR')
+        tarballPath = self.outputPath+'/CombCode.tgz'
+        Job.prepareTarBall(codePath, tarballPath)
+
 
         os.makedirs(os.path.dirname(self.outputPath+'/Scripts/'), exist_ok=True)
         os.makedirs(os.path.dirname(self.outputPath+'/Logs/'), exist_ok=True)
@@ -126,7 +130,8 @@ class RankingPlotter:
 
         script_count = 0
         for np_index,np in self.NPlist.items():
-            
+            if script_count > 5:
+                break
             for _up in [True, False]:
                 for _pre in [True, False]:
 

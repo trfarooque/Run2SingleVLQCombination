@@ -10,6 +10,7 @@
 #!/bin/python
 import time
 import os
+from utils import *
 
 def prepareTarBall(pathToPackage,pathToTarball):
     current_folder = os.getcwd()
