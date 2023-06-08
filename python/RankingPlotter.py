@@ -1,13 +1,22 @@
+import utils
 import sys, os
+import socket
+import datetime
+from optparse import OptionParser
+
 import ROOT
+import Job
 from termcolor import colored
 
-#from CombUtils import VLQCombinationConfig
-from optparse import OptionParser
+## Defines some useful variables
+platform = socket.gethostname()
+now = datetime.datetime.now().strftime("%Y_%m_%d_%H%M")
+sleep = 1
 
 class RankingPlotter:
 
-    def __init__(self, wsPath, wsName, dsName, fitFileName, outputPath, nMerge, includeGamma):
+    def __init__(self, wsPath, wsName, dsName, fitFileName, outputPath, nMerge, includeGamma, 
+                 batch='condor', batch_queue='at3_short', dry_run=False, debug=False):
         self.wsPath = wsPath
         self.wsName = wsName
         self.dsName = dsName
@@ -17,6 +26,10 @@ class RankingPlotter:
         self.includeGamma = includeGamma
         self.mu_nominal = {}
         self.NPlist = {}
+        self.batch = batch
+        self.batch_queue = batch_queue
+        self.dry_run = dry_run
+        self.debug = debug
 
 
     #************************ Making fit jobs for ranking plot ***********************    
@@ -52,8 +65,8 @@ class RankingPlotter:
                     self.NPlist[np_index] = nuispar 
                     np_index += 1
 
-    ##### Write scripts to run fits to calculate impact of each NP ####
-    def WriteNPFit(self, nuisParam, prefit, shift_up, scriptName):
+    ##### Return command to run fits to calculate impact of each NP ####
+    def WriteNPFit(self, nuisParam, prefit, shift_up): #, scriptName):
 
         npval = 0
         config = 'pre' if(prefit) else 'post'
@@ -74,50 +87,76 @@ class RankingPlotter:
 
         outBaseName = 'NPRanking_'+nuisParam['name']+'_'+config
 
-        resultPath = self.outputPath+'/Results/fit_'+outBaseName+'.root'
-        logPath = self.outputPath+'/Logs/log_'+outBaseName+'.txt'
+        resultFile = 'fit_'+outBaseName+'.root'
+        #logPath = self.outputPath+'/Logs/log_'+outBaseName+'.txt'
 
-        cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {} >> {} 2>&1 \n\n'''\
+        ## SKIPPING ALREADY PROCESSED FILES
+        #if(os.path.exists(resultPath)):
+        #    printWarning("=> Already processed: skipping")
+        #    return ""
+
+        #cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {} >> {} 2>&1 \n\n'''\
+        cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {}'''\
             .format(self.wsName,
                     self.wsPath,
                     self.dsName,
-                    resultPath,
-                    fitarg,
-                    logPath)
-        #Make job scripts
-        os.makedirs(os.path.dirname(self.outputPath+'/Scripts/'), exist_ok=True)
-        os.makedirs(os.path.dirname(self.outputPath+'/Logs/'), exist_ok=True)
-        os.makedirs(os.path.dirname(self.outputPath+'/Results/'), exist_ok=True)
-        jobScript = open(self.outputPath+'/Scripts/'+scriptName, 'a')
-        print(self.outputPath+'/Scripts/'+scriptName) 
-        jobScript.write(cmd)
+                    resultFile,
+                    fitarg)
+                    #logPath)
 
-    #### Submit ranking fit scripts to condor ####
-    def submit_condor_job(self, scriptName):
-        print('Launching job : '+scriptName)
+        return cmd
 
     #### Main code that loops over NP list and makes/launches ranking fit scripts ####
     def LaunchRankingFits(self, do_run=False):
 
-        merge_index = 0
+        tarballPath = os.getenv('VLQCOMBDIR')
+
+        os.makedirs(os.path.dirname(self.outputPath+'/Scripts/'), exist_ok=True)
+        os.makedirs(os.path.dirname(self.outputPath+'/Logs/'), exist_ok=True)
+        os.makedirs(os.path.dirname(self.outputPath+'/Results/'), exist_ok=True)
+
+        JOSet = Job.JobSet(platform)
+        JOSet.setBatch(self.batch)
+        JOSet.setQueue(self.batch_queue)
+        JOSet.setScriptDir(self.outputPath+'/Scripts/')
+        JOSet.setLogDir(self.outputPath+'/Logs/')
+        JOSet.setOutDir(self.outputPath+'/Results/')
+        JOSet.setTarBall(tarballPath)#tarball sent to batch (contains all executables)
+        JOSet.setJobRecoveryFile(self.outputPath+'/Scripts/'+"/JobCheck.chk")
+
         script_count = 0
         for np_index,np in self.NPlist.items():
-            if(merge_index < self.nMerge):
-                merge_index += 1
-            else:
-                merge_index = 0
-                script_count += 1
+            
+            for _up in [True, False]:
+                for _pre in [True, False]:
 
-            np_jobScriptName = ('script_ranking_{}.sh').format(script_count)
-            self.WriteNPFit(np, prefit=True, shift_up=True, scriptName=np_jobScriptName)
-            self.WriteNPFit(np, prefit=True, shift_up=False, scriptName=np_jobScriptName)
-            self.WriteNPFit(np, prefit=False, shift_up=True, scriptName=np_jobScriptName)
-            self.WriteNPFit(np, prefit=False, shift_up=False, scriptName=np_jobScriptName)
+                    jOName = np['name']
+                    jOName += 'pre' if(_pre) else 'post'
+                    jOName += 'UP' if(_up) else 'DOWN'
 
-            if(do_run and (merge_index==self.nMerge)):
-                self.submit_condor_job(np_jobScriptName)
+                    ## Declare the Job object (one job = one code running once)
+                    jO = Job.Job(platform)
+                    ## Name of the executable to run
+                    str_exec = self.WriteNPFit(np, prefit=_pre, shift_up=_up)
+                    if(not str_exec):
+                        continue
+                    jO.setExecutable(str_exec)
+                    jO.setDebug(self.debug)
+                    jO.setName(jOName)
 
+                    JOSet.addJob(jO)        
+                    #Write a script and submit it if there are nMerge jobs in the set, or there are residual jobs remaining
+                    if ( (JOSet.size()==self.nMerge) or ((np_index == len(self.NPlist)) and (JOSet.size()>0) ) ):
+                        JOSet.setScriptName( 'script_ranking_{}.sh'.format(script_count) )
+                        JOSet.writeScript()
+                        if not self.dry_run:
+                            JOSet.submitSet()
+                        JOSet.clear()
+                        script_count += 1
 
+        os.system("sleep {:d}".format(sleep))
+
+        
 
     #************************ Reading results of ranking fits ***********************    
 
@@ -172,7 +211,6 @@ class RankingPlotter:
 
         #open ranking file:
         os.makedirs(os.path.dirname(self.outputPath+'/Fits/'), exist_ok=True)
-        #os.system("mkdir -p " + self.outputPath+'/Fits/')
         outputPath = self.outputPath+'/Fits/NPRanking.txt'
 
         #open the fit files for each fixed NP configuration

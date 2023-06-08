@@ -84,6 +84,14 @@ if __name__ == "__main__":
                       dest="ranking_nmerge",
                       help='Number of jobs to merge together when running ranking fits ',
                       default='10')
+    parser.add_option("--batch-system",
+                      dest="batchsystem",
+                      help='Type of batch system (pbs,condor,...) to which jobs should be sent',
+                      default='longlunch')
+    parser.add_option("--batch-queue",
+                      dest="batchqueue",
+                      help='Name of batch queue/flavour (short,long,...) to which jobs should be sent',
+                      default='longlunch')
     parser.add_option("--use-data", 
                       dest="usedata",
                       help='set if real data is to be used, otherwise asimov will be used',
@@ -158,6 +166,16 @@ if __name__ == "__main__":
                       help='set if you want to make ranking plots for combined workspaces. NOTE: Ranking fits must have already been run',
                       action='store_true',
                       default=False)
+    parser.add_option("--dry-run", 
+                      dest="dryrun",
+                      help='set if you want to write commands to scripts without executing them',
+                      action='store_true',
+                      default=False)
+    parser.add_option("--debug", 
+                      dest="debug",
+                      help='set for debug messages',
+                      action='store_true',
+                      default=False)
 
 
     (options, args) = parser.parse_args()
@@ -177,6 +195,8 @@ if __name__ == "__main__":
     do_Combined_Ranking_Plots = bool(options.docombinedrankingplots)
     use_data = False if do_Asimov else bool(options.usedata) # This flag is overwritten when asimov workspaces are required
     ranking_includeGammas = bool(options.ranking_includeGammas)
+    do_dry_run = bool(options.dryrun)
+    debug_level = bool(options.debug)
 
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
@@ -204,6 +224,10 @@ if __name__ == "__main__":
     if fittype not in ['BONLY', 'SPLUSB']:
         print(colored("Unrecognized Fit Type (--fit-type) option. Reverting to BONLY", color = "black", on_color="on_red"))
         fittype = 'BONLY'
+
+    batchSystem = str(options.batchsystem)
+    batchQueue = str(options.batchqueue)
+
 
     print('''
 Options set for this Job:
@@ -305,6 +329,7 @@ BRWs = {}
         mktag = getMKTag(mass, kappa)
         ws_list = ""
         ws_asimov_list = ""
+        ###################### ACTIONS FOR INDIVIDUAL ANALYSES ########################################
         for ana in ALL_CFGs.keys():
             cfg = ALL_CFGs[ana]
 
@@ -414,8 +439,35 @@ BRWs = {}
                 else:
                     print(colored("Limit done for {} for {}!".format(ana, sigtag), color = "black", on_color="on_green"))
                     time.sleep(5)
-                
 
+
+
+            if( do_Separate_Ranking_Fits or do_Separate_Ranking_Plots ):
+                #get the paths from combutils
+                ranking_path = cfg.getRankingPath(mass, kappa, brw, mu=mu, isAsimov=not use_data)
+
+                dsName = "obsData" if use_data else "asimovData_mu{}".format(int(mu*100))
+                wsPath = cfg.getScaledWSPath(mass, kappa, brw, datatag) if use_data \
+                         else cfg.getAsimovWSPath(mass, kappa, brw, mu)
+            
+                outfname = cfg.getScaledWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '') if use_data \
+                           else cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '')
+                outfname += '_' + fittype
+                fitFileName = FitLogDir + '/' + outfname + ".txt"
+            
+                #define the ranking plotter
+                ranking_plotter = RankingPlotter(wsPath, cfg.WSName, dsName, fitFileName,
+                                                 ranking_path, ranking_nmerge, ranking_includeGammas, 
+                                                 batch=batchSystem, batch_queue=batchQueue,
+                                                 dry_run=do_dry_run,debug=debug_level)
+
+                ranking_plotter.ReadFitResultTextFile()
+                if(do_Separate_Ranking_Fits):
+                    ranking_plotter.LaunchRankingFits(True)
+                if(do_Separate_Ranking_Plots):
+                    ranking_plotter.WriteTRexFRankingFile()
+
+        ###################### ACTIONS FOR COMBINED WORKSPACE ########################################
         if do_Combine:
             print("Starting the Combination for {}".format(colored(sigtag, color = "green")))
             time.sleep(5)
@@ -585,33 +637,28 @@ BRWs = {}
                     print(colored("TRExFitter multi-fit failed for {}!".format(sigtag), color = "black", on_color="on_red"))
                     time.sleep(5)
 
-        if( do_Separate_Ranking_Fits or do_Separate_Ranking_Plots ):
+        if( do_Combined_Ranking_Fits or do_Combined_Ranking_Plots ):
             #get the paths from combutils
-            ranking_path = cfg.getRankingPath(mass, kappa, brw, mu=mu, isAsimov=not use_data)
+            ranking_path_comb = combination_cfg.getRankingPath(mass, kappa, brw, mu=mu, isAsimov=not use_data)
 
-            dsName = "obsData" if use_data else "asimovData_mu{}".format(int(mu*100))
-            wsPath = cfg.getScaledWSPath(mass, kappa, brw, datatag) if use_data \
-                     else cfg.getAsimovWSPath(mass, kappa, brw, mu)
+            dsName_comb = "obsData" if use_data else "combData"
+            wsPath_comb = combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag) if use_data \
+                     else combination_cfg.getAsimovWSPath(mass, kappa, brw, mu)
             
-            outfname = cfg.getScaledWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '') if use_data \
-                       else cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '')
-            outfname += '_' + fittype
-            fitFileName = FitLogDir + '/' + outfname + ".txt"
+            outfname_comb = combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1].replace('.root', '') \
+                       if use_data \
+                       else combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '')
+            outfname_comb += '_' + fittype
+            fitFileName_comb = FitLogDir + '/' + outfname + ".txt"
             
             #define the ranking plotter
-            ranking_plotter = RankingPlotter(wsPath, cfg.WSName, dsName, fitFileName, \
-                                             ranking_path, ranking_nmerge, ranking_includeGammas)
-            if(do_Separate_Ranking_Fits):
-                ranking_plotter.ReadFitResultTextFile()
-                print("Launching ranking fits")
-                ranking_plotter.LaunchRankingFits(True)
-                print("Launched ranking fits")
-            if(do_Separate_Ranking_Plots):
-                ranking_plotter.ReadFitResultTextFile()
-                ranking_plotter.WriteTRexFRankingFile()
+            ranking_plotter_comb = RankingPlotter(wsPath_comb, combination_cfg.WSName, dsName_comb, fitFileName_comb,
+                                                  ranking_path_comb, ranking_nmerge, ranking_includeGammas,
+                                                  batch=batchSystem, batch_queue=batchQueue,
+                                                  dry_run=do_dry_run,debug=debug_level)
             
-            
-        if do_Combined_Ranking_Fits:
-
-            print('TO BE COMPLETED')
-
+            ranking_plotter_comb.ReadFitResultTextFile()
+            if(do_Combined_Ranking_Fits):
+                ranking_plotter_comb.LaunchRankingFits(True)
+            if(do_Combined_Ranking_Plots):
+                ranking_plotter_comb.WriteTRexFRankingFile()
