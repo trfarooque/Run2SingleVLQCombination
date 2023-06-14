@@ -31,6 +31,8 @@ class RankingPlotter:
         self.dry_run = dry_run
         self.debug = debug
 
+        os.makedirs(os.path.dirname(self.outputPath), exist_ok=True)
+
 
     #************************ Making fit jobs for ranking plot ***********************    
 
@@ -58,8 +60,8 @@ class RankingPlotter:
                 else:
                     np_name = linedata[0]
                     np_cntrl = float(linedata[1])
-                    np_neg = float(linedata[2])
-                    np_pos = float(linedata[3])
+                    np_pos = float(linedata[2])
+                    np_neg = float(linedata[3])
 
                     nuispar = { 'name': np_name, 'central': np_cntrl, 'up': np_pos, 'down': np_neg }
                     self.NPlist[np_index] = nuispar 
@@ -83,26 +85,26 @@ class RankingPlotter:
             else:
                 npval = nuisParam['central'] + nuisParam['down']
 
-        fitarg = "-p mu_signal,{}={:.6f}".format(nuisParam['name'],npval)
+
+        paramName = nuisParam['name'] if((nuisParam['name'].startswith('gamma_')) or ('BKGNF' in nuisParam['name'])) \
+                    else 'alpha_'+nuisParam['name']
+        fitarg = "-p mu_signal,{}={:.6f}".format(paramName,npval)
 
         outBaseName = 'NPRanking_'+nuisParam['name']+'_'+config
 
         resultFile = 'fit_'+outBaseName+'.root'
-        #logPath = self.outputPath+'/Logs/log_'+outBaseName+'.txt'
 
         ## SKIPPING ALREADY PROCESSED FILES
-        #if(os.path.exists(resultPath)):
-        #    printWarning("=> Already processed: skipping")
-        #    return ""
+        if(os.path.exists(self.outputPath+'/Results/'+resultFile)):
+            printWarning("=> Already processed: skipping")
+            return ""
 
-        #cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {} >> {} 2>&1 \n\n'''\
         cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {}'''\
             .format(self.wsName,
                     self.wsPath,
                     self.dsName,
                     resultFile,
                     fitarg)
-                    #logPath)
 
         return cmd
 
@@ -113,8 +115,7 @@ class RankingPlotter:
         codePath = os.getenv('VLQCOMBDIR')
         tarballPath = self.outputPath+'/CombCode.tgz'
         Job.prepareTarBall(codePath, tarballPath)
-
-
+        #time.sleep(10)
         os.makedirs(os.path.dirname(self.outputPath+'/Scripts/'), exist_ok=True)
         os.makedirs(os.path.dirname(self.outputPath+'/Logs/'), exist_ok=True)
         os.makedirs(os.path.dirname(self.outputPath+'/Results/'), exist_ok=True)
@@ -130,8 +131,6 @@ class RankingPlotter:
 
         script_count = 0
         for np_index,np in self.NPlist.items():
-            if script_count > 5:
-                break
             for _up in [True, False]:
                 for _pre in [True, False]:
 
@@ -185,7 +184,9 @@ class RankingPlotter:
             err_high = fitResult.floatParsFinal().find("mu_signal").getErrorHi()
             err_low = fitResult.floatParsFinal().find("mu_signal").getErrorLo()
             mu_fit = {'name': 'mu_signal_'+config, 'central':valV, 'up':err_high, 'down':err_low }
-            print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
+            #print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
+        else:
+            print("WARNING: No ROOT file found with name: "+fname)
 
         return mu_fit
 
@@ -216,17 +217,11 @@ class RankingPlotter:
 
         #open ranking file:
         os.makedirs(os.path.dirname(self.outputPath+'/Fits/'), exist_ok=True)
-        outputPath = self.outputPath+'/Fits/NPRanking.txt'
+        outputPath = self.outputPath+'/Fits/NPRanking_mu_signal.txt'
 
         #open the fit files for each fixed NP configuration
         with open(outputPath,'w') as outFile:
             for np_index,np in self.NPlist.items():
-
-                #basePath = self.outputPath+'/Logs/log_NPRanking_'+nuisParam['name']
-                #mu_preUP = ReadMuFromLogFile(basePath,True,True)
-                #mu_preDOWN = ReadMuFromLogFile(basePath,True,False)
-                #mu_postUP = ReadMuFromLogFile(basePath,False,True)
-                #mu_postDOWN = ReadMuFromLogFile(basePath,False,False)
 
                 basePath = self.outputPath+'/Results/fit_NPRanking_'+np['name']
                 mu_preUP = self.ReadMuFromResultRootFile(basePath,True,True)
@@ -234,19 +229,68 @@ class RankingPlotter:
                 mu_postUP = self.ReadMuFromResultRootFile(basePath,False,True)
                 mu_postDOWN = self.ReadMuFromResultRootFile(basePath,False,False)
 
-                if(not (mu_preUP or mu_preDOWN or mu_postUP or mu_postDOWN) ):
+                if(not (mu_preUP and mu_preDOWN and mu_postUP and mu_postDOWN) ):
                     continue
                 dmu_preUP = mu_preUP['central'] - self.mu_nominal['central']
                 dmu_preDOWN = mu_preDOWN['central'] - self.mu_nominal['central']
                 dmu_postUP = mu_postUP['central'] - self.mu_nominal['central']
                 dmu_postDOWN = mu_postDOWN['central'] - self.mu_nominal['central']
 
-                outLine = "{}   {:.6f} {:.6f} {:.6f}  {:.6f}   {:.6f}  {:.6f}   {:.6f} \n"\
+                outLine = "{}   {:g} {:+.6f} {:+.6f}  {:.6f}   {:.6f}  {:.6f}   {:.6f} \n"\
                     .format(np['name'],np['central'],np['up'],np['down'],
-                            dmu_preUP,dmu_preDOWN,dmu_postUP,dmu_postDOWN)
+                            dmu_postUP,dmu_postDOWN,dmu_preUP,dmu_preDOWN)
                 outFile.write(outLine)
+                fsub = open(self.outputPath+'/Fits/NPRanking_mu_signal_'+np['name']+'.txt','w')
+                fsub.write(outLine)
+                fsub.close()
+
         outFile.close()
 
+        return
+
+    def GetTRexFConfigFile(self):
+
+        #Remove trailing '/'
+        outDir = self.outputPath[:-1] if(self.outputPath.endswith('/')) else self.outputPath
+
+        outDirParsed = outDir.rsplit("/",1)
+        #Job name should be the same as the name of the ouput subdirectory
+        jobName = outDirParsed[1]
+        #Config file should be put just outside the job directory
+        configName = outDirParsed[0]+'/configFile_'+jobName+'_.txt'
+
+        #open the fit files for each fixed NP configuration
+        with open(configName,'w') as configFile:
+
+            #preamble
+            configFile.write( ('''Job: {0}
+Label: {0}
+ReadFrom: HIST
+ImageFormat: png
+HistoChecks: NOCRASH
+RankingMaxNP: 20
+RankingPlot: all
+POI: "mu_signal"
+
+Region: DUMMY
+Type: SIGNAL
+
+Sample: DUMMY
+Type: SIGNAL 
+
+NormFactor: mu_signal \n\n''').format(jobName) )
+
+            for np_index,np in self.NPlist.items():
+                
+                if(np['name'].startswith('gamma_')):
+                    continue
+                    
+                sysLine = ("NormFactor: {0} \n\n" if('BKGNF' in np['name']) else "Systematic: {0} \n\n").format(np['name'])
+                configFile.write(sysLine)
+
+        configFile.close()
+
+        return 'configFile_'+jobName+'_.txt'
             
 
 

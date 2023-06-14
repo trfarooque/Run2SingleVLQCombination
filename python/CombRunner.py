@@ -304,8 +304,7 @@ BRWs = {}
 
     ALL_CFGs = {}
 
-    for ana in ['SPT_MONOTOP']:
-    #for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
+    for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
         print("Creating CombinationConfig for {}".format(ana))
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc,
@@ -466,6 +465,12 @@ BRWs = {}
                     ranking_plotter.LaunchRankingFits(True)
                 if(do_Separate_Ranking_Plots):
                     ranking_plotter.WriteTRexFRankingFile()
+                    confName = ranking_plotter.GetTRexFConfigFile()
+                    code = os.system("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName))
+                    if not code == 0:
+                        print(colored("TRExFitter ranking plot failed for {} in channel {}!".format(sigtag, ana), 
+                                      color = "black", on_color="on_red"))
+                        time.sleep(5)
 
         ###################### ACTIONS FOR COMBINED WORKSPACE ########################################
         if do_Combine:
@@ -662,3 +667,9 @@ BRWs = {}
                 ranking_plotter_comb.LaunchRankingFits(True)
             if(do_Combined_Ranking_Plots):
                 ranking_plotter_comb.WriteTRexFRankingFile()
+                confName = ranking_plotter_comb.GetTRexFConfigFile()
+                code = os.system("cd {} && trex-fitter r {} Ranking=plot && cd -".format(combination_cfg.RankingDir, confName))
+                if not code == 0:
+                    print(colored("TRExFitter combined ranking plot failed for {}!".format(sigtag), 
+                                  color = "black", on_color="on_red"))
+                    time.sleep(5)
