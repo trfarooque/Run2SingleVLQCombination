@@ -230,7 +230,7 @@ class JobSet:
 
         #Writing the scripts
         current_merged_script_name = self.scriptDir+"/"+self.scriptName
-        #f = open(current_merged_script_name,"w+")
+
         with open(current_merged_script_name,"w+") as f:
             self.Initialize(f)
             for iJob in range(len(self.jobs)):
@@ -247,15 +247,13 @@ class JobSet:
         
                 #Write the file to possibly relaunch the missing jobs
                 if not self.jobRecoveryFileName == "":
-                    for iOption in range(len(temp_job.jobOptions)):
-                        if temp_job.jobOptions[iOption][0].upper()=="OUTPUTFILE":
-                            if self.batch == "pbs":
-                                f_reco_file.write(temp_job.outDir+"/"+temp_job.jobOptions[iOption][1]
-                                                  +" "+current_sub_script_name+"\n")
-                            else:
-                                f_reco_file.write(temp_job.outDir+"/"+temp_job.jobOptions[iOption][1]
-                                                  +" "+self.scriptDir+"/"+self.scriptName+".sub \n")
-                            break
+                    
+                    if self.batch == "pbs":
+                        f_reco_file.write(self.outDir+"/"+temp_job.outputFile
+                                          +" "+current_sub_script_name+"\n")
+                    else:
+                        f_reco_file.write(self.outDir+"/"+temp_job.outputFile
+                                          +" "+self.scriptDir+"/"+self.scriptName+".sub \n")
 
             self.Terminate(f)
             #f.close()
@@ -323,6 +321,7 @@ class Job:
         self.jobName=""
         self.execName=""
         self.outDir=""
+        self.outputFile=""
 
     ##_________________________________________________________________________
     ##
@@ -348,3 +347,8 @@ class Job:
     ##
     def setOutDir(self,outDir):
         self.outDir = outDir
+
+    ##_________________________________________________________________________
+    ##
+    def setOutputFile(self,outputFile):
+        self.outputFile = outputFile

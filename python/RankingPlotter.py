@@ -96,7 +96,7 @@ class RankingPlotter:
 
         ## SKIPPING ALREADY PROCESSED FILES
         if(os.path.exists(self.outputPath+'/Results/'+resultFile)):
-            printWarning("=> Already processed: skipping")
+            print("WARNING=> Already processed: skipping")
             return ""
 
         cmd = '''quickFit -w {} -f {} -d {} -o {} --savefitresult 1 --hesse 1 --minos 1 {}'''\
@@ -106,7 +106,7 @@ class RankingPlotter:
                     resultFile,
                     fitarg)
 
-        return cmd
+        return [cmd,resultFile]
 
     #### Main code that loops over NP list and makes/launches ranking fit scripts ####
     def LaunchRankingFits(self, do_run=False):
@@ -114,8 +114,9 @@ class RankingPlotter:
         #Tar the code directory to send to batch
         codePath = os.getenv('VLQCOMBDIR')
         tarballPath = self.outputPath+'/CombCode.tgz'
-        Job.prepareTarBall(codePath, tarballPath)
-        #time.sleep(10)
+        if(not os.path.exists(tarballPath)):
+            Job.prepareTarBall(codePath, tarballPath)
+
         os.makedirs(os.path.dirname(self.outputPath+'/Scripts/'), exist_ok=True)
         os.makedirs(os.path.dirname(self.outputPath+'/Logs/'), exist_ok=True)
         os.makedirs(os.path.dirname(self.outputPath+'/Results/'), exist_ok=True)
@@ -144,9 +145,10 @@ class RankingPlotter:
                     str_exec = self.WriteNPFit(np, prefit=_pre, shift_up=_up)
                     if(not str_exec):
                         continue
-                    jO.setExecutable(str_exec)
+                    jO.setExecutable(str_exec[0])
                     jO.setDebug(self.debug)
                     jO.setName(jOName)
+                    jO.setOutputFile(str_exec[1])
 
                     JOSet.addJob(jO)        
                     #Write a script and submit it if there are nMerge jobs in the set, or there are residual jobs remaining
