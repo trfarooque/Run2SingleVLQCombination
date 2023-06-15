@@ -8,7 +8,7 @@ import socket
 import sys
 import datetime
 from ROOT import *
-from BatchTools import *
+from utils import *
 
 ##______________________________________________________
 ##
@@ -35,7 +35,7 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
 
         if not(os.path.isfile(scriptFile)):
             printWarning("WARNING: Cannot resubmit job since the script is missing ! ")
-            print "    -> ", scriptFile
+            print( "    -> ", scriptFile)
         else:
             os.system(com)
             time.sleep(2)
@@ -45,15 +45,15 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
 ##------------------------------------------------------
 if(len(sys.argv)<2):
     printWarning("Output checker ==> Wrong input arguments")
-    print "    python "+sys.argv[0]+" input=<name of .chk file> [opt]"
-    print "with as options:"
-    print "    relaunch=TRUE/FALSE"
-    print "        -> if some outputs are missing/corrupted, relaunch the corresponding jobs"
-    print "    batch=<name of the batch system>"
-    print "        -> name of the batch system on which to submit the resubmitted jobs (condor/pbs)"
-    print "    queue=<name of the batch queue>"
-    print "        -> name of the batch queue on which to submit the resubmitted jobs"
-    print ""
+    print("    python "+sys.argv[0]+" input=<name of .chk file> [opt]")
+    print("with as options:")
+    print("    relaunch=TRUE/FALSE")
+    print("        -> if some outputs are missing/corrupted, relaunch the corresponding jobs")
+    print("    batch=<name of the batch system>")
+    print("        -> name of the batch system on which to submit the resubmitted jobs (condor/pbs)")
+    print("    queue=<name of the batch queue>")
+    print("        -> name of the batch queue on which to submit the resubmitted jobs")
+    print("")
     sys.exit()
 
 ##------------------------------------------------------
@@ -77,8 +77,8 @@ if(inputFile==""):
 ##------------------------------------------------------
 ## Opens the input file
 ##------------------------------------------------------
-f = open(inputFile,"read")
-fNew = open(inputFile+".new","write")
+f = open(inputFile,'r')
+fNew = open(inputFile+".new",'w')
 
 nMissing = 0
 nZombie = 0
@@ -89,7 +89,7 @@ for line in f:
     nFilesChecked += 1
     
     if(nFilesChecked%100==1):
-        print "==> "+`nFilesChecked`+" files checked"
+        print("==> {:d} files checked".format(nFilesChecked))
     
     line_splitted = line.replace("\n","").split(" ")
     fileToCheck = line_splitted[0]
@@ -101,7 +101,7 @@ for line in f:
         nMissing += 1
         hasProblems = True
     else:
-        rootFile = TFile(fileToCheck,"read")
+        rootFile = TFile(fileToCheck,'r')
         if rootFile.IsZombie():
             printError("ZOMBIE: "+fileToCheck)
             nZombie += 1
@@ -122,13 +122,14 @@ fNew.close()
 ##------------------------------------------------------
 ## Writting a summary for the user
 ##------------------------------------------------------
-print "============================="
-print "SUMMARY"
-print "============================="
-print "Analysed files:   "+`nFilesChecked`
-print "Good files :      "+`nGood`
-print "Absent files :    "+`nMissing`
-print "Corrupted files : "+`nZombie`
+print("=============================")
+print("SUMMARY")
+print("=============================")
+print("Analysed files: {:d}".format(nFilesChecked))
+print("Good files: {:d}".format(nGood))
+print("Absent files: {:d}".format(nMissing))
+print("Corrupted files: {:d}".format(nZombie))
+
 if relaunchJobs:
-    print "Relaunched jobs : "+`nRelaunchedJobs`
-print "============================="
+    print("Relaunched jobs: {:d}".format(nRelaunchedJobs))
+print("=============================")
