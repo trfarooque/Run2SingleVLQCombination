@@ -654,7 +654,7 @@ BRWs = {}
                        if use_data \
                        else combination_cfg.getAsimovWSPath(mass, kappa, brw, mu).split('/')[-1].replace('.root', '')
             outfname_comb += '_' + fittype
-            fitFileName_comb = FitLogDir + '/' + outfname + ".txt"
+            fitFileName_comb = FitLogDir + '/' + outfname_comb + ".txt"
             
             #define the ranking plotter
             ranking_plotter_comb = RankingPlotter(wsPath_comb, combination_cfg.WSName, dsName_comb, fitFileName_comb,
