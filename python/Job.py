@@ -36,21 +36,33 @@ class JobSet:
     def __init__(self,platform):        
         if(platform.find("lxplus")>-1):
             self.platform = "lxplus"
+            self.batch = "condor"
+            self.queue = "workday"
+        elif(platform.find("uchicago")>-1):
+            self.platform = "uchicago"
+            self.batch = "condor"
+            self.queue = "workday"
         elif(platform.find("pic")>-1):
             self.platform = "pic"
+            self.batch = "xxxx"
+            self.queue = "xxxx"
         elif(platform.find("aglt2")>-1):
             self.platform = "aglt2"
+            self.batch = "xxxx"
+            self.queue = "xxxx"
         else:
             printError("<!> In JobSet class constructor ... Unknown platform: " + platform)
             self.platform = "lxplus"
+            self.batch = "condor"
+            self.queue = "workday"
         self.jobs=[]
         self.outDir=""
         self.logDir=""
         self.scriptDir=""
         self.scriptName=""
         self.tarballPath=""
-        self.batch="condor"
-        self.queue=""
+        # self.batch="condor"
+        # self.queue=""
         self.jobRecoveryFileName="JobCheck.chk"
         self.writeSubmissionCommandsToFileOnly=False
         
@@ -203,6 +215,8 @@ class JobSet:
                 f.write("+IsShortJob = true \n")
             f.write("\n")
             f.write("\n")
+        if(self.batch == 'condor'):
+            f.write('+JobFlavour="{}"\n'.format(self.queue))
         f.write("#Script options \n")
         if(self.platform != "aglt2"):
             f.write("request_memory           = 8 GB \n")

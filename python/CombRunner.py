@@ -76,6 +76,11 @@ if __name__ == "__main__":
     parser.add_option("--mu", dest="mu",
                       help='Choice of mu for asimov dataset',
                       default='0.0')
+    parser.add_option("--use-defScaling", 
+                      dest="usedefscale",
+                      help='set if the mu is to set the signal scale factor to correspond to the theory XS. If set, the mu value will be overwritten',
+                      action='store_true',
+                      default=False)
     parser.add_option("--fit-type", 
                       dest="fittype",
                       help='Provide the fit type: BONLY or SPLUSB',
@@ -86,12 +91,12 @@ if __name__ == "__main__":
                       default='10')
     parser.add_option("--batch-system",
                       dest="batchsystem",
-                      help='Type of batch system (pbs,condor,...) to which jobs should be sent',
-                      default='longlunch')
+                      help='Type of batch system (pbs,condor,...) to which jobs should be sent. The default option will be chosen based on the running platform.',
+                      default='')
     parser.add_option("--batch-queue",
                       dest="batchqueue",
-                      help='Name of batch queue/flavour (short,long,...) to which jobs should be sent',
-                      default='longlunch')
+                      help='Name of batch queue/flavour (short,long,...) to which jobs should be sent. The default option will be chosen based on the running platform.',
+                      default='')
     parser.add_option("--use-data", 
                       dest="usedata",
                       help='set if real data is to be used, otherwise asimov will be used',
@@ -142,6 +147,11 @@ if __name__ == "__main__":
                       help='set if you want to run ranking plot fits for combined workspaces',
                       action='store_true',
                       default=False)
+    parser.add_option("--overwrite-ranking-jobs", 
+                      dest="overwriteranking",
+                      help='set if you want to overwrite preexisting ranking jobs',
+                      action='store_true',
+                      default=False)
     parser.add_option("--ranking-includeGammas", 
                       dest="ranking_includeGammas",
                       help='Include gamma parameters in ranking fits',
@@ -189,6 +199,7 @@ if __name__ == "__main__":
     do_Combined_Limits =  bool(options.docomblims)
     do_Separate_Ranking_Fits = bool(options.doseparaterankingfits)
     do_Combined_Ranking_Fits = bool(options.docombinedrankingfits)
+    do_Overwrite_ranking = bool(options.overwriteranking)
     do_TRExFComp =  bool(options.dotrexfcomp) 
     do_TRExFConfigs = True if do_TRExFComp else bool(options.dotrexfcfgs) # This flag is overwritten when comparison plots are required
     do_Separate_Ranking_Plots = bool(options.doseparaterankingplots)
@@ -197,6 +208,7 @@ if __name__ == "__main__":
     ranking_includeGammas = bool(options.ranking_includeGammas)
     do_dry_run = bool(options.dryrun)
     debug_level = bool(options.debug)
+    use_defScaling = bool(options.usedefscale)
 
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
@@ -324,6 +336,8 @@ BRWs = {}
     combination_cfg.setSubDir(pathdict, makePaths = True)
 
     for (mass, kappa, brw) in product(*[masses, kappas, BRWs]):
+        if use_defScaling:
+            mu = getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt'])
         sigtag = getSigTag(mass, kappa, brw)
         mktag = getMKTag(mass, kappa)
         ws_list = ""
@@ -415,8 +429,7 @@ BRWs = {}
 
                 code = plotCorrelationMatrix(wsFile = cfg.getAsimovWSPath(mass, kappa, brw, mu) if not use_data \
                                              else cfg.getScaledWSPath(mass, kappa, brw, datatag), 
-                                             fitResultFile = 
-                                             cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
+                                             fitResultFile =  cfg.getFittedResultPath(mass, kappa, brw, mu, fittype, (not use_data)),
                                              outputPath = FitLogDir, 
                                              wsName = cfg.WSName, 
                                              plotName = "Correlations_"+outfname)
@@ -462,7 +475,7 @@ BRWs = {}
 
                 ranking_plotter.ReadFitResultTextFile()
                 if(do_Separate_Ranking_Fits):
-                    ranking_plotter.LaunchRankingFits(True)
+                    ranking_plotter.LaunchRankingFits(True, overwrite=do_Overwrite_ranking)
                 if(do_Separate_Ranking_Plots):
                     ranking_plotter.WriteTRexFRankingFile()
                     confName = ranking_plotter.GetTRexFConfigFile()
@@ -664,7 +677,7 @@ BRWs = {}
             
             ranking_plotter_comb.ReadFitResultTextFile()
             if(do_Combined_Ranking_Fits):
-                ranking_plotter_comb.LaunchRankingFits(True)
+                ranking_plotter_comb.LaunchRankingFits(True, overwrite=do_Overwrite_ranking)
             if(do_Combined_Ranking_Plots):
                 ranking_plotter_comb.WriteTRexFRankingFile()
                 confName = ranking_plotter_comb.GetTRexFConfigFile()

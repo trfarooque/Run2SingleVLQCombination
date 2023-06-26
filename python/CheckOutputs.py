@@ -82,6 +82,7 @@ fNew = open(inputFile+".new",'w')
 
 nMissing = 0
 nZombie = 0
+nIncomplete = 0
 nGood = 0
 nRelaunchedJobs = 0
 nFilesChecked = 0
@@ -106,6 +107,13 @@ for line in f:
             printError("ZOMBIE: "+fileToCheck)
             nZombie += 1
             hasProblems = True
+        else:
+            _LL = [x.GetName() for x in rootFile.GetListOfKeys()]
+            if "nllscan" not in _LL or "fitResult" not in _LL:
+                printError("INCOMPLETE: "+fileToCheck)
+                nIncomplete += 1
+                hasProblems = True
+
         rootFile.Close()
 
     if hasProblems:
@@ -129,7 +137,7 @@ print("Analysed files: {:d}".format(nFilesChecked))
 print("Good files: {:d}".format(nGood))
 print("Absent files: {:d}".format(nMissing))
 print("Corrupted files: {:d}".format(nZombie))
-
+print("Incomplete files: {:d}".format(nIncomplete))
 if relaunchJobs:
     print("Relaunched jobs: {:d}".format(nRelaunchedJobs))
 print("=============================")

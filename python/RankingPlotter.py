@@ -16,7 +16,7 @@ sleep = 1
 class RankingPlotter:
 
     def __init__(self, wsPath, wsName, dsName, fitFileName, outputPath, nMerge, includeGamma, 
-                 batch='condor', batch_queue='at3_short', dry_run=False, debug=False):
+                 batch='condor', batch_queue='workday', dry_run=False, debug=False):
         self.wsPath = wsPath
         self.wsName = wsName
         self.dsName = dsName
@@ -68,7 +68,7 @@ class RankingPlotter:
                     np_index += 1
 
     ##### Return command to run fits to calculate impact of each NP ####
-    def WriteNPFit(self, nuisParam, prefit, shift_up): #, scriptName):
+    def WriteNPFit(self, nuisParam, prefit, shift_up, overwrite = False): #, scriptName):
 
         npval = 0
         config = 'pre' if(prefit) else 'post'
@@ -95,7 +95,7 @@ class RankingPlotter:
         resultFile = 'fit_'+outBaseName+'.root'
 
         ## SKIPPING ALREADY PROCESSED FILES
-        if(os.path.exists(self.outputPath+'/Results/'+resultFile)):
+        if(overwrite and os.path.exists(self.outputPath+'/Results/'+resultFile)):
             print("WARNING=> Already processed: skipping")
             return ""
 
@@ -109,7 +109,7 @@ class RankingPlotter:
         return [cmd,resultFile]
 
     #### Main code that loops over NP list and makes/launches ranking fit scripts ####
-    def LaunchRankingFits(self, do_run=False):
+    def LaunchRankingFits(self, do_run=False, overwrite=False):
 
         #Tar the code directory to send to batch
         codePath = os.getenv('VLQCOMBDIR')
@@ -122,8 +122,10 @@ class RankingPlotter:
         os.makedirs(os.path.dirname(self.outputPath+'/Results/'), exist_ok=True)
 
         JOSet = Job.JobSet(platform)
-        JOSet.setBatch(self.batch)
-        JOSet.setQueue(self.batch_queue)
+        if self.batch:
+            JOSet.setBatch(self.batch)
+        if self.batch_queue:
+            JOSet.setQueue(self.batch_queue)
         JOSet.setScriptDir(self.outputPath+'/Scripts/')
         JOSet.setLogDir(self.outputPath+'/Logs/')
         JOSet.setOutDir(self.outputPath+'/Results/')
@@ -142,7 +144,7 @@ class RankingPlotter:
                     ## Declare the Job object (one job = one code running once)
                     jO = Job.Job(platform)
                     ## Name of the executable to run
-                    str_exec = self.WriteNPFit(np, prefit=_pre, shift_up=_up)
+                    str_exec = self.WriteNPFit(np, prefit=_pre, shift_up=_up, overwrite=overwrite)
                     if(not str_exec):
                         continue
                     jO.setExecutable(str_exec[0])
