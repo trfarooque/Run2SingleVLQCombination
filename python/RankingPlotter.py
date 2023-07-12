@@ -66,6 +66,8 @@ class RankingPlotter:
                     nuispar = { 'name': np_name, 'central': np_cntrl, 'up': np_pos, 'down': np_neg }
                     self.NPlist[np_index] = nuispar 
                     np_index += 1
+                    # print("Added to list: ", np_name)
+        print("Number of NPs read: ", np_index+1)
 
     ##### Return command to run fits to calculate impact of each NP ####
     def WriteNPFit(self, nuisParam, prefit, shift_up, overwrite = False): #, scriptName):
@@ -95,7 +97,7 @@ class RankingPlotter:
         resultFile = 'fit_'+outBaseName+'.root'
 
         ## SKIPPING ALREADY PROCESSED FILES
-        if(overwrite and os.path.exists(self.outputPath+'/Results/'+resultFile)):
+        if(not overwrite and os.path.exists(self.outputPath+'/Results/'+resultFile)):
             print("WARNING=> Already processed: skipping")
             return ""
 
@@ -136,7 +138,6 @@ class RankingPlotter:
         for np_index,np in self.NPlist.items():
             for _up in [True, False]:
                 for _pre in [True, False]:
-
                     jOName = np['name']
                     jOName += 'pre' if(_pre) else 'post'
                     jOName += 'UP' if(_up) else 'DOWN'
@@ -153,8 +154,9 @@ class RankingPlotter:
                     jO.setOutputFile(str_exec[1])
 
                     JOSet.addJob(jO)        
+                    print(jOName)
                     #Write a script and submit it if there are nMerge jobs in the set, or there are residual jobs remaining
-                    if ( (JOSet.size()==self.nMerge) or ((np_index == len(self.NPlist)) and (JOSet.size()>0) ) ):
+                    if ( (JOSet.size()==self.nMerge) or ((np_index + 1 == len(self.NPlist)) and (JOSet.size()>0) ) ):
                         JOSet.setScriptName( 'script_ranking_{}.sh'.format(script_count) )
                         JOSet.writeScript()
                         if not self.dry_run:
@@ -188,7 +190,10 @@ class RankingPlotter:
             err_high = fitResult.floatParsFinal().find("mu_signal").getErrorHi()
             err_low = fitResult.floatParsFinal().find("mu_signal").getErrorLo()
             mu_fit = {'name': 'mu_signal_'+config, 'central':valV, 'up':err_high, 'down':err_low }
-            #print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
+            print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
+            fitFile.Close()
+            del fitFile
+            del fitResult
         else:
             print("WARNING: No ROOT file found with name: "+fname)
 
@@ -200,18 +205,44 @@ class RankingPlotter:
         config = 'pre' if(prefit) else 'post'
         config += 'UP' if(shift_up) else 'DOWN'
 
-        fname = logFileBase+'_'+config+'.txt'
-        fitFile = open(fname, 'r')
+        fname = logFileBase + config + '.log'
         mu_fit = {}
-        for line in fitFile:
-            if("mu_signal" in line): #this will not work
-                central = line[line.index('=')+1:line.index('+/-')].strip(' ')
-                err = line[line.index('+/-')+1:].strip(' ')
-                mu_fit = {'name': 'mu_signal_'+config, 'central': float(central), \
-                                   'up': float(err), 'down': -1.*float(err)}
-                break
+        if os.path.isfile(fname):
+            fitFile = open(fname, 'r')
+            for line in fitFile:
+                # if("mu_signal" in line): #this will not work
+                #     central = line[line.index('=')+1:line.index('+/-')].strip(' ')
+                #     err = line[line.index('+/-')+1:].strip(' ')
+                #     mu_fit = {'name': 'mu_signal_'+config, 'central': float(central), \
+                #               'up': float(err), 'down': -1.*float(err)}
+                # 'RooRealVar::mu_signal = 4.43737 +/- (-0.30196,0.3289)  L(-100 - 100) '
+                if 'RooRealVar::mu_signal' in line:
+                    try:
+                        mu_stats = line.split('=')[1].strip().split('L')[0]
+                        central = float(mu_stats.split('+/-')[0])
+                        up = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[1])
+                        down = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[0])
+                        mu_fit = {'name': 'mu_signal_'+config, 
+                                  'central': float(central),
+                                  'up': float(up), 
+                                  'down': float(down)}
+                        break
+                    except:
+                        print("Line could not be formatted from {}: {}".format(fname, line))
+                        mu_fit = { 'name': 'mu_signal_'+config,
+                                  'central': 0.,
+                                  'up': 0.,
+                                  'down': 0.}
+                        continue
+                    
+            fitFile.close()
+
+        else:
+            print('ERROR: Log File{} not found'.format(fname))
+            abort()
+
         if not(mu_fit):
-            print('ERROR: No mu_signal found inside file'+fileName)
+            print('ERROR: No mu_signal found inside file ' + fname)
             abort()
 
         return mu_fit
@@ -227,11 +258,18 @@ class RankingPlotter:
         with open(outputPath,'w') as outFile:
             for np_index,np in self.NPlist.items():
 
-                basePath = self.outputPath+'/Results/fit_NPRanking_'+np['name']
-                mu_preUP = self.ReadMuFromResultRootFile(basePath,True,True)
-                mu_preDOWN = self.ReadMuFromResultRootFile(basePath,True,False)
-                mu_postUP = self.ReadMuFromResultRootFile(basePath,False,True)
-                mu_postDOWN = self.ReadMuFromResultRootFile(basePath,False,False)
+
+                baseLogPath = self.outputPath+'/Logs/' + np['name'] 
+                mu_preUP = self.ReadMuFromLogFile(baseLogPath,True,True)
+                mu_preDOWN = self.ReadMuFromLogFile(baseLogPath,True,False)
+                mu_postUP = self.ReadMuFromLogFile(baseLogPath,False,True)
+                mu_postDOWN = self.ReadMuFromLogFile(baseLogPath,False,False)
+
+                # baseResultPath = self.outputPath+'/Results/fit_NPRanking_'+np['name']
+                # mu_preUP = self.ReadMuFromResultRootFile(baseResultPath,True,True)
+                # mu_preDOWN = self.ReadMuFromResultRootFile(baseResultPath,True,False)
+                # mu_postUP = self.ReadMuFromResultRootFile(baseResultPath,False,True)
+                # mu_postDOWN = self.ReadMuFromResultRootFile(baseResultPath,False,False)
 
                 if(not (mu_preUP and mu_preDOWN and mu_postUP and mu_postDOWN) ):
                     continue

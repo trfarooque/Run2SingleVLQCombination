@@ -659,7 +659,8 @@ BRWs = {}
             #get the paths from combutils
             ranking_path_comb = combination_cfg.getRankingPath(mass, kappa, brw, mu=mu, isAsimov=not use_data)
 
-            dsName_comb = "obsData" if use_data else "combData"
+            #dsName_comb = "obsData" if use_data else "combData"
+            dsName_comb = "combData" if use_data else "asimovData_mu{}".format(int(mu*100))
             wsPath_comb = combination_cfg.getCombinedWSPath(mass, kappa, brw, datatag) if use_data \
                      else combination_cfg.getAsimovWSPath(mass, kappa, brw, mu)
             
@@ -674,7 +675,7 @@ BRWs = {}
                                                   ranking_path_comb, ranking_nmerge, ranking_includeGammas,
                                                   batch=batchSystem, batch_queue=batchQueue,
                                                   dry_run=do_dry_run,debug=debug_level)
-            
+            print("Reading from:", fitFileName_comb)
             ranking_plotter_comb.ReadFitResultTextFile()
             if(do_Combined_Ranking_Fits):
                 ranking_plotter_comb.LaunchRankingFits(True, overwrite=do_Overwrite_ranking)
