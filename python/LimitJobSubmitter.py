@@ -76,13 +76,6 @@ if __name__ == "__main__":
     parser.add_option("--brws", dest="brws",
                       help='Provide a comma separated list of T > Wb BRs (e.g. 0.0,0.5)',
                       default='0.5')
-    # parser.add_option("--mu", dest="mu",
-    #                   help='Choice of mu for asimov dataset',
-    #                   default='0.0')
-    # parser.add_option("--fit-type", 
-    #                   dest="fittype",
-    #                   help='Provide the fit type: BONLY or SPLUSB',
-    #                   default='BONLY')
     parser.add_option("--batch-system",
                       dest="batchsystem",
                       help='Type of batch system (pbs,condor,...) to which jobs should be sent. The default option will be chosen based on the running platform.',
@@ -91,11 +84,6 @@ if __name__ == "__main__":
                       dest="batchqueue",
                       help='Name of batch queue/flavour (short,long,...) to which jobs should be sent. The default option will be chosen based on the running platform.',
                       default='')
-    # parser.add_option("--use-data", 
-    #                   dest="usedata",
-    #                   help='set if real data is to be used, otherwise asimov will be used',
-    #                   action='store_true',
-    #                   default=False)
     parser.add_option("--dry-run", 
                       dest="dryrun",
                       help='set if you want to write commands to scripts without executing them',
@@ -112,7 +100,7 @@ if __name__ == "__main__":
 
     # use_data = False if do_Asimov else bool(options.usedata) # This flag is overwritten when asimov workspaces are required
     DataLoc = str(options.dataloc)
-    script_path = DataLoc + '/' + str(options.scriptsubdir)
+    BatchJobLoc = DataLoc + '/' + str(options.scriptsubdir) + '/'
     do_dry_run = bool(options.dryrun)
     debug_level = bool(options.debug)
 
@@ -133,76 +121,94 @@ if __name__ == "__main__":
     masses = list(map(float, str(options.masses).split(',')))
     kappas = list(map(float, str(options.kappas).split(',')))
     BRWs = list(map(float, str(options.brws).split(',')))
-    # ranking_nmerge = int(options.ranking_nmerge)
+    # BRWs = str(options.brws)
     InDataName =  "obsData"
     datatag = 'data' 
 
-    # if fittype not in ['BONLY', 'SPLUSB']:
-    #     print(colored("Unrecognized Fit Type (--fit-type) option. Reverting to BONLY", color = "black", on_color="on_red"))
-    #     fittype = 'BONLY'
 
     batchSystem = str(options.batchsystem)
     batchQueue = str(options.batchqueue)
-    if os.path.exists(os.environ['VLQCOMBDIR'] + '/CombCode.tgz'):
-        print("Deleting pre-existing tarball!!")
-        os.system('rm ' + os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
-    prepareTarBall(pathToPackage = os.environ['VLQCOMBDIR'], 
-                   pathToTarball = os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
 
-    for (mass, kappa, brw) in product(*[masses, kappas, BRWs]):
-        jobtag = getSigTag(mass, kappa, brw)
-        this_job = Job(batchSystem)
-        this_job.setDebug(debug_level)
-        this_job.setName("LimitBatchJob_{}".format(jobtag))
-        this_job.addOption("--data-loc", DataLoc)
-        this_job.addOption("--inws-subdir", pathdict['InWSSubDir'])
-        this_job.addOption("--scaledws-subdir", pathdict['ScaledWSSubDir'])
-        this_job.addOption("--scalingconfig-subdir", pathdict['ScalingConfigSubDir'])
-        this_job.addOption("--asimovws-subdir", pathdict['AsimovWSSubDir'])
-        this_job.addOption("--asimovconfig-subdir", pathdict['AsimovConfigSubDir'])
-        this_job.addOption("--combinedws-subdir", pathdict['CombinedWSSubDir'])
-        this_job.addOption("--combconfig-subdir", pathdict['CombinationConfigSubDir'])
-        this_job.addOption("--fittedws-subdir", pathdict['FittedWSSubDir'])
-        this_job.addOption("--limit-subdir", pathdict['LimitSubDir'])
-        this_job.addOption("--log-subdir", pathdict['LogSubDir'])
-        this_job.addOption("--ranking-subdir", pathdict['RankingSubDir'])
-        this_job.addOption("--masses", str(int(mass)))
-        this_job.addOption("--kappas", str(kappa))
-        this_job.addOption("--brws", str(brw))
-        this_job.addOption("--use-data", " ")
-        this_job.addOption("--skip-asimov", " ")
-        this_job.addOption("--skip-separate-fitting", " ")
-        this_job.addOption("--skip-separate-limits", " ")
-        this_job.addOption("--skip-trexf-configs", " ")
-        this_job.addOption("--skip-trexf-comp", " ")
-        this_job.setExecutable("python python/CombRunner.py")
+    # if os.path.exists(os.environ['VLQCOMBDIR'] + '/CombCode.tgz'):
+    #     print("Deleting pre-existing tarball!!")
+    #     os.system('rm ' + os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
+    # prepareTarBall(pathToPackage = os.environ['VLQCOMBDIR'], 
+    #                pathToTarball = os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
 
-        command = this_job.execName + " "
-        for opt in this_job.jobOptions:
-            command += opt[0] + ' ' + opt[1] + ' '
-        this_job.setExecutable(command)
+    mkdir_tmp = "mkdir -p {}"
+    
+    OUTLOC = BatchJobLoc + 'outputs/' 
+    os.system(mkdir_tmp.format(OUTLOC))
+    LOGLOC = BatchJobLoc + 'logs/'
+    os.system(mkdir_tmp.format(LOGLOC))
+    SCRIPTLOC = BatchJobLoc + 'scripts/'
+    os.system(mkdir_tmp.format(SCRIPTLOC))
+
+
+    for (mass, kappa) in product(*[masses, kappas]):
+        mktag = getMKTag(mass, kappa)
+        these_jobs = []
+        for brw in BRWs:
+            jobtag = getSigTag(mass, kappa, brw)
+            # jobtag = mktag
+            this_job = Job(batchSystem)
+            this_job.setDebug(debug_level)
+            this_job.setName("LimitBatchJob_{}".format(jobtag))
+            this_job.addOption("--data-loc", DataLoc)
+            this_job.addOption("--inws-subdir", pathdict['InWSSubDir'])
+            this_job.addOption("--scaledws-subdir", pathdict['ScaledWSSubDir'])
+            this_job.addOption("--scalingconfig-subdir", pathdict['ScalingConfigSubDir'])
+            this_job.addOption("--asimovws-subdir", pathdict['AsimovWSSubDir'])
+            this_job.addOption("--asimovconfig-subdir", pathdict['AsimovConfigSubDir'])
+            this_job.addOption("--combinedws-subdir", pathdict['CombinedWSSubDir'])
+            this_job.addOption("--combconfig-subdir", pathdict['CombinationConfigSubDir'])
+            this_job.addOption("--fittedws-subdir", pathdict['FittedWSSubDir'])
+            this_job.addOption("--limit-subdir", pathdict['LimitSubDir'])
+            this_job.addOption("--log-subdir", pathdict['LogSubDir'])
+            this_job.addOption("--ranking-subdir", pathdict['RankingSubDir'])
+            this_job.addOption("--masses", str(int(mass)))
+            this_job.addOption("--kappas", str(kappa))
+            this_job.addOption("--brws", str(brw))
+            this_job.addOption("--use-data", "")
+            this_job.addOption("--skip-asimov", "")
+            this_job.addOption("--skip-separate-fitting", "")
+            this_job.addOption("--skip-separate-limits", "")
+            this_job.addOption("--skip-trexf-configs", "")
+            this_job.addOption("--skip-trexf-comp", "")
+            this_job.setOutDir(DataLoc + '/' + pathdict['LimitSubDir'] + '/SPT_COMBINED/')
+            this_job.setOutputFile('SPT_COMBINED_limits_{}_data.txt'.format(jobtag))
+            this_job.setExecutable("python python/CombRunner.py")
+
+            command = this_job.execName + " "
+            for opt in this_job.jobOptions:
+                command += opt[0] + ' ' 
+                if opt[1]: 
+                    command += opt[1] + ' '
+            this_job.setExecutable(command)
+            these_jobs.append(this_job)
         
         this_js = JobSet("lxplus")
-        this_js.addJob(this_job)
+        this_js.setJobRecoveryFile(SCRIPTLOC + '/JobCheck.chk')
+        for job in these_jobs:
+            this_js.addJob(job)
         
-        mkdir_tmp = "mkdir -p {}"
-
-        OUTLOC = DataLoc + '/batch_jobs/outputs/' 
-        os.system(mkdir_tmp.format(OUTLOC))
         this_js.setOutDir(OUTLOC)     # FIXME
-        LOGLOC = DataLoc + '/batch_jobs/logs/'
-        os.system(mkdir_tmp.format(LOGLOC))
         this_js.setLogDir(LOGLOC)        # FIXME
-        SCRIPTLOC = DataLoc + '/batch_jobs/scripts/'
-        os.system(mkdir_tmp.format(SCRIPTLOC))
         this_js.setScriptDir(SCRIPTLOC)  # FIXME
 
-        this_js.setScriptName("script_{}.sh".format(jobtag))
+        this_js.setScriptName("script_{}.sh".format(mktag))
         this_js.setTarBall(os.environ['VLQCOMBDIR'] + '/CombCode.tgz')  #FIXME
         
         this_js.writeScript()
-        
-        
-        
 
+        # A little hack to get the limit results in the output directory so that the JobCheck file can be used
+
+        f_tmp = open(this_js.scriptDir + "/" + this_js.scriptName , "a")
+        f_tmp.write("\n")
+        f_tmp.write("cp {}/SPT_COMBINED_limits_{}*_data.txt $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/SPT_COMBINED', mktag))
+        f_tmp.close()
         
+        if not options.debug:
+            this_js.submitSet()
+        
+    
