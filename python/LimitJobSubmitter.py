@@ -98,7 +98,6 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    # use_data = False if do_Asimov else bool(options.usedata) # This flag is overwritten when asimov workspaces are required
     DataLoc = str(options.dataloc)
     BatchJobLoc = DataLoc + '/' + str(options.scriptsubdir) + '/'
     do_dry_run = bool(options.dryrun)
@@ -117,11 +116,9 @@ if __name__ == "__main__":
                 'RankingSubDir' : str(options.rankingsubdir)
                 }
 
-    # mu = float(options.mu)
     masses = list(map(float, str(options.masses).split(',')))
     kappas = list(map(float, str(options.kappas).split(',')))
     BRWs = list(map(float, str(options.brws).split(',')))
-    # BRWs = str(options.brws)
     InDataName =  "obsData"
     datatag = 'data' 
 
@@ -129,11 +126,11 @@ if __name__ == "__main__":
     batchSystem = str(options.batchsystem)
     batchQueue = str(options.batchqueue)
 
-    # if os.path.exists(os.environ['VLQCOMBDIR'] + '/CombCode.tgz'):
-    #     print("Deleting pre-existing tarball!!")
-    #     os.system('rm ' + os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
-    # prepareTarBall(pathToPackage = os.environ['VLQCOMBDIR'], 
-    #                pathToTarball = os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
+    if os.path.exists(os.environ['VLQCOMBDIR'] + '/CombCode.tgz'):
+        print("Deleting pre-existing tarball!!")
+        os.system('rm ' + os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
+    prepareTarBall(pathToPackage = os.environ['VLQCOMBDIR'], 
+                   pathToTarball = os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
 
     mkdir_tmp = "mkdir -p {}"
     
@@ -208,7 +205,7 @@ if __name__ == "__main__":
         f_tmp.write("cp {}/SPT_COMBINED_limits_{}*_data.txt $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/SPT_COMBINED', mktag))
         f_tmp.close()
         
-        if not options.debug:
+        if not do_dry_run:
             this_js.submitSet()
         
     
