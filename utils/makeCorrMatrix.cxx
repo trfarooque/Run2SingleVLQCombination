@@ -160,14 +160,67 @@ void makeCorrMatrix(const std::string& plotName){
   }//i
   CorrelationMatrix->GetZaxis()->SetRangeUser(-100.,100.);
 
-  TCanvas* canvas = new TCanvas(plotName.c_str(), "", 800, 800);
-  canvas->SetBottomMargin(0.3);
-  canvas->SetLeftMargin(0.3);
-  canvas->SetRightMargin(0.001);
-  canvas->SetTopMargin(0.001);
+  int size = 200;
+  if(num_RedParam>4){
+    //size = num_RedParam*50;
+    size = num_RedParam*40;
+  }
+
+  //int _resize = size+300;
+  int _resize = size+200;
+
+  float markersize = (num_RedParam <=10) ? 1 : 1 - (0.25/20.)*(num_RedParam - 10);
+  std::cout << " num_RedParam: " << num_RedParam << " markersize: " << markersize << std::endl;
+  TCanvas* canvas = new TCanvas(plotName.c_str(), "", _resize, _resize);
+  gStyle->SetPalette(87);
+  //CorrelationMatrix->SetMarkerSize(0.75*1000);
+  CorrelationMatrix->SetMarkerSize(markersize);
+  gStyle->SetPaintTextFormat(".1f");
+  gPad->SetLeftMargin(240./(_resize));
+  gPad->SetBottomMargin(240./(_resize));
+  gPad->SetRightMargin(60./(_resize));
+  gPad->SetTopMargin(60./(_resize));
+
+  std::cout << "xlabel : " << CorrelationMatrix->GetXaxis()->GetLabelSize()
+	    << "ylabel : " << CorrelationMatrix->GetYaxis()->GetLabelSize() << std::endl;
+
+  CorrelationMatrix->GetXaxis()->LabelsOption("v");
+  CorrelationMatrix->GetXaxis()->SetLabelSize( CorrelationMatrix->GetXaxis()->GetLabelSize()*0.75 );
+  CorrelationMatrix->GetYaxis()->SetLabelSize( CorrelationMatrix->GetYaxis()->GetLabelSize()*0.75 );
+
+
+
+  /*
+  gStyle->SetPalette(87);
+  CorrelationMatrix->SetMarkerSize(0.75*1000);
+  gStyle->SetPaintTextFormat(".1f");
+  gPad->SetLeftMargin(240./(_resize));
+  gPad->SetBottomMargin(240./(_resize));
+  gPad->SetRightMargin(60./(_resize));
+  gPad->SetTopMargin(60./(_resize));
+
+  CorrelationMatrix->GetXaxis()->LabelsOption("v");
+  CorrelationMatrix->GetXaxis()->SetLabelSize( CorrelationMatrix->GetXaxis()->GetLabelSize()*0.75 );
+  CorrelationMatrix->GetYaxis()->SetLabelSize( CorrelationMatrix->GetYaxis()->GetLabelSize()*0.75 );
+  */
+
+  canvas->SetTickx(0);
+  canvas->SetTicky(0);
+  CorrelationMatrix->GetYaxis()->SetTickLength(0);
+  CorrelationMatrix->GetXaxis()->SetTickLength(0);
   canvas->SetGrid();
-  canvas->cd();
   CorrelationMatrix->Draw("coltext");
+  canvas->RedrawAxis("g");
+
+  /*
+  canvas->SetTickx(0);
+  canvas->SetTicky(0);
+  CorrelationMatrix->GetYaxis()->SetTickLength(0);
+  CorrelationMatrix->GetXaxis()->SetTickLength(0);
+  canvas->SetGrid();
+  CorrelationMatrix->Draw("coltext");
+  canvas->RedrawAxis("g");
+  */
   std::cout << "Writing to file : " << plotName+".png" << std::endl;
   canvas->SaveAs((plotName+".png").c_str());
 
