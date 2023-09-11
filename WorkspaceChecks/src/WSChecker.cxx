@@ -59,20 +59,20 @@ void WSChecker::init(){
   //
   // Getting all analyses
   //
-  m_analyses = file_utils::read_file("data/NAMING_analyses.dat",
+  m_analyses = file_utils::read_file("WorkspaceChecks/data/NAMING_analyses.dat",
                                       {}/*characters that make skipped lines*/,
                                       {}/*ignored characters*/);
   //
   // Getting all nuisance parameters
   //
-  m_nps = file_utils::read_file_and_expand("data/NAMING_NPs.dat",
+  m_nps = file_utils::read_file_and_expand("WorkspaceChecks/data/NAMING_NPs.dat",
                                             {"*"}/*characters that make skipped lines*/,
                                             {"|"," "}/*ignored characters*/,
                                             "index"/*expansion key*/);
   //
   // Getting all backgrounds
   //
-  std::vector < std::string > temps_backs = file_utils::read_file("data/NAMING_backs.dat",
+  std::vector < std::string > temps_backs = file_utils::read_file("WorkspaceChecks/data/NAMING_backs.dat",
                                                                   {"*"}/*characters that make skipped lines*/,
                                                                   {"|"}/*ignored characters*/);
   for( const std::string &back : temps_backs ){
@@ -85,7 +85,7 @@ void WSChecker::init(){
   // Getting the templates
   //
   TEnv rEnv;
-  rEnv.ReadFile( "data/NAMING_other_conventions.dat", kEnvAll);
+  rEnv.ReadFile( "WorkspaceChecks/data/NAMING_other_conventions.dat", kEnvAll);
   for( const std::string &name : {"Back.NP","Back.Norm","Param.Default","Region.Name","POI.Name"}){
     m_templates.insert( std::pair < std::string, std::string >( name, rEnv.GetValue(name.c_str(), "") ) );
   }

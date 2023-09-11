@@ -14,6 +14,18 @@ def getSigTag(mass, kappa, brw):
 def getMKTag(mass, kappa):
     return "M{:02d}K{:03d}".format(int(mass/100), int(kappa*100))
 
+def getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
+    c = vlq(mass, 'T')
+    c.setKappaxi(kappa, brw, (1-brw)/2.0)
+    GM = c.getGamma()/mass
+    cw, cz, _, _ = c.getc_Vals()
+    XSsum = 0.
+    for mode in all_modes:
+        this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * (brw if mode[2] == 'W' else (1-brw)/2.) * \
+                  FtFactor(proc=mode, mass=mass, GM=GM)/PNWA(proc=mode, mass=mass, GM=GM)
+        XSsum += this_xs
+    return XSsum/0.1
+
 def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
     c = vlq(mass, 'T')
     c.setKappaxi(kappa, brw, (1-brw)/2.0)

@@ -13,11 +13,17 @@ from utils import *
 ##______________________________________________________
 ##
 def submitFailedJobs( expectedRootFile, scriptFile ):
+    if scriptFile in submitted_joblist:
+        print("Script has been submitted already! Moving on!")
+        return False
 
+    else:
+        submitted_joblist.append(scriptFile)
     if batchSystem == "condor":
         com = "condor_submit " + scriptFile
         os.system(com)
         time.sleep(2)
+        return True
     else:
         platform = socket.gethostname()
         com = ""
@@ -36,9 +42,11 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
         if not(os.path.isfile(scriptFile)):
             printWarning("WARNING: Cannot resubmit job since the script is missing ! ")
             print( "    -> ", scriptFile)
+            return False
         else:
             os.system(com)
             time.sleep(2)
+            return True
 
 ##------------------------------------------------------
 ## Check there is enough arguments
@@ -82,9 +90,11 @@ fNew = open(inputFile+".new",'w')
 
 nMissing = 0
 nZombie = 0
+nIncomplete = 0
 nGood = 0
 nRelaunchedJobs = 0
 nFilesChecked = 0
+submitted_joblist = []
 for line in f:
     nFilesChecked += 1
     
@@ -106,13 +116,27 @@ for line in f:
             printError("ZOMBIE: "+fileToCheck)
             nZombie += 1
             hasProblems = True
+        else:
+            _LL = [x.GetName() for x in rootFile.GetListOfKeys()]
+            if "nllscan" not in _LL or "fitResult" not in _LL:
+                printError("INCOMPLETE: "+fileToCheck)
+                nIncomplete += 1
+                hasProblems = True
+            else:
+                t = rootFile.Get('nllscan')
+                t.GetEntry(0)
+                if t.status != 0:
+                    printWarning("CONVERGENCE FAILED: "+fileToCheck)
+                    # nIncomplete += 1
+                    # hasProblems = True
+                del t
         rootFile.Close()
 
     if hasProblems:
         fNew.write(fileToCheck+" "+scriptFile+"\n")
         if relaunchJobs:
-            submitFailedJobs(fileToCheck, scriptFile)
-            nRelaunchedJobs += 1
+            if submitFailedJobs(fileToCheck, scriptFile):
+                nRelaunchedJobs += 1
     else:
         nGood += 1
 
@@ -129,7 +153,7 @@ print("Analysed files: {:d}".format(nFilesChecked))
 print("Good files: {:d}".format(nGood))
 print("Absent files: {:d}".format(nMissing))
 print("Corrupted files: {:d}".format(nZombie))
-
+print("Incomplete files: {:d}".format(nIncomplete))
 if relaunchJobs:
     print("Relaunched jobs: {:d}".format(nRelaunchedJobs))
 print("=============================")
