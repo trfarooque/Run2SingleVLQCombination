@@ -41,11 +41,11 @@ def oneDLimitPlotter(_x, _yup2, _yup1, _ydown1, _ydown2, _ymed, _yobs, _ytheory,
     ymed = np.asarray(_ymed)
     ytheory = np.asarray(_ytheory)
 
-    print x
-    print ymed
+    print(x)
+    print(ymed)
 
     grmedian = ROOT.TGraph(do_n,x,ymed)
-    for ii in range(do_n): print grmedian.GetX()[ii], grmedian.GetY()[ii]
+    for ii in range(do_n): print(grmedian.GetX()[ii], grmedian.GetY()[ii])
     grobs = ROOT.TGraph(do_n,x,yobs)
     
     if ytype == "xs": grtheory = ROOT.TGraph(do_n,x,ytheory)
