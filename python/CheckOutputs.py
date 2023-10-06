@@ -31,6 +31,8 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
             com += "qsub "
         elif platform.find("lxplus")>-1:#we work at lxbatch
             com += "bsub "
+        elif platform.find("atlui")>-1:#we work at lxbatch
+            com += "qsub "
         com += "-q " + batchQueue + " " + scriptFile
 
         place_to_store_the_logfiles = ""
@@ -70,7 +72,7 @@ if(len(sys.argv)<2):
 inputFile=""
 relaunchJobs=False
 batchSystem="condor"
-batchQueue="at3_short"
+batchQueue="workday" #"at3_short"
 for iArg in range(1,len(sys.argv)):
     splitted=sys.argv[iArg].split("=")
     if(splitted[0]=="input"): inputFile = splitted[1]
