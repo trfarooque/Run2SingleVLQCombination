@@ -1,5 +1,6 @@
 from Interp_Utils import *
 import json
+import sys
 
 #### Mass and Kappa ranges
 
@@ -21,8 +22,9 @@ Limit_map_all = LimitMapMaker(loc, Ms, Ks, BRWs, analysis, fit_to)
 
 for k in Ks:
     kappa = int(k)/100.
-    XSLimit_Plotter(Limit_map_all, kappa)
+    XSLimit_Plotter(Limit_map_all, kappa, BRWs, plotnametag = "_%s_%s_BRW%s" % (analysis, fit_to, BRWs))
 
+sys.exit()
 ### Make CW vs M plot
 
 CWLimit_Plotter(Limit_map_all)

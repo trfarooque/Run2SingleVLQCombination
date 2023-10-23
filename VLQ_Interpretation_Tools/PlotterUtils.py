@@ -69,10 +69,10 @@ def oneDLimitPlotter(_x, _yup2, _yup1, _ydown1, _ydown2, _ymed, _yobs, _ytheory,
     
     leg.AddEntry(grshade1,"95% CL Exp. #pm 2#sigma","f")
     leg.AddEntry(grshade2,"95% CL Exp. #pm 1#sigma","f")
+    leg.AddEntry(grobs,"Observed Limit","lp")
     leg.AddEntry(grmedian,"95% CL Exp. Limit","l")
     if ytype == "xs": leg.AddEntry(grtheory,"Theory Prediction (#kappa = " + str(k) +  ")")
-    #leg.AddEntry(grobs,"Observed Limit","lp")
-    leg.AddEntry(0, "BR(T #rightarrow Zt) = 0.25", "")
+    #leg.AddEntry(0, "BR(T #rightarrow Zt) = 0.25", "")
 
     grmedian.SetLineColor(1)
     grmedian.SetLineWidth(4)
@@ -96,7 +96,7 @@ def oneDLimitPlotter(_x, _yup2, _yup1, _ydown1, _ydown2, _ymed, _yobs, _ytheory,
     
     c_1DLimit = ROOT.TCanvas("c_1DLimit","c_1DLimit",1000,800)
     c_1DLimit.cd()
-    if ytype == "xs": ROOT.gPad.DrawFrame(x[0],_min,x[do_n-1],_max," ;m_{T}[GeV];#sigma(pp #rightarrow T #rightarrow Zt) [pb]")
+    if ytype == "xs": ROOT.gPad.DrawFrame(x[0],_min,x[do_n-1],_max," ;m_{T}[GeV];#sigma(pp #rightarrow T ) [pb]")
     if ytype == "coupling": ROOT.gPad.DrawFrame(x[0],_min,x[do_n-1],_max," ;m_{T}[GeV];#sqrt{c_{W,L}^{2} + c_{W,R}^{2}}")
     ROOT.gPad.SetLogy(do_log)
     grshade1.Draw("f")
@@ -104,7 +104,7 @@ def oneDLimitPlotter(_x, _yup2, _yup1, _ydown1, _ydown2, _ymed, _yobs, _ytheory,
     grshade3.Draw("f same")
     grmedian.Draw("same")
     if ytype == "xs": grtheory.Draw("same")
-    #grobs.Draw("l same")
+    grobs.Draw("l same")
     
     if _y2l is not None: 
         y2l = np.asarray(_y2l)

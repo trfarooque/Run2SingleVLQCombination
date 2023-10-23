@@ -183,13 +183,15 @@ def LimitMapMaker(Loc, Ms, Ks, BRWs, analysis, fit_to):
             if kappa not in Limit_map_all.keys(): Limit_map_all[kappa] = {}
             if m*100 not in  Limit_map_all[kappa].keys(): Limit_map_all[kappa][m*100] = {}
             #print(kappa, m*100, h_limits.GetBinContent(1))
-            Limit_map_all[kappa][m*100]["obs"] = h_limits.GetBinContent(1)
-            Limit_map_all[kappa][m*100]["exp"] = h_limits.GetBinContent(2)
-            Limit_map_all[kappa][m*100]["2up"] = h_limits.GetBinContent(3)
-            Limit_map_all[kappa][m*100]["1up"] = h_limits.GetBinContent(4)
-            Limit_map_all[kappa][m*100]["1dn"] = h_limits.GetBinContent(5)
-            Limit_map_all[kappa][m*100]["2dn"] = h_limits.GetBinContent(6)
+            Limit_map_all[kappa][m*100]["obs"] = h_limits.GetBinContent(1)*0.1
+            Limit_map_all[kappa][m*100]["exp"] = h_limits.GetBinContent(2)*0.1
+            Limit_map_all[kappa][m*100]["2up"] = h_limits.GetBinContent(3)*0.1
+            Limit_map_all[kappa][m*100]["1up"] = h_limits.GetBinContent(4)*0.1
+            Limit_map_all[kappa][m*100]["1dn"] = h_limits.GetBinContent(5)*0.1
+            Limit_map_all[kappa][m*100]["2dn"] = h_limits.GetBinContent(6)*0.1
             n += 1
+
+            #if MKtag=='M16K050BRW50': print('Limits for M16K050BRW50', h_limits.GetBinContent(1), h_limits.GetBinContent(2))
 
     print("Total of %d points read" % n)
             
@@ -482,7 +484,7 @@ def Newstyle_Map(Limit_map, kfact=1.0, plotnametag = ""):
     cc.SetRightMargin(0.2)
     cc.SaveAs("Plots/New_Exclusion_" + str(int(kfact)) + plotnametag + ".png")
 
-def XSLimit_Plotter(Limit_map_all, k, Limit_map_2l = None, Limit_map_3l = None, plotnametag = ''):
+def XSLimit_Plotter(Limit_map_all, k, BRW, Limit_map_2l = None, Limit_map_3l = None, plotnametag = ''):
 
     ## Creates XS vs Mass plots for one of the chosen kappas
 
@@ -503,8 +505,14 @@ def XSLimit_Plotter(Limit_map_all, k, Limit_map_2l = None, Limit_map_3l = None, 
         y_3l = []
     else:
         y_3l = None
+
+    # Set BRs
+    xiw = float(BRW)/100.
+    xiz = (1.0 - xiw)/2.
+
     c = vlq()
     for m in Ms:
+        if k==0.5 and m==1600: print("limits for k = %0.2f, m = %d: %f %f" % (k, m, this_limits[m]['obs'], this_limits[m]['exp']))
         _med.append(this_limits[m]['exp'])
         _obs.append(this_limits[m]['obs'])
         _2up.append(this_limits[m]['2up'])
@@ -516,16 +524,23 @@ def XSLimit_Plotter(Limit_map_all, k, Limit_map_2l = None, Limit_map_3l = None, 
         if Limit_map_3l != None:
             y_3l.append(Limit_map_3l[k][m]['exp'])
         c.setMVLQ(m*1.0)
-        c.setKappaxi(k, 0.5, 0.25)
+        #c.setKappaxi(k, 0.5, 0.25)
+        c.setKappaxi(k, xiw, xiz) # No hardcoding on BRs
         G = c.getGamma()/(m*1.0)
         cw = c.getc_Vals()[0]
         BRZ = c.getBRs()[1]
-        _theory.append(XS_NWA(m*1.0, cw)*BRZ/PNWA("WTZt",m*1.0, G))
+        BRH = c.getBRs()[2]
+        XS_WTZt = XS_NWA(m*1.0, cw)*BRZ/PNWA("WTZt",m*1.0, G)
+        XS_WTHt = XS_NWA(m*1.0, cw)*BRH/PNWA("WTHt",m*1.0, G)
+        XS_ZTZt = XS_NWA(m*1.0, cw)*BRZ/PNWA("ZTZt",m*1.0, G)
+        XS_ZTHt = XS_NWA(m*1.0, cw)*BRH/PNWA("ZTHt",m*1.0, G)
+        _theory.append(XS_WTZt + XS_WTHt + XS_ZTZt + XS_ZTHt)
+
     for ii in range(len(Ms)): Ms[ii] = Ms[ii]*1.0
     plotname = "Plots/XSLimit_" + str(int(k*100)) + plotnametag +  ".png"
     oneDLimitPlotter(Ms, _2up, _1up, _1dn, _2dn, _med, _obs, _theory, True, k = k, ytype = "xs", plotname = plotname, _y2l = y_2l, _y3l = y_3l)
         
-def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
+def CWLimit_Plotter(Limit_map_all, BRW, plotnametag = ''):
 
     ## Create cW vs M plot for singlet BRs
 
@@ -562,6 +577,10 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
                   "1dn":_1dn,
                   "2dn":_2dn
                   }
+
+    # Set BRs
+    xiw = float(BRW)/100.
+    xiz = (1.0 - xiw)/2.
     
     c= vlq()
 
@@ -572,7 +591,7 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
             mass = m*1.0
             c.setMVLQ(mass)
             k_low = Ks_to_scan[0]
-            c.setKappaxi(k_low, 0.5, 0.25)
+            c.setKappaxi(k_low, xiw, xiz)
             cw_low = c.getc_Vals()[0]
             BRZ = c.getBRs()[1]
             G = c.getGamma()/mass
@@ -580,7 +599,7 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
             xs_low = XS_NWA(mass, cw_low)*BRZ/PNWA("WTZt",mass, G)
             for k in Ks_to_scan[1:]:
                 k_high = k
-                c.setKappaxi(k_high, 0.5, 0.25)
+                c.setKappaxi(k_high, xiw, xiz)
                 cw_high = c.getc_Vals()[0]
                 BRZ = c.getBRs()[1]
                 G = c.getGamma()/mass
