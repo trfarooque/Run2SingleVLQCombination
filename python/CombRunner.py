@@ -15,6 +15,11 @@ from optparse import OptionParser
 
 if __name__ == "__main__":
     parser = OptionParser()
+    parser.add_option("--ana-tag",
+                      dest="anatag",
+                      help='analysis channel',
+                      choices=['ALL','SPT_MONOTOP','SPT_OSML','SPT_HTZT'],
+                      default='ALL')
     parser.add_option("--data-loc", 
                       dest="dataloc",
                       help='location of data',
@@ -210,6 +215,7 @@ if __name__ == "__main__":
     debug_level = bool(options.debug)
     use_defScaling = bool(options.usedefscale)
 
+    AnaTag = str(options.anatag)
     DataLoc = str(options.dataloc)
     fittype = str(options.fittype)
     pathdict = {'InWSSubDir' : str(options.inwssubdir),
@@ -317,6 +323,8 @@ BRWs = {}
     ALL_CFGs = {}
 
     for ana in ['SPT_OSML', 'SPT_HTZT', 'SPT_MONOTOP']:
+        if (AnaTag != 'ALL') and (AnaTag != ana):
+            continue
         print("Creating CombinationConfig for {}".format(ana))
         ALL_CFGs[ana]  = VLQCombinationConfig(AnaCode = ana, 
                                               DataFolder = DataLoc,

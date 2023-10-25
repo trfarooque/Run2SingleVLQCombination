@@ -38,6 +38,7 @@ class RankingPlotter:
 
     ##### Main code that extracts list of NPs and their pulls/constraints from SPLUSB fit file ####
     def ReadFitResultTextFile(self):
+
         fitFile = open(self.fitFileName, 'r')
 
         np_index = 0
@@ -49,6 +50,7 @@ class RankingPlotter:
             elif( not(self.includeGamma) and ("gamma_" in line) ):
                 continue
             elif("mu_signal" in line):
+                linedata = line.split()
                 self.mu_nominal = {'name': linedata[0], 'central': float(linedata[1]), \
                                    'up': float(linedata[2]), 'down': float(linedata[3])}
                 print("Read mu_nominal, central:{:g}".format(self.mu_nominal['central']))
@@ -66,7 +68,7 @@ class RankingPlotter:
                     nuispar = { 'name': np_name, 'central': np_cntrl, 'up': np_pos, 'down': np_neg }
                     self.NPlist[np_index] = nuispar 
                     np_index += 1
-                    # print("Added to list: ", np_name)
+
         print("Number of NPs read: ", np_index+1)
 
     ##### Return command to run fits to calculate impact of each NP ####
@@ -190,7 +192,7 @@ class RankingPlotter:
             err_high = fitResult.floatParsFinal().find("mu_signal").getErrorHi()
             err_low = fitResult.floatParsFinal().find("mu_signal").getErrorLo()
             mu_fit = {'name': 'mu_signal_'+config, 'central':valV, 'up':err_high, 'down':err_low }
-            print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
+            #print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
             fitFile.Close()
             del fitFile
             del fitResult
@@ -226,6 +228,7 @@ class RankingPlotter:
                                   'central': float(central),
                                   'up': float(up), 
                                   'down': float(down)}
+                        #print("Read mu_signal from {} :\n {:g}".format(fname, mu_fit['central']))
                         break
                     except:
                         print("Line could not be formatted from {}: {}".format(fname, line))

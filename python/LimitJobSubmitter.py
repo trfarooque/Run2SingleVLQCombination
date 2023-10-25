@@ -14,6 +14,11 @@ if 'VLQCOMBDIR' not in os.environ.keys():
 
 if __name__ == "__main__":
     parser = OptionParser()
+    parser.add_option("--ana-tag",
+                      dest="anatag",
+                      help='analysis channel',
+                      choices=['SPT_COMBINED','SPT_MONOTOP','SPT_OSML','SPT_HTZT'],
+                      default='SPT_COMBINED')
     parser.add_option("--data-loc", 
                       dest="dataloc",
                       help='location of data',
@@ -84,6 +89,11 @@ if __name__ == "__main__":
                       dest="batchqueue",
                       help='Name of batch queue/flavour (short,long,...) to which jobs should be sent. The default option will be chosen based on the running platform.',
                       default='')
+    parser.add_option("--use-data",
+                      dest="usedata",
+                      help='set if real data is to be used, otherwise asimov will be used',
+                      action='store_true',
+                      default=False)
     parser.add_option("--dry-run", 
                       dest="dryrun",
                       help='set if you want to write commands to scripts without executing them',
@@ -98,8 +108,10 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
+    anatag = options.anatag
     DataLoc = str(options.dataloc)
     BatchJobLoc = DataLoc + '/' + str(options.scriptsubdir) + '/'
+    use_data = bool(options.usedata)
     do_dry_run = bool(options.dryrun)
     debug_level = bool(options.debug)
 
@@ -146,7 +158,7 @@ if __name__ == "__main__":
         mktag = getMKTag(mass, kappa)
         these_jobs = []
         for brw in BRWs:
-            jobtag = getSigTag(mass, kappa, brw)
+            jobtag = anatag + "_" + getSigTag(mass, kappa, brw)
             # jobtag = mktag
             this_job = Job(batchSystem)
             this_job.setDebug(debug_level)
@@ -166,14 +178,20 @@ if __name__ == "__main__":
             this_job.addOption("--masses", str(int(mass)))
             this_job.addOption("--kappas", str(kappa))
             this_job.addOption("--brws", str(brw))
-            this_job.addOption("--use-data", "")
-            this_job.addOption("--skip-asimov", "")
-            this_job.addOption("--skip-separate-fitting", "")
-            this_job.addOption("--skip-separate-limits", "")
+            if(use_data):
+                this_job.addOption("--use-data", "")
+                this_job.addOption("--skip-asimov", "")
+            if(anatag == 'SPT_COMBINED'):
+                this_job.addOption("--skip-separate-fitting", "")
+                this_job.addOption("--skip-separate-limits", "")
+            else:
+                this_job.addOption("--skip-combined-fitting", "")
+                this_job.addOption("--skip-combined-limits", "")
+                this_job.addOption("--ana-tag", str(anatag))
             this_job.addOption("--skip-trexf-configs", "")
             this_job.addOption("--skip-trexf-comp", "")
-            this_job.setOutDir(DataLoc + '/' + pathdict['LimitSubDir'] + '/SPT_COMBINED/')
-            this_job.setOutputFile('SPT_COMBINED_limits_{}_data.txt'.format(jobtag))
+            this_job.setOutDir(DataLoc + '/' + pathdict['LimitSubDir'] + '/'+anatag+'/')
+            this_job.setOutputFile('{}_limits_{}_data.txt'.format(anatag,jobtag))
             this_job.setExecutable("python python/CombRunner.py")
 
             command = this_job.execName + " "
@@ -189,12 +207,12 @@ if __name__ == "__main__":
         for job in these_jobs:
             this_js.addJob(job)
         
-        this_js.setOutDir(OUTLOC)     # FIXME
-        this_js.setLogDir(LOGLOC)        # FIXME
-        this_js.setScriptDir(SCRIPTLOC)  # FIXME
+        this_js.setOutDir(OUTLOC)
+        this_js.setLogDir(LOGLOC)
+        this_js.setScriptDir(SCRIPTLOC)
 
-        this_js.setScriptName("script_{}.sh".format(mktag))
-        this_js.setTarBall(os.environ['VLQCOMBDIR'] + '/CombCode.tgz')  #FIXME
+        this_js.setScriptName("script_{}_{}.sh".format(anatag,mktag))
+        this_js.setTarBall(os.environ['VLQCOMBDIR'] + '/CombCode.tgz')
         
         this_js.writeScript()
 
@@ -202,7 +220,7 @@ if __name__ == "__main__":
 
         f_tmp = open(this_js.scriptDir + "/" + this_js.scriptName , "a")
         f_tmp.write("\n")
-        f_tmp.write("cp {}/SPT_COMBINED_limits_{}*_data.txt $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/SPT_COMBINED', mktag))
+        f_tmp.write("cp {}/{}_limits_{}*_data.txt $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/'+anatag, anatag,mktag))
         f_tmp.close()
         
         if not do_dry_run:
