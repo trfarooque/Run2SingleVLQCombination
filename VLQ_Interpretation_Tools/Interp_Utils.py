@@ -1,6 +1,6 @@
 import ROOT
 import os, sys
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 from numpy import random, diag, array, asarray, log, exp, arange, sin, cos, append
 from VLQCouplingCalculator import VLQCouplingCalculator as vlq
 from VLQCouplingCalculator import VLQMixAngleCalculator as vlqx
@@ -139,16 +139,19 @@ def LimitReader(Limit_map_all, label="exp"):
     Kappas = sorted(Limit_map_all.keys())
     Ms = sorted(Limit_map_all[Kappas[0]].keys())
     if label not in Limit_map_all[Kappas[0]][Ms[0]].keys():
-        print "Label not recognized"
+        print("Label not recognized")
         return {}
     Limit_map = {}
     for k in Kappas:
         Limit_map[k] = {}
         for m in Ms:
-            Limit_map[k][m] = Limit_map_all[k][m][label]
+            try:
+                Limit_map[k][m] = Limit_map_all[k][m][label]
+            except:
+                print("Error in reading limit for k = %0.2f, m = %d" % (k, m))
     return Limit_map
 
-def LimitMapMaker(Loc):
+def LimitMapMaker(Loc, Ms, Ks, BRWs, analysis, fit_to):
 
     ## Makes a dictionary of limits
     ## For each kappa and mass, there is a dictionary entry: limit[kappa][mass], each entry being a dictionary
@@ -157,31 +160,77 @@ def LimitMapMaker(Loc):
     ## Adapted for OSML_SP3l analysis, can be adapted for any analysis
 
     Limit_map_all = {}  # Map of mass -> limit for kappas: _map [k_index] [m_index]
-    Ms = range(10, 24, 1)
-    Ks = ['015', '020','025', '030', '035', '040', '045', '050', '060', '070', '080', '090', '100', '110', '120', '130', '140', '150', '160']
+    #Ms = range(10, 24, 1)
+    #Ks = ['015', '020','025', '030', '035', '040', '045', '050', '060', '070', '080', '090', '100', '110', '120', '130', '140', '150', '160']
+    n = 0
     for m in Ms:
         for k in Ks:
-            MKtag = 'M' + str(m) + 'K' + k
-            FitJobName = Loc + MKtag
-            _dir = FitJobName + '/Limits/asymptotics/myLimit_CL95.root'
+            MKtag = 'M' + str(m) + 'K' + k + 'BRW' + BRWs
+            #FitJobName = Loc + MKtag
+            _dir = Loc + '/%s_limits_%s_%s.root' % (analysis, MKtag, fit_to)
+            #_dir = FitJobName + '/Limits/asymptotics/myLimit_CL95.root'
             if not os.path.exists(_dir):
                 _dir = _dir.replace(MKtag, MKtag[1:])
-                if not os.path.exists(_dir):
-                    print _dir + " Doesn't Exist!!"
-                    continue
+                #if not os.path.exists(_dir):
+                #print(_dir + " Doesn't Exist!!")
+                continue
+            
             _f = ROOT.TFile(_dir)
-            t_stats = _f.Get("stats")
-            t_stats.GetEntry(0)
+            print("Reading " + _dir)
+            h_limits = _f.Get("limit")
+            h_limits.Sumw2()
             kappa = int(k)/100.0
             if kappa not in Limit_map_all.keys(): Limit_map_all[kappa] = {}
             if m*100 not in  Limit_map_all[kappa].keys(): Limit_map_all[kappa][m*100] = {}
-            Limit_map_all[kappa][m*100]["obs"] = t_stats.obs_upperlimit * 0.1
-            Limit_map_all[kappa][m*100]["exp"] = t_stats.exp_upperlimit * 0.1
-            Limit_map_all[kappa][m*100]["2up"] = t_stats.exp_upperlimit_plus2 * 0.1
-            Limit_map_all[kappa][m*100]["1up"] = t_stats.exp_upperlimit_plus1 * 0.1
-            Limit_map_all[kappa][m*100]["1dn"] = t_stats.exp_upperlimit_minus1 * 0.1
-            Limit_map_all[kappa][m*100]["2dn"] = t_stats.exp_upperlimit_minus2 * 0.1
+            #print(kappa, m*100, h_limits.GetBinContent(1))
+            Limit_map_all[kappa][m*100]["obs"] = h_limits.GetBinContent(1)*0.1
+            Limit_map_all[kappa][m*100]["exp"] = h_limits.GetBinContent(2)*0.1
+            Limit_map_all[kappa][m*100]["2up"] = h_limits.GetBinContent(3)*0.1
+            Limit_map_all[kappa][m*100]["1up"] = h_limits.GetBinContent(4)*0.1
+            Limit_map_all[kappa][m*100]["1dn"] = h_limits.GetBinContent(5)*0.1
+            Limit_map_all[kappa][m*100]["2dn"] = h_limits.GetBinContent(6)*0.1
+            n += 1
+
+            #if MKtag=='M16K050BRW50': print('Limits for M16K050BRW50', h_limits.GetBinContent(1), h_limits.GetBinContent(2))
+
+    print("Total of %d points read" % n)
+            
     return Limit_map_all
+
+#def LimitMapMaker(Loc):
+#
+#    ## Makes a dictionary of limits
+#    ## For each kappa and mass, there is a dictionary entry: limit[kappa][mass], each entry being a dictionary
+#    ## Each entry stores six numbers, with keys ['obs', 'exp', '2up', '1up', '1dn', '2dn']
+#    ## These numbers are XS limits in pb
+#    ## Adapted for OSML_SP3l analysis, can be adapted for any analysis
+#
+#    Limit_map_all = {}  # Map of mass -> limit for kappas: _map [k_index] [m_index]
+#    Ms = range(10, 24, 1)
+#    Ks = ['015', '020','025', '030', '035', '040', '045', '050', '060', '070', '080', '090', '100', '110', '120', '130', '140', '150', '160']
+#    for m in Ms:
+#        for k in Ks:
+#            MKtag = 'M' + str(m) + 'K' + k
+#            FitJobName = Loc + MKtag
+#            _dir = FitJobName + '/Limits/asymptotics/myLimit_CL95.root'
+#            if not os.path.exists(_dir):
+#                _dir = _dir.replace(MKtag, MKtag[1:])
+#                if not os.path.exists(_dir):
+#                    print _dir + " Doesn't Exist!!"
+#                    continue
+#            _f = ROOT.TFile(_dir)
+#            t_stats = _f.Get("stats")
+#            t_stats.GetEntry(0)
+#            kappa = int(k)/100.0
+#            if kappa not in Limit_map_all.keys(): Limit_map_all[kappa] = {}
+#            if m*100 not in  Limit_map_all[kappa].keys(): Limit_map_all[kappa][m*100] = {}
+#            Limit_map_all[kappa][m*100]["obs"] = t_stats.obs_upperlimit * 0.1
+#            Limit_map_all[kappa][m*100]["exp"] = t_stats.exp_upperlimit * 0.1
+#            Limit_map_all[kappa][m*100]["2up"] = t_stats.exp_upperlimit_plus2 * 0.1
+#            Limit_map_all[kappa][m*100]["1up"] = t_stats.exp_upperlimit_plus1 * 0.1
+#            Limit_map_all[kappa][m*100]["1dn"] = t_stats.exp_upperlimit_minus1 * 0.1
+#            Limit_map_all[kappa][m*100]["2dn"] = t_stats.exp_upperlimit_minus2 * 0.1
+#    return Limit_map_all
 
 
 def GetLimit(Limit_map, m , k):
@@ -329,21 +378,25 @@ def ATLASstyle_Map(Limit_map, kfact=1.0, plotnametag = ""):
             lim_high = GetLimit(Limit_map, Mhigh, k)
             xs_high = XS_NWA(Mhigh, cw)*c.getBRs()[1]/PNWA("WTZt",Mhigh, G)
             for m in arange(M_max, M_min, -1*dM):
-                #print m, cw, cz
-                Mlow = m
-                c.setMVLQ(Mlow*1.0)
-                c.setc_Vals(cw, cz, kfact*cz)
-                k = c.getKappa()
-                G = c.getGamma()/Mlow
-                lim_low = GetLimit(Limit_map, Mlow, k)
-                xs_low = XS_NWA(Mlow, cw)*c.getBRs()[1]/PNWA("WTZt",Mlow, G)
-                if (lim_low - xs_low)*(lim_high - xs_high) < 0. and lim_low > 0. and lim_high > 0.:
-                    h.Fill(cz*(mZ/mW), cw, (Mlow + Mhigh)/2.0)   # Wulzer coupling
-                    print cz, cw, Mlow, Mhigh
-                    break
-                Mhigh = Mlow
-                lim_high = lim_low
-                xs_high = xs_low
+                #print(m, cw, cz)
+                try: 
+                    Mlow = m
+                    c.setMVLQ(Mlow*1.0)
+                    c.setc_Vals(cw, cz, kfact*cz)
+                    k = c.getKappa()
+                    G = c.getGamma()/Mlow
+                    lim_low = GetLimit(Limit_map, Mlow, k)
+                    xs_low = XS_NWA(Mlow, cw)*c.getBRs()[1]/PNWA("WTZt",Mlow, G)
+                    if (lim_low - xs_low)*(lim_high - xs_high) < 0. and lim_low > 0. and lim_high > 0.:
+                        h.Fill(cz*(mZ/mW), cw, (Mlow + Mhigh)/2.0)   # Wulzer coupling
+                        print(cz, cw, Mlow, Mhigh)
+                        break
+                    Mhigh = Mlow
+                    lim_high = lim_low
+                    xs_high = xs_low
+                except:
+                    print("Error in computing limit for m = %0.2f, kappa=%0.2f cw = %0.2f, cz = %0.2f" % (m, k, cw, cz))
+                    continue
     cc2 = ROOT.TCanvas("C","C",1000,800)
     cc2.cd()
     cc2.SetFrameFillColor(20)
@@ -431,7 +484,7 @@ def Newstyle_Map(Limit_map, kfact=1.0, plotnametag = ""):
     cc.SetRightMargin(0.2)
     cc.SaveAs("Plots/New_Exclusion_" + str(int(kfact)) + plotnametag + ".png")
 
-def XSLimit_Plotter(Limit_map_all, k, Limit_map_2l = None, Limit_map_3l = None, plotnametag = ''):
+def XSLimit_Plotter(Limit_map_all, k, BRW, Limit_map_2l = None, Limit_map_3l = None, plotnametag = ''):
 
     ## Creates XS vs Mass plots for one of the chosen kappas
 
@@ -452,29 +505,42 @@ def XSLimit_Plotter(Limit_map_all, k, Limit_map_2l = None, Limit_map_3l = None, 
         y_3l = []
     else:
         y_3l = None
+
+    # Set BRs
+    xiw = float(BRW)/100.
+    xiz = (1.0 - xiw)/2.
+
     c = vlq()
     for m in Ms:
+        if k==0.5 and m==1600: print("limits for k = %0.2f, m = %d: %f %f" % (k, m, this_limits[m]['obs'], this_limits[m]['exp']))
         _med.append(this_limits[m]['exp'])
         _obs.append(this_limits[m]['obs'])
         _2up.append(this_limits[m]['2up'])
         _1up.append(this_limits[m]['1up'])
         _2dn.append(this_limits[m]['2dn'])
         _1dn.append(this_limits[m]['1dn'])
-        if Limit_map_2l <> None: 
+        if Limit_map_2l != None: 
             y_2l.append(Limit_map_2l[k][m]['exp'])
-        if Limit_map_3l <> None:
+        if Limit_map_3l != None:
             y_3l.append(Limit_map_3l[k][m]['exp'])
         c.setMVLQ(m*1.0)
-        c.setKappaxi(k, 0.5, 0.25)
+        #c.setKappaxi(k, 0.5, 0.25)
+        c.setKappaxi(k, xiw, xiz) # No hardcoding on BRs
         G = c.getGamma()/(m*1.0)
         cw = c.getc_Vals()[0]
         BRZ = c.getBRs()[1]
-        _theory.append(XS_NWA(m*1.0, cw)*BRZ/PNWA("WTZt",m*1.0, G))
+        BRH = c.getBRs()[2]
+        XS_WTZt = XS_NWA(m*1.0, cw)*BRZ/PNWA("WTZt",m*1.0, G)
+        XS_WTHt = XS_NWA(m*1.0, cw)*BRH/PNWA("WTHt",m*1.0, G)
+        XS_ZTZt = XS_NWA(m*1.0, cw)*BRZ/PNWA("ZTZt",m*1.0, G)
+        XS_ZTHt = XS_NWA(m*1.0, cw)*BRH/PNWA("ZTHt",m*1.0, G)
+        _theory.append(XS_WTZt + XS_WTHt + XS_ZTZt + XS_ZTHt)
+
     for ii in range(len(Ms)): Ms[ii] = Ms[ii]*1.0
     plotname = "Plots/XSLimit_" + str(int(k*100)) + plotnametag +  ".png"
     oneDLimitPlotter(Ms, _2up, _1up, _1dn, _2dn, _med, _obs, _theory, True, k = k, ytype = "xs", plotname = plotname, _y2l = y_2l, _y3l = y_3l)
         
-def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
+def CWLimit_Plotter(Limit_map_all, BRW, plotnametag = ''):
 
     ## Create cW vs M plot for singlet BRs
 
@@ -511,6 +577,10 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
                   "1dn":_1dn,
                   "2dn":_2dn
                   }
+
+    # Set BRs
+    xiw = float(BRW)/100.
+    xiz = (1.0 - xiw)/2.
     
     c= vlq()
 
@@ -521,7 +591,7 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
             mass = m*1.0
             c.setMVLQ(mass)
             k_low = Ks_to_scan[0]
-            c.setKappaxi(k_low, 0.5, 0.25)
+            c.setKappaxi(k_low, xiw, xiz)
             cw_low = c.getc_Vals()[0]
             BRZ = c.getBRs()[1]
             G = c.getGamma()/mass
@@ -529,7 +599,7 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
             xs_low = XS_NWA(mass, cw_low)*BRZ/PNWA("WTZt",mass, G)
             for k in Ks_to_scan[1:]:
                 k_high = k
-                c.setKappaxi(k_high, 0.5, 0.25)
+                c.setKappaxi(k_high, xiw, xiz)
                 cw_high = c.getc_Vals()[0]
                 BRZ = c.getBRs()[1]
                 G = c.getGamma()/mass
@@ -551,7 +621,7 @@ def CWLimit_Plotter(Limit_map_all, plotnametag = ''):
                 indices_to_remove.append(ii)
                 break
 
-    print indices_to_remove
+    print(indices_to_remove)
 
     newMs = []
     newobs = []
@@ -677,7 +747,7 @@ def MixAngleLimit_Plotter(Limit_map_all, multiplet='T', plotnametag = ""):
                 Mlow = Mhigh
                 lim_low = lim_high
                 xs_low = xs_high
-        print lim_type
+        print(lim_type)
         #for ii in range(len(this_Limits_array)):
             #print int(this_Limits_array[ii]*100.0)/100.0, ":", this_Ms_array[ii]
             #print this_Ms_array
@@ -690,12 +760,12 @@ def MixAngleLimit_Plotter(Limit_map_all, multiplet='T', plotnametag = ""):
         this_Ms_array = map_MLimit[lim_type]
         if this_Ms_array[0] > smallest_m:
             extra_lim = interpolator(this_Ms_array[0], this_Limits_array[0], this_Ms_array[1], this_Limits_array[1], smallest_m)
-            print lim_type, smallest_m, extra_lim
+            print(lim_type, smallest_m, extra_lim)
             map_AngleLimit[lim_type] = [extra_lim] + map_AngleLimit[lim_type]
             map_MLimit[lim_type] = [smallest_m] + map_MLimit[lim_type]
         if this_Ms_array[-1] > smallest_m:
             extra_lim = interpolator(this_Ms_array[-1], this_Limits_array[-1], this_Ms_array[-2], this_Limits_array[-2], smallest_m)
-            print lim_type, smallest_m,extra_lim
+            print(lim_type, smallest_m,extra_lim)
             map_AngleLimit[lim_type] = map_AngleLimit[lim_type] + [extra_lim]
             map_MLimit[lim_type] = map_MLimit[lim_type] + [smallest_m]
             #this_Limits_array.append(extra_lim)
