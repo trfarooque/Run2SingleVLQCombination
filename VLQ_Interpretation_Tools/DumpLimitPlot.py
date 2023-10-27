@@ -246,9 +246,6 @@ if drawNonTheory:
             indir = baseDir + '/' + cfg + '/'
             pathname = indir + cfg + "_limits_" + getSigTag(mass['mass'],Kappa,BRW) + "_" + datatag + ".root"
             files = glob.glob(pathname)
-            if len(files)==0: ## TF 000 HACK
-                pathname = indir + cfg + "_limits_" + getSigTag(mass['mass'],Kappa,BRW) + "_asimov_mu0" + ".root"
-                files = glob.glob(pathname)
 
             if len(files)==0 or len(files)>1:
                 print("<!> ERROR for mass ",mass['mass']," !! --> nFiles = ",len(files))
