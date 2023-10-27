@@ -33,12 +33,6 @@ def ExtractLimitFromRootFile(fname):
     limits["exp_lim_minus1"] = h_lim.GetBinContent(6)
     infile.Close()
 
-
-    #print('Displaying limits information for ',fname)
-    #for key,val in limits.items():
-    #    print(key,' : ',val)
-    #print('\n')
-
     return limits
 
 ##_____________________________________________________________________________________________
@@ -212,9 +206,7 @@ for M in Masses:
         prodIndex = keyDictionary[sig[:2:]]
         decayIndex = keyDictionary[sig[2::].upper()]
                 
-        #print("sigtype : ",sig," prodIndex : ",prodIndex," decayIndex : ",decayIndex)
         XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]/PNWA(proc=sig, mass=M, GM=Gamma/M)
-
         TotalXSec += XSec
 
         #print("process : ",sig," M =",M,", kappa =",Kappa,", BRW =",BRW,", width/mass =",Gamma/M)
@@ -253,7 +245,6 @@ if drawNonTheory:
 
             indir = baseDir + '/' + cfg + '/'
             pathname = indir + cfg + "_limits_" + getSigTag(mass['mass'],Kappa,BRW) + "_" + datatag + ".root"
-            print(pathname)
             files = glob.glob(pathname)
             if len(files)==0: ## TF 000 HACK
                 pathname = indir + cfg + "_limits_" + getSigTag(mass['mass'],Kappa,BRW) + "_asimov_mu0" + ".root"
@@ -265,7 +256,6 @@ if drawNonTheory:
             counter+=1
             limpoint = ExtractLimitFromRootFile(files[0])
             this_xsec = mass['xsec']
-            #print(" Mass: ", mass['mass'], " mu : ", limpoint["obs_lim"], " xsec : ", this_xsec)
 
             tg_obs[n].SetPoint(counter,mass['mass'],limpoint["obs_lim"]*this_xsec)
             tg_exp[n].SetPoint(counter,mass['mass'],limpoint["exp_lim"]*this_xsec)
@@ -280,7 +270,7 @@ if drawNonTheory:
 
 ###################### All required TGraphs filled ########################
 
-cols = [kBlue+1,kRed,kBlack,kOrange+4] # max compare 4 configurations
+cols = [kBlack,kBlue+1,kMagenta,kOrange+4] # max compare 4 configurations
 fills = [3002,3004,3005,3007]
 
 #Make multigraph and legend, set graph styles and add all required graphs to multigraph and to legend
@@ -295,59 +285,60 @@ tmg_ratio = TMultiGraph()
 if drawTheory:
     tg_theory.SetLineColor(kRed)
     tg_theory.SetFillColor(kRed-9)
+    print("Adding theory")
     tmg_main.Add(tg_theory, "4lx")
     leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 if drawNonTheory:
 
-    if ratio:
-        tg_ratio[n].SetLineColor(cols[n])
-        tg_ratio[n].SetLineWidth(3)
-        tg_ratio[n].SetLineStyle(2)
-        tmg_ratio.Add(tg_ratio[n], "l")
+    for n,cfg in enumerate(configs):
 
-    if n==0:
-        tg_exp2s[n].SetLineColor(kYellow)
-        tg_exp2s[n].SetFillColor(kYellow)
-        tmg_main.Add(tg_exp2s[n], "fl")
-        leg.AddEntry(tg_exp2s[n],"95% CL expected limit #pm2#sigma","f")
+        if ratio:
+            tg_ratio[n].SetLineColor(cols[n])
+            tg_ratio[n].SetLineWidth(3)
+            tg_ratio[n].SetLineStyle(2)
+            tmg_ratio.Add(tg_ratio[n], "l")
 
-        tg_exp1s[n].SetLineColor(kGreen)
-        tg_exp1s[n].SetFillColor(kGreen)
-        tmg_main.Add(tg_exp1s[n], "fl")
-        leg.AddEntry(tg_exp1s[n],"95% CL expected limit #pm1#sigma","f")
+        if n==0:
+            tg_exp2s[n].SetLineColor(kYellow)
+            tg_exp2s[n].SetFillColor(kYellow)
+            print("Adding exp line :",n)
+            tmg_main.Add(tg_exp2s[n], "fl")
+            leg.AddEntry(tg_exp2s[n],"95% CL expected limit #pm2#sigma","f")
+            
+            tg_exp1s[n].SetLineColor(kGreen)
+            tg_exp1s[n].SetFillColor(kGreen)
+            tmg_main.Add(tg_exp1s[n], "fl")
+            leg.AddEntry(tg_exp1s[n],"95% CL expected limit #pm1#sigma","f")
 
-        tg_exp[n].SetLineColor(kBlack)
-        tg_exp[n].SetLineWidth(3)
-        tg_exp[n].SetLineStyle(2)
-        tmg_main.Add(tg_exp, "l")
-        leg.AddEntry(tg_exp[n],"95% CL expected limit","l")
+            tg_exp[n].SetLineColor(kBlack)
+            tg_exp[n].SetLineWidth(3)
+            tg_exp[n].SetLineStyle(2)
+            tmg_main.Add(tg_exp[n], "l")
+            leg.AddEntry(tg_exp[n],"95% CL expected limit","l")
         
-        if data:
-            tg_obs[n].SetLineColor(kBlack)
-            tg_obs[n].SetLineWidth(3)
-            tg_obs[n].SetLineStyle(1)
-            tmg_main.Add(tg_obs, "l")
-            leg.AddEntry(tg_obs,"95% CL observed limit","l")
+            if data:
+                tg_obs[n].SetLineColor(kBlack)
+                tg_obs[n].SetLineWidth(3)
+                tg_obs[n].SetLineStyle(1)
+                tmg_main.Add(tg_obs[n], "l")
+                leg.AddEntry(tg_obs[n],"95% CL observed limit","l")
 
-    else:
-        tg_exp[n].SetLineColor(cols[n])
-        tg_exp[n].SetFillColor(cols[n])
-        tg_exp[n].SetFillStyle(3005)
-        tg_exp[n].SetLineWidth(3)
-        tg_exp[n].SetLineStyle(2)
-        tmg_main.Add(tg_exp[n], "l")
-        leg.AddEntry(tg_exp[n],labels[n],"l")
+        else:
+            tg_exp[n].SetLineColor(cols[n])
+            tg_exp[n].SetFillColor(cols[n])
+            tg_exp[n].SetFillStyle(3005)
+            tg_exp[n].SetLineWidth(3)
+            tg_exp[n].SetLineStyle(2)
+            print("Adding exp line :",n)
+            tmg_main.Add(tg_exp[n], "l")
+            leg.AddEntry(tg_exp[n],labels[n],"l")
 
 
 
 ###
 # Creating the canvas
 ###
-print("ratio:",ratio)
-print(drawTheory)
-print(doMulti)
-print(drawNonTheory)
 
 if ratio:
     can = TCanvas("1DLimit_"+signal,"1DLimit_"+signal,1000,1150)
@@ -372,10 +363,6 @@ else:
     can.SetLeftMargin(0.15)
     can.SetRightMargin(0.05)
     can.SetTopMargin(0.05)
-
-leg = TLegend(0.57,0.6,0.82,0.9)
-leg.SetFillColor(0)
-leg.SetLineColor(0)
 
 ###
 # Making axis limits
@@ -414,7 +401,6 @@ if ratio:
     pad1.cd()
 else:
     can.cd()
-
 
 tmg_main.Draw("a")
 
@@ -480,10 +466,7 @@ ROOT.gPad.Modified(); ROOT.gPad.Update()
 
 print(can.GetName())
 canvName = outDir + "/" + signal.upper()+"_"+lumi.replace(".","")+outSuffix+".png"
-print(canvName)
 
-#can.Update()
-#ROOT.gPad.Modified(); ROOT.gPad.Update()
 can.SaveAs(canvName)
-print("written")
+
 # No log plot if comparison
