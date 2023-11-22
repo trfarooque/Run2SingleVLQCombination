@@ -112,7 +112,7 @@ gROOT.SetBatch(1)
 ## OPTIONS
 parser = ArgumentParser()
 parser.add_argument("-i","--inputDir",help="location of the limit files ",dest="baseDir",default="")
-parser.add_argument("-c", "--configs",help="",nargs='*',dest="configs",default="")
+parser.add_argument("-c", "--configs",help="",dest="configs",default="")
 parser.add_argument("-o","--outDir",help="output folder",dest="outDir",default="./test/")
 
 parser.add_argument("-k","--kappa",type=float,
@@ -122,7 +122,7 @@ parser.add_argument("-w","--brW",type=float,
 
 parser.add_argument("-e","--energy",help="energy",dest="energy",default="13")
 parser.add_argument("-a","--addText",help="additional text to plot",dest="addText",default="")
-parser.add_argument("-l","--lumi",help="luminosity",dest="lumi",default="140")
+parser.add_argument("-l","--lumi",help="luminosity",dest="lumi",default="139")
 parser.add_argument("-d","--data",help="consider data",dest="data",action="store_true",default=False)
 parser.add_argument("-x","--suffix",help="suffix of input directory of each mass point",dest="suffix",default="")
 parser.add_argument("-t","--theory",help="draw theory",dest="drawTheory",action="store_true",default=False)
@@ -131,6 +131,8 @@ parser.add_argument("-f","--forceranges",help="force ranges",dest="forceRanges",
 parser.add_argument("-s","--outSuffix",help="suffix in output file",dest="outSuffix",default="")
 parser.add_argument("-b","--labels",help="list of labels",dest="labels",default="")
 parser.add_argument("-r","--ratio",help="make ratio panel",dest="ratio",action="store_true",default=False)
+parser.add_argument("-m","--masses",help="list of masses",dest="masses",default="")
+parser.add_argument("-S","--signal",help="signal interpretation. TSinglet or TDoublet",dest="signal",default="TSinglet")
 
 options = parser.parse_args()
 
@@ -150,11 +152,17 @@ forceRanges=options.forceRanges
 outSuffix=options.outSuffix
 labels=options.labels
 ratio=options.ratio
-
-signal="TSinglet"
+masses=options.masses
+signal=options.signal
 
 # Build labels
 labels = list(map(str, labels.strip('[]').split(',')))
+
+# Build configs
+configs = list(map(str, configs.strip('[]').split(',')))
+
+# Build masses
+masses = list(map(str, masses.strip('[]').split(',')))
 
 # if outSuffix != "":
 #     outSuffix = '_'+outSuffix
@@ -180,15 +188,17 @@ signal_label = "\#splitline{{T}}{{ \#xi_{{W}}={} }}".format(BRW)
 ###
 # Getting the values of the masses and cross-sections
 ###
-masses = []
+
 sigtype=["WTHt","WTZt","ZTHt","ZTZt"]
-Masses = [m for m in range(1100,2100,100)]
+#Masses = [m for m in range(1100,2100,100)]
+Masses = [int(m) for m in masses]
 vlqMode = 'T'
 BRZ = 0.5* (1-BRW) #under assumption BRZ = BRH
 
 # Key map: 0=W; 1=Z; 2=H
 keyDictionary = {"WT": 0,"ZT": 1,"HT": 2}
- 
+
+masses = []
 for M in Masses:
 
     vlq = couplingCalculator(M, vlqMode)
@@ -248,7 +258,7 @@ if drawNonTheory:
             files = glob.glob(pathname)
 
             if len(files)==0 or len(files)>1:
-                print("<!> ERROR for mass ",mass['mass']," !! --> nFiles = ",len(files))
+                print("<!> ERROR for", cfg, "mass", mass['mass']," !! --> nFiles = ",len(files))
                 continue
             counter+=1
             limpoint = ExtractLimitFromRootFile(files[0])
@@ -278,13 +288,6 @@ leg.SetLineColor(0)
 
 tmg_main = TMultiGraph()
 tmg_ratio = TMultiGraph()
-
-if drawTheory:
-    tg_theory.SetLineColor(kRed)
-    tg_theory.SetFillColor(kRed-9)
-    print("Adding theory")
-    tmg_main.Add(tg_theory, "4lx")
-    leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 if drawNonTheory:
 
@@ -330,6 +333,14 @@ if drawNonTheory:
             print("Adding exp line :",n)
             tmg_main.Add(tg_exp[n], "l")
             leg.AddEntry(tg_exp[n],labels[n],"l")
+
+
+if drawTheory:
+    tg_theory.SetLineColor(kRed)
+    tg_theory.SetFillColor(kRed-9)
+    print("Adding theory")
+    tmg_main.Add(tg_theory, "4lx")
+    leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 
 
@@ -404,7 +415,8 @@ tmg_main.Draw("a")
 tmg_main.GetXaxis().SetNdivisions(406)
 tmg_main.SetTitle("")
 tmg_main.GetXaxis().SetTitle("m_{T} [GeV]")
-tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qb(T #rightarrow Ht/Zt)) [pb]")
+#tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qb(T #rightarrow Ht/Zt)) [pb]")
+tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qbT )[pb]")
 tmg_main.GetHistogram().GetXaxis().SetLabelSize(tmg_main.GetHistogram().GetXaxis().GetLabelSize()*1.3)
 tmg_main.GetHistogram().GetYaxis().SetLabelSize(tmg_main.GetHistogram().GetYaxis().GetLabelSize()*1.3)
 tmg_main.GetHistogram().GetXaxis().SetTitleSize(tmg_main.GetHistogram().GetXaxis().GetTitleSize()*1.6)
