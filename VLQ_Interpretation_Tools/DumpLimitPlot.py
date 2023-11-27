@@ -151,8 +151,6 @@ outSuffix=options.outSuffix
 labels=options.labels
 ratio=options.ratio
 
-signal="TSinglet"
-
 # Build labels
 labels = list(map(str, labels.strip('[]').split(',')))
 
@@ -174,6 +172,10 @@ if ratio and not doMulti:
 #Data vs Asimov tag
 datatag = "data" if data else "asimov_mu0"
 
+#signal="TDoublet"
+signal = "T_K{}_BRW{}_{}".format(Kappa,BRW,datatag)
+
+
 #Signal label
 signal_label = "\#splitline{{T}}{{ \#xi_{{W}}={} }}".format(BRW)
 
@@ -182,7 +184,10 @@ signal_label = "\#splitline{{T}}{{ \#xi_{{W}}={} }}".format(BRW)
 ###
 masses = []
 sigtype=["WTHt","WTZt","ZTHt","ZTZt"]
-Masses = [m for m in range(1100,2100,100)]
+#sigtype=["WTZt","ZTZt"]
+Masses = [m for m in range(1100,2200,100)]
+Masses += [m for m in range(2300,2900,200)]
+
 vlqMode = 'T'
 BRZ = 0.5* (1-BRW) #under assumption BRZ = BRH
 
@@ -199,24 +204,24 @@ for M in Masses:
     cVals = vlq.getcVals()
     BR = vlq.getBRs()
     Gamma = vlq.getGamma()
-
+    GM = Gamma/M
     TotalXSec = 0
     for sig in sigtype:
         
         prodIndex = keyDictionary[sig[:2:]]
         decayIndex = keyDictionary[sig[2::].upper()]
                 
-        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]/PNWA(proc=sig, mass=M, GM=Gamma/M)
+        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]*FtFactor(proc=sig, mass=M, GM=GM)/PNWA(proc=sig, mass=M, GM=GM)
         TotalXSec += XSec
 
-        #print("process : ",sig," M =",M,", kappa =",Kappa,", BRW =",BRW,", width/mass =",Gamma/M)
-        #print("Xsec = ", XSec, "pb")
+        print("process : ",sig," M =",M,", kappa =",Kappa,", BRW =",BRW,", width/mass =",Gamma/M)
+        print("Xsec = ", XSec, "pb")
 
     XSecErrors = XSUncertainty(M)
     XSecErrorUp = XSecErrors[0]*TotalXSec
     XSecErrorDown = XSecErrors[1]*TotalXSec
     
-    masses +=[{'name': getSigTag(M,Kappa,BRW), 'mass':M, 'mass_theory':M, 'xsec': 0.1, 'xsecTheory':TotalXSec, 'errUp':XSecErrorUp, 'errDown':XSecErrorDown}]
+    masses +=[{'name': getSigTag(M,Kappa,BRW), 'mass':M, 'mass_theory':M, 'GM':Gamma/M,'xsec': 0.1, 'xsecTheory':TotalXSec, 'errUp':XSecErrorUp, 'errDown':XSecErrorDown}]
 
 ###
 # Effectively building the plots
@@ -230,9 +235,13 @@ tg_exp2s = [TGraph() for i in range(len(configs))]
 tg_ratio = [TGraph() for i in range(len(configs))]
 
 ###################### Fill all required TGraphs ########################
+wideM = -1.
 if drawTheory:
     # Theory plot
     for iMass in range(len(masses)):
+        if(masses[iMass]['GM']>0.5):
+           wideM=masses[iMass]['mass']
+           break
         tg_theory.SetPoint(iMass,masses[iMass]['mass_theory'],masses[iMass]['xsecTheory'])
         tg_theory.SetPointError(iMass,0,0,masses[iMass]['errDown'],masses[iMass]['errUp'])
 
@@ -241,8 +250,13 @@ if drawNonTheory:
     counter = -1
     for n,cfg in enumerate(configs):
         counter = -1
+        #number of points in this graph
+        gr_len = sum( ((mass['GM']<=0.5) and \
+                       (mass['mass']<=2100 or cfg!='SPT_HTZT')) for mass in masses)
+        print(cfg,' : ',gr_len)
         for mass in masses:
-
+            if (mass['GM']>0.5) or (mass['mass']>2100 and cfg=='SPT_HTZT'):
+                continue
             indir = baseDir + '/' + cfg + '/'
             pathname = indir + cfg + "_limits_" + getSigTag(mass['mass'],Kappa,BRW) + "_" + datatag + ".root"
             files = glob.glob(pathname)
@@ -258,8 +272,8 @@ if drawNonTheory:
             tg_exp[n].SetPoint(counter,mass['mass'],limpoint["exp_lim"]*this_xsec)
             tg_exp1s[n].SetPoint(counter,mass['mass'],limpoint["exp_lim_plus1"]*this_xsec)
             tg_exp2s[n].SetPoint(counter,mass['mass'],limpoint["exp_lim_plus2"]*this_xsec)
-            tg_exp1s[n].SetPoint(2*len(masses)-counter-1,mass['mass'],limpoint["exp_lim_minus1"]*this_xsec)
-            tg_exp2s[n].SetPoint(2*len(masses)-counter-1,mass['mass'],limpoint["exp_lim_minus2"]*this_xsec)
+            tg_exp1s[n].SetPoint(2*gr_len-counter-1,mass['mass'],limpoint["exp_lim_minus1"]*this_xsec)
+            tg_exp2s[n].SetPoint(2*gr_len-counter-1,mass['mass'],limpoint["exp_lim_minus2"]*this_xsec)
                 
             if ratio:
                 tg_ratio[n].SetPoint(counter,mass['mass'],tg_exp[n].Eval(mass['mass'])
@@ -278,13 +292,6 @@ leg.SetLineColor(0)
 
 tmg_main = TMultiGraph()
 tmg_ratio = TMultiGraph()
-
-if drawTheory:
-    tg_theory.SetLineColor(kRed)
-    tg_theory.SetFillColor(kRed-9)
-    print("Adding theory")
-    tmg_main.Add(tg_theory, "4lx")
-    leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 if drawNonTheory:
 
@@ -330,6 +337,13 @@ if drawNonTheory:
             print("Adding exp line :",n)
             tmg_main.Add(tg_exp[n], "l")
             leg.AddEntry(tg_exp[n],labels[n],"l")
+
+if drawTheory:
+    tg_theory.SetLineColor(kRed)
+    tg_theory.SetFillColor(kRed-9)
+    print("Adding theory")
+    tmg_main.Add(tg_theory, "4lx")
+    leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 
 
@@ -401,6 +415,8 @@ else:
 
 tmg_main.Draw("a")
 
+#if wideM > 0.:
+#draw
 tmg_main.GetXaxis().SetNdivisions(406)
 tmg_main.SetTitle("")
 tmg_main.GetXaxis().SetTitle("m_{T} [GeV]")
