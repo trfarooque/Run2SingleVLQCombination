@@ -344,6 +344,12 @@ BRWs = {}
     combination_cfg.setSubDir(pathdict, makePaths = True)
 
     for (mass, kappa, brw) in product(*[masses, kappas, BRWs]):
+
+        #ignore if fractional width>50%:
+        if getWidth(mass, kappa, brw) > 0.5:
+            print( "Gamma/M exceeds 50%. Skipping" )
+            continue
+
         if use_defScaling:
             mu = getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt'])
         sigtag = getSigTag(mass, kappa, brw)
@@ -352,6 +358,12 @@ BRWs = {}
         ws_asimov_list = ""
         ###################### ACTIONS FOR INDIVIDUAL ANALYSES ########################################
         for ana in ALL_CFGs.keys():
+            
+            #ignore HTZT if mass > 2.1 TeV
+            if ((mass > 2100) or (kappa < 0.2)) and ana=='SPT_HTZT':
+                print( "No available workspace for HTZT. Comb will proceed with other channels" )
+                continue
+
             cfg = ALL_CFGs[ana]
 
             if do_Scaling:

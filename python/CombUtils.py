@@ -26,6 +26,14 @@ def getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
         XSsum += this_xs
     return XSsum/0.1
 
+def getWidth(mass, kappa, brw):
+    c = vlq(mass, 'T')
+    c.setKappaxi(kappa, brw, (1-brw)/2.0)
+    GM = c.getGamma()/mass
+
+    return GM
+
+
 def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
     c = vlq(mass, 'T')
     c.setKappaxi(kappa, brw, (1-brw)/2.0)
