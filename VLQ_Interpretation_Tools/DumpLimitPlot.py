@@ -225,7 +225,7 @@ for M in Masses:
         prodIndex = keyDictionary[sig[:2:]]
         decayIndex = keyDictionary[sig[2::].upper()]
                 
-        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]*FtFactor(proc=sig, mass=M, GM=GM)/PNWA(proc=sig, mass=M, GM=GM)
+        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]*FtFactor(proc=sig, mass=M, GM=GM, useAverageXS = True)/PNWA(proc=sig, mass=M, GM=GM)
         TotalXSec += XSec
 
         print("process : ",sig," M =",M,", kappa =",Kappa,", BRW =",BRW,", width/mass =",Gamma/M)
@@ -367,8 +367,6 @@ if drawTheory:
     tmg_main.Add(tg_theory, "4lx")
     leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
-
-
 ###
 # Creating the canvas
 ###
@@ -442,8 +440,8 @@ tmg_main.Draw("a")
 tmg_main.GetXaxis().SetNdivisions(406)
 tmg_main.SetTitle("")
 tmg_main.GetXaxis().SetTitle("m_{T} [GeV]")
-#tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qb(T #rightarrow Ht/Zt)) [pb]")
-tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qbT )[pb]")
+tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qb(T #rightarrow Ht/Zt)) [pb]")
+#tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qbT )[pb]")
 tmg_main.GetHistogram().GetXaxis().SetLabelSize(tmg_main.GetHistogram().GetXaxis().GetLabelSize()*1.3)
 tmg_main.GetHistogram().GetYaxis().SetLabelSize(tmg_main.GetHistogram().GetYaxis().GetLabelSize()*1.3)
 tmg_main.GetHistogram().GetXaxis().SetTitleSize(tmg_main.GetHistogram().GetXaxis().GetTitleSize()*1.6)
