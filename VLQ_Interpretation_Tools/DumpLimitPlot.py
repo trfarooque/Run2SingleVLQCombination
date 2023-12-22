@@ -225,7 +225,7 @@ for M in Masses:
         prodIndex = keyDictionary[sig[:2:]]
         decayIndex = keyDictionary[sig[2::].upper()]
                 
-        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]*FtFactor(proc=sig, mass=M, GM=GM, useAverageXS = True)/PNWA(proc=sig, mass=M, GM=GM)
+        XSec = XS_NWA(M, cVals[prodIndex], sig[:2:])*BR[decayIndex]*FtFactor(proc=sig, mass=M, GM=GM, useAverageXS = True)[0]/PNWA(proc=sig, mass=M, GM=GM)
         TotalXSec += XSec
 
         print("process : ",sig," M =",M,", kappa =",Kappa,", BRW =",BRW,", width/mass =",Gamma/M)
