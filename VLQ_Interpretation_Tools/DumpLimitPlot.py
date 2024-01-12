@@ -360,13 +360,6 @@ if drawTheory:
     leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
 
-if drawTheory:
-    tg_theory.SetLineColor(kRed)
-    tg_theory.SetFillColor(kRed-9)
-    print("Adding theory")
-    tmg_main.Add(tg_theory, "4lx")
-    leg.AddEntry(tg_theory,"Theory (NLO)","lf")
-
 ###
 # Creating the canvas
 ###
