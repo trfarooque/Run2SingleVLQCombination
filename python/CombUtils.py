@@ -22,7 +22,7 @@ def getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
     XSsum = 0.
     for mode in all_modes:
         this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * (brw if mode[2] == 'W' else (1-brw)/2.) * \
-                  FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)[0]/PNWA(proc=mode, mass=mass, GM=GM)
+                  FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)/PNWA(proc=mode, mass=mass, GM=GM)
         XSsum += this_xs
     return XSsum/0.1
 
@@ -459,16 +459,17 @@ def getTRExFFitFileFromRoot(in_fname, out_fname):
             .format(par.GetName().replace('alpha_',''),par.getValV(),par.getErrorHi(),par.getErrorLo())
         outfile.write(line)
 
-    outfile.write('\n\nCORRELATION_MATRIX \n')
+    outfile.write('\n\nCORRELATION_MATRIX\n')
     corrMatrix = fitResult.correlationHist()
     outfile.write("{:d}   {:d}\n".format(corrMatrix.GetNbinsX(),corrMatrix.GetNbinsY()))
     for i in range(1,corrMatrix.GetNbinsX()+1):
         for j in range(1,corrMatrix.GetNbinsY()+1):
             outfile.write("{:g}   ".format(corrMatrix.GetBinContent(i,j)))
-    outfile.write('\n')
+        outfile.write('\n')
 
-    outfile.write('\n\nNLL \n')
-    outfile.write("{:.6f}".format(fitResult.minNll()))
+    outfile.write('\n\nNLL\n')
+    outfile.write("{:.6f}\n".format(fitResult.minNll()))
+    outfile.write('\n')
 
     #code = os.system(cmd)
     return True #if code == 0 else False
