@@ -221,6 +221,7 @@ if __name__ == "__main__":
         f_tmp = open(this_js.scriptDir + "/" + this_js.scriptName , "a")
         f_tmp.write("\n")
         f_tmp.write("cp {}/{}_limits_{}*_data.txt $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/'+anatag, anatag,mktag))
+        f_tmp.write("cp {}/{}_limits_{}*_data.root $OUTDIR".format(DataLoc + '/' + pathdict['LimitSubDir'] + '/'+anatag, anatag,mktag))
         f_tmp.close()
         
         if not do_dry_run:
