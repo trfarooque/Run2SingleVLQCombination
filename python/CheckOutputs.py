@@ -33,6 +33,8 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
             com += "bsub "
         elif platform.find("atlui")>-1:#we work at lxbatch
             com += "qsub "
+        elif platform.find("mlui")>-1:#we work at lxbatch
+            com += "qsub "
         com += "-q " + batchQueue + " " + scriptFile
 
         place_to_store_the_logfiles = ""

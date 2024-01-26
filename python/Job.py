@@ -46,6 +46,10 @@ class JobSet:
             self.platform = "atlui"
             self.batch = "condor"
             self.queue = "workday"
+        elif(platform.find("mlui")>-1):
+            self.platform = "mlui"
+            self.batch = "condor"
+            self.queue = "workday"
         elif(platform.find("pic")>-1):
             self.platform = "pic"
             self.batch = "xxxx"
@@ -295,6 +299,8 @@ class JobSet:
                 com += "qsub -q "
             elif(self.platform == "atlui"):
                 com += "qsub -q "
+            elif(self.platform == "mlui"):
+                com += "qsub -q "
             else:
                 printError("The system you are running on is not supported yet ... Please move to lxplus or PIC")
             if(self.queue==""):
@@ -335,6 +341,8 @@ class Job:
             self.platform = "aglt2"
         elif(platform.find("atlui")>-1):
             self.platform = "atlui"
+        elif(platform.find("mlui")>-1):
+            self.platform = "mlui"
         else:
             printError("<!> In Job class constructor ... Unknown platform: " + platform)
             self.platform = "pic"
