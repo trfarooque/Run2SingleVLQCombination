@@ -1,6 +1,7 @@
 #!/bin/bash
 
 setupATLAS -q
+#asetup StatAnalysis,0.2.5
 asetup StatAnalysis,0.0.4
 export VLQCOMBDIR=$PWD
 export PATH=$VLQCOMBDIR/bin/:$VLQCOMBDIR/python/:$PATH
