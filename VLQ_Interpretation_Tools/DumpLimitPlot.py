@@ -295,6 +295,20 @@ if drawNonTheory:
 
 ###################### All required TGraphs filled ########################
 
+# Save TGraphs to ntuple
+out_ntuple = TFile(outDir + "/" + signal.upper()+"_"+lumi.replace(".","")+outSuffix+".root","recreate")
+out_ntuple.cd()
+if drawTheory:
+    tg_theory.Write("tg_theory")
+if drawNonTheory:
+    for n,cfg in enumerate(configs):
+        tg_obs[n].Write("tg_obs_"+cfg)
+        tg_exp[n].Write("tg_exp_"+cfg)
+        tg_exp1s[n].Write("tg_exp1s_"+cfg)
+        tg_exp2s[n].Write("tg_exp2s_"+cfg)
+
+out_ntuple.Close()
+
 cols = [kBlack,kBlue+1,kMagenta,kOrange+4] # max compare 4 configurations
 fills = [3002,3004,3005,3007]
 
