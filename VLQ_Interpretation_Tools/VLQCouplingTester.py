@@ -91,7 +91,7 @@ print( "Total Decay Width [GeV] = ", c.getGamma())
 
 
 ### Testing cross section calculation
-mass = 1600.
+mass = 1700.
 print( "\n============================\n")
 
 print( "T singlet with mass", mass, "\n")
@@ -110,14 +110,15 @@ for kappa in kappas:
     width = c.getGamma()
     #print "width/mass : ", width/mass
     cw = c.getcVals()[0]
+    cz = c.getcVals()[1]
     #print "cw : ", cw
     (BRW,BRZ,BRH,BRS) = c.getBRs()
     #print "BRs : ", c.getBRs()
 
     print( "M =",mass,", kappa =",kappa,", width/mass =",width/mass)
-    print( "  Xsec(Wb->T->Wb) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRW/PNWA(proc='WTWb', mass=mass, GM=width/mass), "fb")
-    print( "  Xsec(Wb->T->Zt) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRZ/PNWA(proc='WTZt', mass=mass, GM=width/mass), "fb")
-    print( "  Xsec(Wb->T->Ht) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRH/PNWA(proc='WTHt', mass=mass, GM=width/mass), "fb")
-    print( "  Xsec(Zt->T->Zt) = ", 1000*XS_NWA(mass, cw, mode='ZT')*BRZ/PNWA(proc='ZTZt', mass=mass, GM=width/mass), "fb")
-    print( "  Xsec(Zt->T->Ht) = ", 1000*XS_NWA(mass, cw, mode='ZT')*BRH/PNWA(proc='ZTHt', mass=mass, GM=width/mass), "fb")
+    print( "  Xsec(Wb->T->Wb) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRW*FtFactor('WTWb', mass, width/mass, useAverageXS = True)[0]/PNWA(proc='WTWb', mass=mass, GM=width/mass), "fb")
+    print( "  Xsec(Wb->T->Zt) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRZ*FtFactor('WTZt', mass, width/mass, useAverageXS = True)[0]/PNWA(proc='WTZt', mass=mass, GM=width/mass), "fb")
+    print( "  Xsec(Wb->T->Ht) = ", 1000*XS_NWA(mass, cw, mode='WT')*BRH*FtFactor('WTHt', mass, width/mass, useAverageXS = True)[0]/PNWA(proc='WTHt', mass=mass, GM=width/mass), "fb")
+    print( "  Xsec(Zt->T->Zt) = ", 1000*XS_NWA(mass, cz, mode='ZT')*BRZ*FtFactor('ZTZt', mass, width/mass, useAverageXS = True)[0]/PNWA(proc='ZTZt', mass=mass, GM=width/mass), "fb")
+    print( "  Xsec(Zt->T->Ht) = ", 1000*XS_NWA(mass, cz, mode='ZT')*BRH*FtFactor('ZTHt', mass, width/mass, useAverageXS = True)[0]/PNWA(proc='ZTHt', mass=mass, GM=width/mass), "fb")
     print( "  Xsec Uncertianty: (up) ", 100*XSUncertainty(mass)[0], "%, (down) ", 100*XSUncertainty(mass)[1], "%" )
