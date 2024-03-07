@@ -524,7 +524,7 @@ class TheoryInfo:
         ## Set the VLQ Parameters: kappa, xi parameterization as in https://arxiv.org/pdf/1305.4172.pdf
         vlq.setKappaxi(self.kappa, self.BRW, self.BRZ) # kappa, xiW, xiZ. xiH = 1 - xiW - xiZ
             
-        cVals = vlq.getcVals()
+        cVals = vlq.getc_Vals()
         BR = vlq.getBRs()
         #Gamma = vlq.getGamma()
         self.GM = vlq.getGamma()/self.mass
