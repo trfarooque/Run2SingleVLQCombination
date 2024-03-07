@@ -46,6 +46,7 @@ def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
                   FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)[0]/PNWA(proc=mode, mass=mass, GM=GM)
         XSsum += this_xs
         XSvals.append(this_xs)
+        print (mode, this_xs)
     for ii in range(len(XSvals)):
         XSvals[ii] = XSvals[ii]/XSsum
     return XSvals
@@ -208,7 +209,8 @@ class VLQCombinationConfig:
         AnaChannel = self.AnaCode
         WSName = self.WSName
 
-        sfWTZt, sfWTHt, sfZTZt, sfZTHt = getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt'])
+        #sfWTZt, sfWTHt, sfZTZt, sfZTHt = getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt'])
+        sfWTZt, sfZTZt = getSF(mass, kappa, brw, all_modes = ['WTZt', 'ZTZt'])
 
         str_to_print = '''
 <!DOCTYPE Organization  SYSTEM 'Organization.dtd'>
@@ -222,20 +224,14 @@ class VLQCombinationConfig:
         DataName="{}"'''.format(DataName) + '''
         >
   <Item Name="sc_TS_WTZt[{}]"/>
-  <Item Name="sc_TS_WTHt[{}]"/>
-  <Item Name="sc_TS_ZTZt[{}]"/>
-  <Item Name="sc_TS_ZTHt[{}]"/>'''.format(sfWTZt, sfWTHt, sfZTZt, sfZTHt) + '''
+  <Item Name="sc_TS_ZTZt[{}]"/>'''.format(sfWTZt, sfZTZt) + '''
   <Item Name="mu_signal[1,-100,100]"/>
 
   <Item Name="expr::mu_sc_TS_WTZt('@0*@1', sc_TS_WTZt, mu_signal)" />
-  <Item Name="expr::mu_sc_TS_WTHt('@0*@1', sc_TS_WTHt, mu_signal)" />
   <Item Name="expr::mu_sc_TS_ZTZt('@0*@1', sc_TS_ZTZt, mu_signal)" />
-  <Item Name="expr::mu_sc_TS_ZTHt('@0*@1', sc_TS_ZTHt, mu_signal)" />
   <Map Name="EDIT::NEWPDF(OLDPDF,                                                                                                                                           
-             mu_WTZt=mu_sc_TS_WTZt,                                                                                                                                         
-             mu_WTHt=mu_sc_TS_WTHt,                                                                                                                                         
-             mu_ZTZt=mu_sc_TS_ZTZt,                                                                                                                                         
-             mu_ZTHt=mu_sc_TS_ZTHt)" />
+             mu_WTZt=mu_sc_TS_WTZt,                                                                                                                                                                                                                                                                                 
+             mu_ZTZt=mu_sc_TS_ZTZt)" />                                                                                                                                       
 </Organization>
 '''
 
