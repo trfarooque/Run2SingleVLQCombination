@@ -5,8 +5,8 @@ from array import array
 from ROOT import *
 import ctypes
 import numpy as np
-#from scipy.interpolate import RBFInterpolator as rbf
-from scipy.interpolate import Rbf as rbf
+from scipy.interpolate import RBFInterpolator as rbf
+#from scipy.interpolate import Rbf as rbf
 import math
 
 
@@ -317,9 +317,10 @@ def GetSmoothHist(gr,smooth=1.0,mode="linear",degree=4):
             k+=1
 
     dense_points = np.stack([x_dense, y_dense], -1)  # shape (N, 2) in 2d
-    #z_rbf = rbf(sparse_points, z_sparse.ravel(),smoothing=smooth,kernel=mode,degree=degree)
-    z_rbf = rbf(x_sparse,y_sparse, z_sparse,smoothing=smooth,function=mode)
-    z_dense = z_rbf(x_dense,y_dense) #dense_points)  
+    z_rbf = rbf(sparse_points, z_sparse.ravel(),smoothing=smooth,kernel=mode,degree=degree)
+    z_dense = z_rbf(dense_points)  
+    #z_rbf = rbf(x_sparse,y_sparse, z_sparse,smoothing=smooth,function=mode)
+    #z_dense = z_rbf(x_dense,y_dense)
 
 
     k=0
@@ -1027,9 +1028,9 @@ class LimitPlotter:
 
                 ##### COMPARE SMOOTHING #######
                 
-                if gtype=="exp":
-                    DoSmoothingComparisons(tg_xsratio_list[gtype][n],0.5,1.5,doContours=True, smooth=1.0)
-                    DoSmoothingComparisons(tg_list[gtype][n],0.,0.2,doContours=False, smooth=1.0)
+                #if gtype=="exp":
+                #    DoSmoothingComparisons(tg_xsratio_list[gtype][n],0.5,1.5,doContours=True, smooth=1.0)
+                #    DoSmoothingComparisons(tg_list[gtype][n],0.,0.2,doContours=False, smooth=1.0)
                 #else:
                 #    DoSmoothingComparisons(tg_xsratio_list[gtype],0.5,1.5,doContours=True)
                 #    DoSmoothingComparisons(tg_list[gtype],0.,0.2,doContours=False)
