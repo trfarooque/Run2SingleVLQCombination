@@ -215,7 +215,7 @@ for M in Masses:
     ## Set the VLQ Parameters: kappa, xi parameterization as in https://arxiv.org/pdf/1305.4172.pdf
     vlq.setKappaxi(Kappa, BRW, BRZ) # kappa, xiW, xiZ. xiH = 1 - xiW - xiZ
             
-    cVals = vlq.getcVals()
+    cVals = vlq.getc_Vals()
     BR = vlq.getBRs()
     Gamma = vlq.getGamma()
     GM = Gamma/M

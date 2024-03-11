@@ -196,8 +196,8 @@ for M in Masses:
         vlqSinglet.setKappaxi(Kappa, 0.5, 0.25) # kappa, xiW, xiZ. xiH = 1 - xiW - xiZ
         vlqDoublet.setKappaxi(Kappa, 0., 0.5) # kappa, xiW, xiZ. xiH = 1 - xiW - xiZ
         
-        cSinglet = vlqSinglet.getcVals()
-        cDoublet = vlqDoublet.getcVals()
+        cSinglet = vlqSinglet.getc_Vals()
+        cDoublet = vlqDoublet.getc_Vals()
         BRSinglet = vlqSinglet.getBRs()
         BRDoublet = vlqDoublet.getBRs()
         
