@@ -13,14 +13,44 @@ from utils import *
 ##______________________________________________________
 ##
 def submitFailedJobs( expectedRootFile, scriptFile ):
-    if scriptFile in submitted_joblist:
+
+    ## Need to run only the failed systematic, not all the ones contained in the bash script
+    ## Extract name from expectedRootFile
+    file = expectedRootFile.split("/")[-1]
+    systematic = file.replace("fit_NPRanking_","").replace(".root","").replace("_pre","pre").replace("_post","post")
+    ## Get name for individual systematic exectuable
+    scriptPath = "/".join(scriptFile.split("/")[:-1])
+    scriptName = scriptFile.split("/")[-1].replace(".sub","")
+    syst_exec = "sub_"+scriptName+"_"+systematic
+    new_syst_exec = "resubmit_"+scriptName.replace(".sh","")+"_"+systematic+".sh"
+
+    print("Resubmitting job for systematic: "+systematic)
+    print("Path for scripts: "+scriptPath)
+    print("syst_exec: "+syst_exec)
+    print("new_syst_exec: "+new_syst_exec)
+
+    ## Copy the individual executable to a new one and make it executable
+    print("cp "+scriptPath+"/"+syst_exec+" "+scriptPath+"/"+new_syst_exec)
+    os.system("cp "+scriptPath+"/"+syst_exec+" "+scriptPath+"/"+new_syst_exec)
+    print("chmod +x "+scriptPath+"/"+new_syst_exec)
+    os.system("chmod +x "+scriptPath+"/"+new_syst_exec)
+
+    ## Copy the submission file into a new one and replace the script name
+    new_scriptFile = scriptFile.replace(scriptName,new_syst_exec.replace(".sh",""))
+    print("new_scriptFile: "+new_scriptFile)
+    print("cp "+scriptFile+" "+new_scriptFile)
+    os.system("cp "+scriptFile+" "+new_scriptFile)
+    print("sed -i 's/"+scriptName+"/"+new_syst_exec+"/g' "+new_scriptFile)
+    os.system("sed -i 's/"+scriptName+"/"+new_syst_exec+"/g' "+new_scriptFile)
+
+    if new_scriptFile in submitted_joblist:
         print("Script has been submitted already! Moving on!")
         return False
 
     else:
-        submitted_joblist.append(scriptFile)
+        submitted_joblist.append(new_scriptFile)
     if batchSystem == "condor":
-        com = "condor_submit " + scriptFile
+        com = "condor_submit " + new_scriptFile
         os.system(com)
         time.sleep(2)
         return True
@@ -35,7 +65,7 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
             com += "qsub "
         elif platform.find("mlui")>-1:#we work at lxbatch
             com += "qsub "
-        com += "-q " + batchQueue + " " + scriptFile
+        com += "-q " + batchQueue + " " + new_scriptFile
 
         place_to_store_the_logfiles = ""
         for splitted in expectedRootFile.split("/"):
@@ -43,9 +73,9 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
                 place_to_store_the_logfiles += splitted + "/"
 
 
-        if not(os.path.isfile(scriptFile)):
+        if not(os.path.isfile(new_scriptFile)):
             printWarning("WARNING: Cannot resubmit job since the script is missing ! ")
-            print( "    -> ", scriptFile)
+            print( "    -> ", new_scriptFile)
             return False
         else:
             os.system(com)
@@ -95,6 +125,7 @@ fNew = open(inputFile+".new",'w')
 nMissing = 0
 nZombie = 0
 nIncomplete = 0
+nUnconverged = 0
 nGood = 0
 nRelaunchedJobs = 0
 nFilesChecked = 0
@@ -131,8 +162,8 @@ for line in f:
                 t.GetEntry(0)
                 if t.status != 0:
                     printWarning("CONVERGENCE FAILED: "+fileToCheck)
-                    # nIncomplete += 1
-                    # hasProblems = True
+                    nUnconverged += 1
+                    #hasProblems = True
                 del t
         rootFile.Close()
 
@@ -141,6 +172,7 @@ for line in f:
         if relaunchJobs:
             if submitFailedJobs(fileToCheck, scriptFile):
                 nRelaunchedJobs += 1
+                #sys.exit()
     else:
         nGood += 1
 
@@ -158,6 +190,7 @@ print("Good files: {:d}".format(nGood))
 print("Absent files: {:d}".format(nMissing))
 print("Corrupted files: {:d}".format(nZombie))
 print("Incomplete files: {:d}".format(nIncomplete))
+print("Failed convergence: {:d}".format(nUnconverged))
 if relaunchJobs:
     print("Relaunched jobs: {:d}".format(nRelaunchedJobs))
 print("=============================")
