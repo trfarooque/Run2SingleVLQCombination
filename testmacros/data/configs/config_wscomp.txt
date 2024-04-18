@@ -1,0 +1,28 @@
+MultiFit: "WScomp_BONLY"
+  Label: "HTZT vs OSML"
+  Combine: FALSE
+  Compare: TRUE
+  CmeLabel: "13 TeV"
+  LumiLabel: "139.02 fb^{-1}"
+  ComparePOI: FALSE
+  ComparePulls: TRUE
+  CompareLimits: FALSE
+  POIName: "mu_signal"
+  DebugLevel: 2
+
+Fit: "HTZT"
+  ConfigFile: /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/StatRelease/run/configFile_HTZT.txt
+  Label: "HTZT"
+
+Fit: "OSML"
+  ConfigFile: /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/StatRelease/run/configFile_OSML.txt
+  Label: "OSML"
+
+Fit: "combined"
+  ConfigFile: /data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/StatRelease/run/configFile_combined.txt
+  Label: "combined"
+
+
+  #FitResultsFile: /data/at3/scratch2/farooque/TRExFitter_WorkArea/PlotTesting/OSML_3l_M16K050_withDummySig/Fits/OSML_3l_M16K050_withDummySig.txt
+  #UseInComparison: FALSE
+  

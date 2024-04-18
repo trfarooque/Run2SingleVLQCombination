@@ -28,7 +28,7 @@ def rhoZ(M, mode):
     elif mode == 'B': mq = 4.19
     elif mode == '0' or mode ==0: mq =0.0
     else:
-        print 'WARNING! Decay to Z is not allowed for modes X and Y. Returning 1.0 as default'
+        print( 'WARNING! Decay to Z is not allowed for modes X and Y. Returning 1.0 as default')
         return 1.0
     return (1+ math.pow(mV/M,2)-2*math.pow(mq/M,2) -2*math.pow(mV/M,4) + math.pow(mq/M,4) + math.pow(mV*mq/(M*M),2))*math.sqrt(1+math.pow(mV/M,4)+math.pow(mq/M,4)-2*math.pow(mV/M,2)-2*math.pow(mq/M,2)-2*math.pow(mV*mq/(M*M),2))
 
@@ -38,7 +38,7 @@ def rhoH(M, mode):
     elif mode == 'B': mq = 4.19
     elif mode == '0' or mode ==0: mq =0.0
     else:
-        print 'WARNING! Decay to H is not allowed for modes X and Y. Returning 1.0 as default'
+        print( 'WARNING! Decay to H is not allowed for modes X and Y. Returning 1.0 as default')
         return 1.0
     return (1 - math.pow(mV/M,2) + math.pow(mq/M,2))*math.sqrt(1+math.pow(mV/M,4)+math.pow(mq/M,4)-2*math.pow(mV/M,2)-2*math.pow(mq/M,2)-2*math.pow(mV*mq/(M*M),2))
 
@@ -48,7 +48,7 @@ def rhoS(MS, M, mode):
     elif mode == 'B': mq = 4.19
     elif mode == '0' or mode ==0: mq =0.0
     else:
-        print 'WARNING! Decay to S is not allowed for modes X and Y. Returning 1.0 as default'
+        print( 'WARNING! Decay to S is not allowed for modes X and Y. Returning 1.0 as default')
         return 1.0
     return (1 - math.pow(mV/M,2) + math.pow(mq/M,2))*math.sqrt(1+math.pow(mV/M,4)+math.pow(mq/M,4)-2*math.pow(mV/M,2)-math.pow(mq/M,2)-2*math.pow(mV*mq/(M*M),2))
 
@@ -111,7 +111,7 @@ class VLQCouplingCalculator:
 
     def setVLQMode(self, mode):
         if mode not in ['T', 'B', 'X', 'Y']:
-            print 'VLQ Mode is unrecognized. Selecting T by default'
+            print( 'VLQ Mode is unrecognized. Selecting T by default')
             self.VLQMode = 'T'
         else:
             self.VLQMode = mode
@@ -159,7 +159,7 @@ class VLQCouplingCalculator:
         else:
             self.xiS = 0.
         valsum = self.xiW + self.xiZ + self.xiH + self.xiS
-        if valsum <> 1.0:
+        if valsum != 1.0:
             self.xiW = self.xiW/valsum
             self.xiZ = self.xiZ/valsum
             self.xiH = self.xiH/valsum
@@ -200,12 +200,12 @@ class VLQCouplingCalculator:
             self.xiH = 0.
 
         if self.xiH < 0:
-            print " xiW + xiZ =", self.xiW + self.xiZ, "> 1.0, setting xiH = 0 "
+            print( " xiW + xiZ =", self.xiW + self.xiZ, "> 1.0, setting xiH = 0 ")
             self.xiH = 0
 
         valsum = self.xiW + self.xiZ + self.xiH + self.xiS
-        if valsum <> 1.0:
-            print "xi values (Branching ratios) not normalized. Valsum = ", valsum, ". Renormalizing BR(W+Z+H) to 1.0"
+        if valsum != 1.0:
+            print( "xi values (Branching ratios) not normalized. Valsum = ", valsum, ". Renormalizing BR(W+Z+H) to 1.0")
             self.xiW = self.xiW/valsum
             self.xiZ = self.xiZ/valsum
             self.xiH = self.xiH/valsum
@@ -269,12 +269,12 @@ class VLQCouplingCalculator:
             self.BRH = 0.
 
         if self.BRH < 0:
-            print " BR(W+Z) > 1, setting BR(H) = 0 "
+            print( " BR(W+Z) > 1, setting BR(H) = 0 ")
             self.BRH = 0
 
         valsum = self.BRW + self.BRZ + self.BRH + self.BRS
-        if valsum <> 1.0:
-            print "Branching ratios not normalized. Renormalizing BR(W+Z+H) to 1.0", valsum
+        if valsum != 1.0:
+            print( "Branching ratios not normalized. Renormalizing BR(W+Z+H) to 1.0", valsum)
             self.BRW = self.BRW/valsum
             self.BRZ = self.BRZ/valsum
             self.BRH = self.BRH/valsum
@@ -321,7 +321,7 @@ class VLQCouplingCalculator:
     def CalcBRs(self):
         self.CalcDecayWidths()
         if self.Gamma == 0:
-            print "Total Width Zero. Setting All BRs to zero. Check your couplings!"
+            print( "Total Width Zero. Setting All BRs to zero. Check your couplings!")
             self.BRW = 0.
             self.BRZ = 0.
             self.BRH = 0.
@@ -356,7 +356,7 @@ class VLQMixAngleCalculator(VLQCouplingCalculator):
 
     def setMultiplet(self, multiplet):
         if multiplet not in ['T', 'B', 'XT', 'TB', 'BY', 'XTB', 'TBY']:
-            print "Multiplet not recognized. Must be one of 'T', 'B', 'XT', 'TB', 'BY', 'XTB', 'TBY'. Selecting 'T' by default."
+            print( "Multiplet not recognized. Must be one of 'T', 'B', 'XT', 'TB', 'BY', 'XTB', 'TBY'. Selecting 'T' by default.")
             self.VLQMultiplet = 'T'
         else:
             self.VLQMultiplet = multiplet
@@ -369,14 +369,14 @@ class VLQMixAngleCalculator(VLQCouplingCalculator):
             self.Angle_DL = 0.
         elif self.VLQMultiplet == 'XTB':
             if a > math.pi/8.0:
-                print "maximum value of Angle_UL in XTB triplet it pi/8 i.e. 22.5 degrees. Setting angle to 0.1 radians as default"
+                print( "maximum value of Angle_UL in XTB triplet it pi/8 i.e. 22.5 degrees. Setting angle to 0.1 radians as default")
                 this_a = 0.1
             else: this_a = a
             self.Angle_DL = 0.5*math.asin(1.414 * math.sin(2*this_a))
         elif self.VLQMultiplet == 'TBY':
             self.Angle_DL = 0.5*math.asin( (1. / 1.414) * math.sin(2*a))
         else:
-            print "Angle_UL is not a dominant angle for current choice of SU(2) representation"
+            print( "Angle_UL is not a dominant angle for current choice of SU(2) representation")
 
     def setAngleDL(self, a):
         self.Angle_DL = a
@@ -387,12 +387,12 @@ class VLQMixAngleCalculator(VLQCouplingCalculator):
             self.Angle_UL = 0.5*math.asin( (1./1.414) * math.sin(2*a))
         elif self.VLQMultiplet == 'TBY':
             if a > math.pi/8.0:
-                print "maximum value of Angle_DL in TBY triplet it pi/8 i.e. 22.5 degrees. Setting angle to 0.1 radians as default"
+                print( "maximum value of Angle_DL in TBY triplet it pi/8 i.e. 22.5 degrees. Setting angle to 0.1 radians as default")
                 this_a = 0.1
             else: this_a = a
             self.Angle_UL = 0.5*math.asin(1.414 * math.sin(2*this_a))
         else:
-            print "Angle_DL is not a dominant angle for current choice of SU(2) representation"
+            print( "Angle_DL is not a dominant angle for current choice of SU(2) representation")
         self.Angle_UR = math.atan(Mt/VLQCouplingCalculator.getMVLQ(self) * math.tan(a))
 
     def setAngleUR(self, a, b = 0.): # the angle b represents Angle_DR for TB multiplet only

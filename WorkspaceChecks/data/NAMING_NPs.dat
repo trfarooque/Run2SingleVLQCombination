@@ -51,28 +51,6 @@
 | MET_SoftTrk_ResoPara |
 | MET_SoftTrk_ResoPerp |
 | MET_SoftTrk_Scale |
-| *TRK* |
-| TRK_BIAS_D0_WM |
-| TRK_BIAS_QOVERP_SAGITTA_WM |
-| TRK_BIAS_Z0_WM |
-| TRK_EFF_LOOSE_GLOBAL |
-| TRK_EFF_LOOSE_IBL |
-| TRK_EFF_LOOSE_PHYSMODEL |
-| TRK_EFF_LOOSE_PP0 |
-| TRK_EFF_LOOSE_TIDE |
-| TRK_EFF_TIGHT_GLOBAL |
-| TRK_EFF_TIGHT_IBL |
-| TRK_EFF_TIGHT_PHYSMODEL |
-| TRK_EFF_TIGHT_PP0 |
-| TRK_FAKE_RATE_LOOSE |
-| TRK_FAKE_RATE_LOOSE_ROBUST |
-| TRK_FAKE_RATE_LOOSE_TIDE |
-| TRK_FAKE_RATE_TIGHT |
-| TRK_FAKE_RATE_TIGHT_TIDE |
-| TRK_RES_D0_DEAD |
-| TRK_RES_D0_MEAS |
-| TRK_RES_Z0_DEAD |
-| TRK_RES_Z0_MEAS |
 | * Large R-jets * | 
 | LARGERJET_Medium_JET_Comb_Baseline_Kin |
 | LARGERJET_Medium_JET_Comb_Modelling_Kin |
@@ -85,34 +63,47 @@
 | *WEIGHTS* |
 | *Electrons* |
 | EL_SF_ID |
-| EL_SF_Isol |
+| EL_SF_Iso |
 | EL_SF_Reco |
 | EL_SF_Trigger |
 | *Muons* |
-| MU_SF_ID_STAT |
-| MU_SF_ID_SYST |
-| MU_SF_ID_STAT_LOWPT |
-| MU_SF_ID_SYST_LOWPT |
-| MU_SF_Isol_STAT |
-| MU_SF_Isol_SYST |
-| MU_SF_TTVA_STAT |
-| MU_SF_TTVA_SYST |
-| MU_SF_Trigger_STAT |
-| MU_SF_Trigger_SYST |
+| MU_EFF_RECO_STAT |
+| MU_EFF_RECO_SYS |
+| MU_EFF_RECO_STAT_LOWPT |
+| MU_EFF_RECO_SYS_LOWPT |
+| MU_EFF_ISO_STAT |
+| MU_EFF_ISO_SYS |
+| MU_EFF_TTVA_STAT |
+| MU_EFF_TTVA_SYS |
+| MU_EFF_TrigStatUncertainty |
+| MU_EFF_TrigSystUncertainty |
 | *b-tagging* |
-| TRK_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| TRK_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| TRK_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| TRK_FT_EFF_extrapolation |
-| TRK_FT_EFF_extrapolation_from_charm |
-| PF_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
-| PF_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
-| PF_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
-| PF_FT_EFF_extrapolation |
-| PF_FT_EFF_extrapolation_from_charm |
+| TRK_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| TRK_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| TRK_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| TRK_<WP>_FT_EFF_extrapolation |
+| TRK_<WP>_FT_EFF_extrapolation_from_charm |
+| PF_<WP>_FT_EFF_Eigen_B_=index= (index = 0, ..., 8) |
+| PF_<WP>_FT_EFF_Eigen_C_=index= (index = 0, ..., 4) |
+| PF_<WP>_FT_EFF_Eigen_Light_=index= (index = 0,...,5) |
+| PF_<WP>_FT_EFF_extrapolation |
+| PF_<WP>_FT_EFF_extrapolation_from_charm |
 | *JVT efficiency* |
 | JET_JvtEfficiency |
+| JET_FJvtEfficiency |
 | *Pile-up reweighting* |
 | PRW_DATASF |
 | *Luminosity* |
-| Luminosity |
+| LUMINOSITY |
+| *JMR-for-Combination* |
+| COMB_Flat20Smoothed_JMR |
+| COMB_MCData_JMR |
+| COMB_MCLargeR_JMR |
+| COMB_MCME_JMR |
+| COMB_MCPS_JMR |
+| COMB_MCRAD_JMR |
+| COMB_MCSmallJET_JMR |
+| COMB_OutsideCalib_JMR |
+| COMB_SHAPE_JMR |
+| COMB_Smoothing_JMR |
+| COMB_Stat_JMR |

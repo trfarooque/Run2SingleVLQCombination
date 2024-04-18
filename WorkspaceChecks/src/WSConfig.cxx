@@ -44,15 +44,21 @@ void WSConfig::init(){
       messages::print_error( __func__, __FILE__, __LINE__, "Line: "+line+" has less than two entries. Skipping it.");
       continue;
     }
-    if(vec_chan.size()>3){
-      messages::print_error( __func__, __FILE__, __LINE__, "Line: "+line+" has more than 3 entries. Skipping it.");
+    if(vec_chan.size()>4){
+      messages::print_error( __func__, __FILE__, __LINE__, "Line: "+line+" has more than 4 entries. Skipping it.");
       continue;
     }
     Channel ch;
     ch.channel_name = string_utils::replace_string(vec_chan[0]," ","");
     ch.workspace_path = string_utils::replace_string(vec_chan[1]," ","");
-    if(vec_chan.size()==3){
-      ch.np_naming_path = string_utils::replace_string(vec_chan[2]," ","");
+    if(vec_chan.size()>=3){
+      ch.workspace_name = string_utils::replace_string(vec_chan[2]," ","");
+    } else {
+      ch.workspace_name = m_opt.ws_name;
+    }
+
+    if(vec_chan.size()==4){
+      ch.np_naming_path = string_utils::replace_string(vec_chan[3]," ","");
     } else {
       ch.np_naming_path = "";
     }
@@ -66,50 +72,79 @@ void WSConfig::init(){
 void WSConfig::dump_files(){
   //Master file (contains all)
   std::ofstream o_master_file;
-  gSystem -> mkdir( m_opt.output_folder.c_str(), true );
-  o_master_file.open ( m_opt.output_folder + "/combination.xml" );
+  std::ofstream o_master_trexf_file;
 
-  //Writing the header of the master file
-  o_master_file << "<!DOCTYPE Combination  SYSTEM 'Combination.dtd'> " << std::endl;
-  o_master_file << std::endl;
-  o_master_file << "<Combination> " << std::endl;
-  o_master_file << "  <Channel Name=\"combined\" IsCombined=\"true\" Mass=\"125.09\"> " << std::endl;
-  o_master_file << "    <File Name=\"./combined.root\"/> " << std::endl;
-  o_master_file << "    <Workspace Name=\"combWS\"/>" << std::endl;
-  o_master_file << "    <ModelConfig  Name=\"ModelConfig\"/>" << std::endl;
-  o_master_file << "    <ModelData Name=\"combData\"/>" << std::endl;
-  o_master_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
-  o_master_file << "  </Channel>" << std::endl;
-  o_master_file << " " << std::endl;
+  if(m_opt.do_trexf_dump){
+    gSystem -> mkdir( m_opt.output_trexf_folder.c_str(), true );
+    o_master_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_multifit_" + m_opt.output_tag + ".txt" );
+    o_master_trexf_file << "MultiFit: Compare_" << m_opt.output_tag << std::endl; 
+    o_master_trexf_file << "Label: Compare_" << m_opt.output_tag << std::endl; 
+    o_master_trexf_file << "Combine: FALSE" << std::endl;
+    o_master_trexf_file << "Compare: TRUE" << std::endl;
+    o_master_trexf_file << "CmeLabel: \"13 TeV\"" << std::endl;
+    o_master_trexf_file << "LumiLabel: \"139 fb^{-1}\"" << std::endl;
+    if(std::strcmp(m_opt.fittype.c_str(), "BONLY") == 0)
+      o_master_trexf_file << "ComparePOI: FALSE" << std::endl;
+    else
+      o_master_trexf_file << "ComparePOI: TRUE" << std::endl;
+    o_master_trexf_file << "ComparePulls: TRUE" << std::endl;
+    o_master_trexf_file << "CompareLimits: FALSE" << std::endl;
+    o_master_trexf_file << "POIName: \"mu_signal\"" << std::endl;
+    o_master_trexf_file << "PlotCombCorrMatrix: TRUE" << std::endl;
+    o_master_trexf_file << "DebugLevel: 2" << std::endl;
+    o_master_trexf_file << "NPCategories: Jets,Electrons,Muons,b_tagging,SPT_ALLHAD_BKGNP,SPT_OSML_BKGNP,SPT_HTZT_BKGNP,SPT_TYWB_BKGNP,SPT_MONOTOP_BKGNP,Bkgd_norm,Others"<<std::endl;
+    o_master_trexf_file << std::endl;
+  }
+
+  if(m_opt.do_config_dump){
+    gSystem -> mkdir( m_opt.output_xml_folder.c_str(), true );
+    gSystem -> mkdir( m_opt.output_ws_folder.c_str(), true );
+    o_master_file.open ( m_opt.output_xml_folder + "/" + m_opt.output_xml_name );
+
+    //Writing the header of the master file
+    o_master_file << "<!DOCTYPE Combination  SYSTEM 'Combination.dtd'> " << std::endl;
+    o_master_file << std::endl;
+    o_master_file << "<Combination WorkspaceName=\"combWS\" " << std::endl;
+    o_master_file << "   ModelConfigName=\"ModelConfig\" " << std::endl;
+    o_master_file << "   DataName=\"combData\"" << std::endl;
+    o_master_file << "   OutputFile=\"" + m_opt.output_ws_folder + "/" +  m_opt.output_ws_name + "\">"<< std::endl;
+    o_master_file << "   <POIList Combined=\"mu_signal[1~-100,100]\"/>" << std::endl;
+    o_master_file << " " << std::endl;
+  }
 
   for( const auto &ch : m_channels ){
     const std::string channel_name = string_utils::replace_string(ch.first," ","");
     const Channel channel_info = ch.second;
-
     std::ofstream o_channel_file;
-    o_channel_file.open ( m_opt.output_folder + "/" + channel_name + ".xml" );
 
-    //Including the channel in the master file
-    o_master_file << "  <Channel Name=\"" + channel_name + "_binned\">" << std::endl;
-    o_master_file << "    <File Name=\"" + channel_info.workspace_path + "\"/>" << std::endl;
-    o_master_file << "    <Workspace Name=\"combined\"/>" << std::endl;
-    o_master_file << "    <ModelConfig Name=\"ModelConfig\"/>" << std::endl;
-    o_master_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
-    o_master_file << "    <ModelData Name=\"" << m_opt.data_name << "\"/>" << std::endl;
-    o_master_file << "    <RenameMap>" << std::endl;
+    if(m_opt.do_config_dump){
+      //Including the channel in the master file
+      o_master_file << "  <Channel Name=\"" + channel_name + "_binned\"" << std::endl;
+      //o_master_file << "     InputFile=\"" + m_opt.input_ws_folder + "/" + channel_info.workspace_path + ".root\"" << std::endl;
+      o_master_file << "     InputFile=\"" + channel_info.workspace_path + "\"" << std::endl;
+      o_master_file << "     WorkspaceName=\"" << channel_info.workspace_name << "\"" << std::endl;
+      o_master_file << "     ModelConfigName=\"ModelConfig\"" << std::endl;
+      o_master_file << "     DataName=\"" << m_opt.data_name << "\">" << std::endl;
+      o_master_file << "    <POIList Input=\"mu_signal\"/>" << std::endl;
 
-    //Writting the information in the channel files
-    o_channel_file << "  <Channel Name=\"" + channel_name + "_binned\">" << std::endl;
-    o_channel_file << "    <File Name=\"#" + channel_name + "#\"/>" << std::endl;
-    o_channel_file << "    <Workspace Name=\"combined\"/>" << std::endl;
-    o_channel_file << "    <ModelConfig Name=\"ModelConfig\"/>" << std::endl;
-    o_channel_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
-    o_channel_file << "    <ModelData Name=\"#DATA#\"/>" << std::endl;
-    o_channel_file << "    <RenameMap>" << std::endl;
+      o_master_file << "    <RenameMap>" << std::endl;
+
+      //Writting the information in the channel files
+      o_channel_file.open ( m_opt.output_xml_folder + "/" + channel_name + ".xml" );
+
+      o_channel_file << "  <Channel Name=\"" + channel_name + "_binned\">" << std::endl;
+      o_channel_file << "    <File Name=\"#" + channel_name + "#\"/>" << std::endl;
+      o_channel_file << "     WorkspaceName=\"" << channel_info.workspace_name << "\"" << std::endl;
+      o_channel_file << "    <ModelConfig Name=\"ModelConfig\"/>" << std::endl;
+      o_channel_file << "    <ModelPOI Name=\"mu_signal\"/>" << std::endl;
+      o_channel_file << "    <ModelData Name=\"#DATA#\"/>" << std::endl;
+      o_channel_file << "    <RenameMap>" << std::endl;
+    }
 
     //Getting all the necessary objects
-    TFile *f = TFile::Open( channel_info.workspace_path.c_str(), "READ" );
-    RooWorkspace *ws = (RooWorkspace*)(f -> Get( m_opt.ws_name.c_str() ));
+    //TFile *f = TFile::Open( (m_opt.input_ws_folder + "/" + channel_info.workspace_path +".root").c_str(), "READ" );
+    TFile *f = TFile::Open(channel_info.workspace_path.c_str(), "READ" );
+    RooWorkspace *ws = (RooWorkspace*)(f -> Get( channel_info.workspace_name.c_str() ));
     if(!ws){
       messages::print_error( __func__, __FILE__, __LINE__, "No workspace found in file ! Aborting !");
       abort();
@@ -119,9 +154,13 @@ void WSConfig::dump_files(){
       messages::print_error( __func__, __FILE__, __LINE__, "No ModelConfig object found in workspace ! Aborting !");
       abort();
     }
-    RooAbsData *data = ws -> data( m_opt.data_name.c_str() );
+    RooAbsData *data;
+    if((std::strcmp(channel_name.c_str(), "SPT_COMBINED") == 0) && (m_opt.data_name.find("asimov") == std::string::npos))
+      data = ws -> data( "combData" );
+    else
+      data = ws -> data( m_opt.data_name.c_str() );
     if(!data){
-      messages::print_error( __func__, __FILE__, __LINE__, "No "+m_opt.data_name+" object found in workspace ! Aborting !");
+      messages::print_error( __func__, __FILE__, __LINE__, "No "+m_opt.data_name+" (or combData)  object found in workspace ! Aborting !");
       abort();
     }
     RooSimultaneous *simPdf = (RooSimultaneous*)(mc->GetPdf());
@@ -152,6 +191,25 @@ void WSConfig::dump_files(){
       }
     }
 
+    std::ofstream o_channel_trexf_file;
+    if(m_opt.do_trexf_dump){
+      o_channel_trexf_file.open ( m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" );
+      std::vector < std::string > vec_path = string_utils::split_string( channel_info.workspace_path, '/' );
+      //o_channel_trexf_file << "Job: " << channel_info.workspace_path << std::endl; //this job name should be the same as the name of the workspace
+      o_channel_trexf_file << "Job: " << string_utils::replace_string(vec_path[vec_path.size() - 1], ".root", "") + "_" + m_opt.fittype << std::endl; //this job name should be the same as the name of the workspace
+      o_channel_trexf_file << "Label: " << m_opt.output_tag << std::endl;
+      o_channel_trexf_file << "ReadFrom: HIST" << std::endl;
+      o_channel_trexf_file << "ImageFormat: png" << std::endl;
+      o_channel_trexf_file << "HistoChecks: NOCRASH" << std::endl;
+      o_channel_trexf_file << std::endl;
+
+      //Add channel to master multifit config
+      o_master_trexf_file << "Fit: \"" << channel_name << "\"" << std::endl;
+      o_master_trexf_file << "ConfigFile: \"" << m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" << "\"" << std::endl;
+      o_master_trexf_file << "Label: \"" << channel_name << "\"" << std::endl;
+      o_master_trexf_file << std::endl;
+
+    }
 
     TIterator* it = mc -> GetNuisanceParameters() -> createIterator();
     RooRealVar* var = NULL;
@@ -161,43 +219,115 @@ void WSConfig::dump_files(){
       if(rn_map.find(varname) != rn_map.end()){
         repname = rn_map.at(varname);
       }
-      //Master
-      o_master_file << "      <Syst OldName = \"" + varname;
-      if(m_opt.decorr_all){
-        o_master_file << "\"     NewName =       \"" + channel_name << "_" << varname;
-      } else {
-        o_master_file << "\"     NewName =       \"" + repname; 
-      }
-      o_master_file << "\" />" << std::endl;
+      if(m_opt.do_config_dump){
 
-      //Channel
-      o_channel_file << "      <Syst OldName = \"" + varname;
-      if(m_opt.decorr_all){
-        o_channel_file << "\"     NewName =       \"" + channel_name << "_" << varname;
-      } else {
-        o_channel_file << "\"     NewName =       \"" + repname;        
+	std::string oldname = "";
+	if(string_utils::contains_string(varname,"alpha_")){
+	  oldname = varname+"Constraint("+varname+", nom_"+varname+")";
+	}
+	else{ 
+	  oldname = varname; 
+	}
+
+	//Master
+	o_master_file << "      <Syst OldName = \"" + oldname;
+	if(m_opt.decorr_all){
+	  o_master_file << "\"     NewName =       \"" + channel_name << "_" << varname;
+	} else {
+	  o_master_file << "\"     NewName =       \"" + repname; 
+	}
+	o_master_file << "\" />" << std::endl;
+
+	//Channel
+	o_channel_file << "      <Syst OldName = \"" + oldname;
+	if(m_opt.decorr_all){
+	  o_channel_file << "\"     NewName =       \"" + channel_name << "_" << varname;
+	} else {
+	  o_channel_file << "\"     NewName =       \"" + repname;        
+	}
+	o_channel_file << "\" />" << std::endl;
+
       }
+      if(m_opt.do_trexf_dump){
+	if(string_utils::contains_string(varname,"alpha_")){
+	  std::string varname_NP = string_utils::replace_string(varname,"alpha_","");
+
+	  o_channel_trexf_file << "  Systematic:    " + varname_NP << std::endl;
+  	  if(string_utils::contains_string(varname_NP,"JET_") || string_utils::contains_string(varname_NP,"COMB_")){
+	    o_channel_trexf_file << "  Category: Jets" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"EL_") || string_utils::contains_string(varname_NP,"EG_")){
+	    o_channel_trexf_file << "  Category: Electrons" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"MU_") || string_utils::contains_string(varname_NP,"MUON_")){
+	    o_channel_trexf_file << "  Category: Muons" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"FT_EFF_")){
+	    o_channel_trexf_file << "  Category: b_tagging" << std::endl;
+	  }
+  	  else if(string_utils::contains_string(varname_NP,"BKGNP_")){
+
+	    if(string_utils::contains_string(varname_NP,"SPT_ALLHAD")){
+	      o_channel_trexf_file << "  Category: SPT_ALLHAD_BKGNP" << std::endl;
+	    }
+	    else if(string_utils::contains_string(varname_NP,"SPT_OSML")){
+	      o_channel_trexf_file << "  Category: SPT_OSML_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_HTZT")){
+	      o_channel_trexf_file << "  Category: SPT_HTZT_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_TYWB")){
+	      o_channel_trexf_file << "  Category: SPT_TYWB_BKGNP" << std::endl;
+	    }
+	    if(string_utils::contains_string(varname_NP,"SPT_MONOTOP")){
+	      o_channel_trexf_file << "  Category: SPT_MONOTOP_BKGNP" << std::endl;
+	    }
+
+	  }//Channel-specific
+	  else{
+	    o_channel_trexf_file << "  Category: Others" << std::endl;
+	  }
+
+	}//Nuisance parameters
+	else if(string_utils::contains_string(varname,"BKGNF_")){
+	  o_channel_trexf_file << "  NormFactor:    " + varname << std::endl;
+	}//Background norm factors
+
+	o_channel_trexf_file << std::endl;
+
+      }//trex dump
+
+    }//real var
+
+    if(m_opt.do_config_dump){
+      RooAbsCategoryLValue* cat = ( RooAbsCategoryLValue* ) &simPdf->indexCat();
+      std::string catName = (std::string)cat->GetName();
+      //Master
+      o_master_file << "      <Syst OldName = \"" + catName;
+      o_master_file << "\"     NewName =       \"" + channel_name + "_" + catName;
+      o_master_file << "\" />" << std::endl;
+      o_master_file << "    </RenameMap>" << std::endl;
+      o_master_file << "  </Channel>" << std::endl;
+      //Channel
+      o_channel_file << "      <Syst OldName = \"" + catName;
+      o_channel_file << "\"     NewName =       \"" + channel_name + "_" + catName;
       o_channel_file << "\" />" << std::endl;
+      o_channel_file << "    </RenameMap>" << std::endl;
+      o_channel_file << "  </Channel>" << std::endl;
+      o_channel_file.close();
     }
 
-    RooAbsCategoryLValue* cat = ( RooAbsCategoryLValue* ) &simPdf->indexCat();
-    std::string catName = (std::string)cat->GetName();
-    //Master
-    o_master_file << "      <Syst OldName = \"" + catName;
-    o_master_file << "\"     NewName =       \"" + channel_name + "_" + catName;
-    o_master_file << "\" />" << std::endl;
-    o_master_file << "    </RenameMap>" << std::endl;
-    o_master_file << "  </Channel>" << std::endl;
-    //Channel
-    o_channel_file << "      <Syst OldName = \"" + catName;
-    o_channel_file << "\"     NewName =       \"" + channel_name + "_" + catName;
-    o_channel_file << "\" />" << std::endl;
-    o_channel_file << "    </RenameMap>" << std::endl;
-    o_channel_file << "  </Channel>" << std::endl;
-    o_channel_file.close();
-
+    if(m_opt.do_trexf_dump){
+      o_channel_trexf_file.close();
+    }
     f->Close();
+
+  }//channel loop
+
+  if(m_opt.do_config_dump){
+    o_master_file << "</Combination> " << std::endl;
+    o_master_file.close();
   }
-  o_master_file << "</Combination> " << std::endl;
-  o_master_file.close();
+
 }
+

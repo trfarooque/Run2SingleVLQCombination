@@ -11,13 +11,23 @@ public:
     std::string file_name;
     std::string ws_name;
     std::string data_name;
-    std::string output_folder;
+    bool do_config_dump;
+    bool do_trexf_dump;
+    std::string input_ws_folder;
+    std::string output_trexf_folder;
+    std::string output_xml_folder;
+    std::string output_ws_folder;
+    std::string output_xml_name;
+    std::string output_ws_name;
+    std::string output_tag;
+    std::string fittype;
     bool abort_on_error;
     bool decorr_all;
   };
   struct Channel {
     std::string channel_name;
     std::string workspace_path;
+    std::string workspace_name;
     std::string np_naming_path;
   };
 

@@ -1,0 +1,9 @@
+<!DOCTYPE Asimov  SYSTEM 'asimovUtil.dtd'>  
+<Asimov 
+    InputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/scaled_workspaces/SPT_MONOTOP_TS_M16K050.root" 
+    OutputFile="/data/at3/scratch2/farooque/VLQCombination/SingleVLQCombination_2022/newCO/Run2SingleVLQCombination/data/workspaces/asimov_mu0_workspaces/SPT_MONOTOP_TS_M16K050_MU0_ASIMOV.root"
+    POI="mu_signal" 
+    >
+  <Action Name="Prepare" Setup="" Action="nominalNuis:nominalGlobs"/>
+  <Action Name="asimovData_mu0" Setup="mu_signal=0" Action="genasimov:nominalGlobs"/>
+</Asimov>

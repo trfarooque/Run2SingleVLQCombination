@@ -59,20 +59,20 @@ void WSChecker::init(){
   //
   // Getting all analyses
   //
-  m_analyses = file_utils::read_file("data/NAMING_analyses.dat",
+  m_analyses = file_utils::read_file("WorkspaceChecks/data/NAMING_analyses.dat",
                                       {}/*characters that make skipped lines*/,
                                       {}/*ignored characters*/);
   //
   // Getting all nuisance parameters
   //
-  m_nps = file_utils::read_file_and_expand("data/NAMING_NPs.dat",
+  m_nps = file_utils::read_file_and_expand("WorkspaceChecks/data/NAMING_NPs.dat",
                                             {"*"}/*characters that make skipped lines*/,
                                             {"|"," "}/*ignored characters*/,
                                             "index"/*expansion key*/);
   //
   // Getting all backgrounds
   //
-  std::vector < std::string > temps_backs = file_utils::read_file("data/NAMING_backs.dat",
+  std::vector < std::string > temps_backs = file_utils::read_file("WorkspaceChecks/data/NAMING_backs.dat",
                                                                   {"*"}/*characters that make skipped lines*/,
                                                                   {"|"}/*ignored characters*/);
   for( const std::string &back : temps_backs ){
@@ -85,7 +85,7 @@ void WSChecker::init(){
   // Getting the templates
   //
   TEnv rEnv;
-  rEnv.ReadFile( "data/NAMING_other_conventions.dat", kEnvAll);
+  rEnv.ReadFile( "WorkspaceChecks/data/NAMING_other_conventions.dat", kEnvAll);
   for( const std::string &name : {"Back.NP","Back.Norm","Param.Default","Region.Name","POI.Name"}){
     m_templates.insert( std::pair < std::string, std::string >( name, rEnv.GetValue(name.c_str(), "") ) );
   }
@@ -144,8 +144,8 @@ bool WSChecker::check_parameters(){
   RooRealVar* var = NULL;
   while( (var = (RooRealVar*) it->Next()) ){
     std::string varname = (std::string) var->GetName();
-    //std::cout<< varname << std::endl;
     varname = string_utils::replace_string( varname, "alpha_", "" );
+    //std::cout<< varname << std::endl;
     if ( varname.find("gamma_stat") != std::string::npos ){
       continue;
     }
@@ -156,7 +156,19 @@ bool WSChecker::check_parameters(){
     // First checking if the NP is part of the object NP list
     for( const std::string &np : m_nps ){
       if(np==varname){
+	//std::cout<< "Matched with " << varname << std::endl;
         isOK = true; break;
+      }
+      else if(np.find("<WP>") != std::string::npos){
+	std::string wps[5] = {"60", "70", "77", "85", "PsC"};
+	for(const std::string &wp : wps){
+	  std::string modnp = string_utils::replace_string( np, "<WP>", wp );
+	  if(modnp==varname){
+	    //std::cout<< "Matched with " << varname << std::endl;
+	    isOK = true; break;
+	  }
+	}
+	if(isOK) break;
       }
     }
     // If this is not part of the previous list, check if this follows
@@ -181,7 +193,8 @@ bool WSChecker::check_parameters(){
           std::string temp = string_utils::replace_string(m_templates[key],"CODE",ana);
           // temp = string_utils::replace_string(temp,"NAME",back);
           temp = string_utils::replace_string(temp,"explicit_name","");
-          if( varname.find(temp) == 0 ){
+          if( !temp.empty() && varname.find(temp) == 0 ){
+	    //std::cout<<"Matched here "<< "=" + temp + "R2D2" << std::endl;
             isOK = true; break;
           }
 	  //}
@@ -256,9 +269,9 @@ bool WSChecker::check_sample_names(){
 
     while( (comp1 = (RooProduct*) funcIter1.Next()) ) {
       TString compname(comp1->GetName());
-      // std::cout<<compname<<std::endl;
+      //std::cout<<compname<<std::endl;
       compname.ReplaceAll("L_x_","").ReplaceAll(tt->GetName(),"").ReplaceAll("_overallSyst_x_StatUncert","");
-      compname.ReplaceAll("_overallSyst_x_HistSyst","").ReplaceAll("_overallSyst_x_Exp","").ReplaceAll("_","");
+      compname.ReplaceAll("_overallSyst_x_HistSyst","").ReplaceAll("_overallSyst_x_Exp","").ReplaceAll("_shapes","").ReplaceAll("_","");
       if(compname.Contains((TRegexp)sigex))
 	compname = compname(compname.Index((TRegexp)sigex), 12);
       set_samples.insert( (std::string) compname );

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+${VLQCOMBDIR}/WorkspaceChecks/bin/workspace.exe \
+file_path=${VLQCOMBDIR}/data/xml/combination/wsList.txt data_name="asimovData" \
+input_ws_folder=${VLQCOMBDIR}/data/workspaces/scaled_workspaces/ \
+output_xml_folder=${VLQCOMBDIR}/data/xml/combination/ \
+output_ws_folder=${VLQCOMBDIR}/data/workspaces/combined_workspaces/ \
+output_ws_name=SPT_combined_TS_M16K050.root \
+do_config_dump=TRUE do_checks=FALSE abort_on_error=FALSE

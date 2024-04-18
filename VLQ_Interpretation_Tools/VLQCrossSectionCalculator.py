@@ -1,4 +1,5 @@
-from numpy import array, log, exp
+from numpy import array as nparray, log, exp
+
 
 XS_map_singleWb = {600.:9060., 700.:5820., 800.:3860., 900.:2720., 1000.:1950.,
           1100.:1350., 1200.:982., 1300.:716., 1400.:540., 1500.:408.,
@@ -27,7 +28,7 @@ XS_map_pair = {500.:3270., 600.:1130., 700.:442., 800.:190., 900.:87.7, 1000.:42
 
 XSUncertainty_map_Stat_SingleWb = {700.:1.0, 800.:1.3, 900.:1.2, 1000.:1.1, 1100.:1.3, 1200.:1.3, 1300.:1.3, 1400.:1.1, 1500.:1.3, 1600.:1.4, 1700.:1.4, 1800.:1.4, 1900.:1.3, 2000.:1.4, 2100.:1.3, 2200.:1.3, 2300.:1.6, 2400.:1.4, 2500.:1.4, 2600.:1.6, 2700.: 1.2, 2800.: 1.2, 2900.:1.7, 3000.:1.4}
 
-XSUncertainty_map_PDF_SingleWb = {700.:0.9, 800.:1.2, 900.:2.1, 1000.:1.7, 1100.:1.4, 1200.:1.6, 1300.:1.5, 1400.:1.8, 1500.:2.3, 1600.:1.9, 1700.:2.4, 1800.:1.9, 1900.:2.3, 2000.:2.5, 2100.:15.9, 2200.:2.8, 2300.:3.1, 2400.:3.2, 2500.:3.6, 2600.:3.8, 2700.:4.3, 2800.: 5.1, 2900.:5.8, 3000.:5.6}
+XSUncertainty_map_PDF_SingleWb = {700.:0.9, 800.:1.2, 900.:2.1, 1000.:1.7, 1100.:1.4, 1200.:1.6, 1300.:1.5, 1400.:1.8, 1500.:2.3, 1600.:1.9, 1700.:2.4, 1800.:1.9, 1900.:2.3, 2000.:2.5, 2100.:2.65, 2200.:2.8, 2300.:3.1, 2400.:3.2, 2500.:3.6, 2600.:3.8, 2700.:4.3, 2800.: 5.1, 2900.:5.8, 3000.:5.6}
 
 
 XSUncertainty_map_ScaleUp_SingleWb = {700.:2.2, 800.:2.4, 900.:2.5, 1000.:1.8, 1100.:2.7, 1200.:2.2, 1300.:1.8, 1400.:1.7, 1500.:2.1, 1600.:1.9, 1700.:1.9, 1800.:1.7, 1900.:1.3, 2000.:1.9, 2100.:2.3, 2200.:2.1, 2300.:2.6, 2400.:2.5, 2500.:2.6, 2600.:3.1, 2700.: 2.5, 2800.: 3.6, 2900.:3.2, 3000.:3.5}
@@ -37,7 +38,7 @@ XSUncertainty_map_ScaleDown_SingleWb = {700.:1.4, 800.:1.4, 900.:1.5, 1000.:1.0,
 
 def interpolator(x1, y1, x2, y2, x):
     if x1==x2:
-        print "Input x values are same. Cannot interpolate. Returning (y1+y2)/2."
+        print( "Input x values are same. Cannot interpolate. Returning (y1+y2)/2." )
         return (y1+y2)/2.0
     if float(x)==float(x1): return y1
     elif float(x)==float(x2): return y2
@@ -51,13 +52,13 @@ def XS_NWA(mass, cw, mode='WT'):
     ## Allowed mode is 'WT', 'ZT', 'WB', or 'ZB'
     m = mass/100.
     # These values are from the Wulzer paper
-    #A, A0 = array([ -7.39028425e-01,   3.32655022e-02,  -1.08256630e-03,   1.38042384e-05]), 12.5570351663
+    #A, A0 = nparray([ -7.39028425e-01,   3.32655022e-02,  -1.08256630e-03,   1.38042384e-05]), 12.5570351663
     # These values are from the New paper by Fuks
-    x =  array( [ m, m**2, m**3, m**4 ] ) 
+    x =  nparray( [ m, m**2, m**3, m**4 ] ) 
     if mode == 'WT':
-        A, A0 = array([-0.532, 0.015, -3.54e-4, 3.35e-6]), 11.9
+        A, A0 = nparray([-0.532, 0.015, -3.54e-4, 3.35e-6]), 11.9
     if mode == 'ZT':
-        A, A0 = array([-4.74655447e-01,  1.22370471e-02, -2.95886410e-04 , 2.79057526e-06]), 9.150415284734407
+        A, A0 = nparray([-4.74655447e-01,  1.22370471e-02, -2.95886410e-04 , 2.79057526e-06]), 9.150415284734407
     XS = exp(A0 + A.dot(x))
     return XS*(cw**2)/1000.0  ## Returns XS value in pb
 
@@ -72,32 +73,32 @@ def PNWA(proc, mass, GM):
 
     ## Customized for different processes following parameterization in https://arxiv.org/abs/2003.00640
     ## Use bilinear interpolation for intermediate masses    
-    if proc is "WTWb":
+    if proc == "WTWb":
         As = {1000:  0.526, 1200:  0.638, 1400:  0.708, 1600: 0.697, 1800: 0.784, 2000: 0.764, 2200: 0.720}
         Bs = {1000: -0.123, 1200: -0.048, 1400: -0.054, 1600: 0.171, 1800: 0.153, 2000: 0.235, 2200: 0.346}
-    elif proc is "WTZt":
+    elif proc == "WTZt":
         As = {1000:  0.55720, 1200:  0.68056, 1400:  0.73284, 1600: 0.71534, 1800: 0.75899, 2000: 0.77691, 2200: 0.69649 }
         Bs = {1000: -0.24681, 1200: -0.17556, 1400: -0.00117, 1600: 0.25712, 1800: 0.23967, 2000: 0.22725, 2200: 0.45627 }
-    elif proc is "WTHt":
+    elif proc == "WTHt":
         As = { 1000:  0.057, 1200:  0.189, 1400: 0.319, 1600: 0.433, 1800: 0.522, 2000: 0.613, 2200:  0.658 }
         Bs = { 1000: 35.032, 1200: 10.005, 1400: 7.923, 1600: 7.801, 1800: 8.771, 2000: 9.329, 2200: 12.082 }
         x0 = { 1000:  0.052, 1200:  0.035, 1400: 0.026, 1600: 0.022, 1800: 0.023, 2000: 0.021, 2200:  0.024 }
-    elif proc is "ZTWb":
+    elif proc == "ZTWb":
         As = {1000:  0.507, 1200:  0.639, 1400:  0.737, 1600: 0.757, 1800: 0.807, 2000: 0.820, 2200: 0.754 }
         Bs = {1000: -0.272, 1200: -0.126, 1400: -0.046, 1600: 0.141, 1800: 0.160, 2000: 0.195, 2200: 0.356 }
-    elif proc is "ZTZt":
-        As = {1000:  0.734, 1200:  0.550, 1400:  0.664, 1600: 0.730, 1800: 0.746, 2000: 0.786, 2200: 0.709 }
+    elif proc == "ZTZt":
+        As = {1000:  0.374, 1200:  0.550, 1400:  0.664, 1600: 0.730, 1800: 0.746, 2000: 0.786, 2200: 0.709 }
         Bs = {1000:  0.013, 1200:  0.035, 1400:  0.087, 1600: 0.166, 1800: 0.312, 2000: 0.275, 2200: 0.477 }
-    elif proc is "ZTHt":
+    elif proc == "ZTHt":
         As = { 1000:  0.0, 1200:  0.078, 1400: 0.199, 1600: 0.321, 1800: 0.428, 2000: 0.526, 2200:  0.601 }
         Bs = { 1000:  0.0, 1200: 20.616, 1400: 9.290, 1600: 7.936, 1800: 8.072, 2000: 8.456, 2200:  9.896 }
         x0 = { 1000:  0.0, 1200:  0.047, 1400: 0.030, 1600: 0.026, 1800: 0.023, 2000: 0.021, 2200:  0.022 }
     else:
-        print "ERROR: proc",proc,"is not a valid process! (returning 0)"
+        print( "ERROR: proc",proc,"is not a valid process! (returning 0)" )
         return 0;
 
     ### Determine known mass below and above requested mass that has a PNWA fucntion
-    known_masses = array(sorted(As.keys()))
+    known_masses = nparray(sorted(As.keys()))
     if mass <= float(min(known_masses)): mlow, mhigh = float(known_masses[0]), float(known_masses[1])
     elif mass >= float(max(known_masses)): mlow, mhigh = float(known_masses[-2]), float(known_masses[-1])
     else:
@@ -106,29 +107,39 @@ def PNWA(proc, mass, GM):
                 mlow, mhigh = float(known_masses[ii]), float(known_masses[ii+1])
                 break
 
+    _A = interpolator(mlow, As[mlow], mhigh, As[mhigh], mass)
+    _B = interpolator(mlow, Bs[mlow], mhigh, Bs[mhigh], mass)
+    if "H" in proc:
+            _x0 = interpolator(mlow, x0[mlow], mhigh, x0[mhigh], mass)
+    if "H" not in proc:
+            return 1.0 + _A*GM + _B*GM**2
+    elif GM < _x0:
+            return 1.0 +_A*_B*GM -(_A*_B/_x0)*GM**2
+    else:
+            return 1.0 - _A*(1 - exp(-_B*(GM - _x0)))
 
     ### Define the funtional forms for PNWA
     # ... for W and Z decays and H decays with Gamma/M < x0:
-    PNWAfunction = lambda mass, GM : 1.0 +  As[int(mass)]*GM + Bs[int(mass)]*GM**2
+    # PNWAfunction = lambda mass, GM : 1.0 +  As[int(mass)]*Bs[int(mass)]*GM - (As[int(mass)]*Bs[int(mass)]/x0[mass])*GM**2 #1.0 +  As[int(mass)]*GM + Bs[int(mass)]*GM**2
     # ... for H decays with Gamma/M >= x0:
-    PNWAfunction2 = lambda mass, GM : 1.0 - As[int(mass)]*( 1.0 - exp( -Bs[int(mass)]*(GM - x0[mass]) ) )
+    # PNWAfunction2 = lambda mass, GM : 1.0 - As[int(mass)]*( 1.0 - exp( -Bs[int(mass)]*(GM - x0[mass]) ) )
 
     ### Get PNWA value for mlow
-    if "H" in proc and GM >= x0[mlow] :
-        flow = PNWAfunction2(mlow,GM)
-    else :
-        flow = PNWAfunction(mlow,GM)
+    # if "H" in proc and GM >= x0[mlow] :
+    #     flow = PNWAfunction2(mlow,GM)
+    # else :
+    #     flow = PNWAfunction(mlow,GM)
 
-    ### Get PNWA value for mhigh
-    if "H" in proc and GM >= x0[mhigh] :
-        fhigh = PNWAfunction2(mhigh,GM)
-    else :
-        fhigh = PNWAfunction(mhigh,GM)
+    # ### Get PNWA value for mhigh
+    # if "H" in proc and GM >= x0[mhigh] :
+    #     fhigh = PNWAfunction2(mhigh,GM)
+    # else :
+    #     fhigh = PNWAfunction(mhigh,GM)
 
-    return interpolator(mlow, flow, mhigh, fhigh, mass)
+    # return interpolator(mlow, flow, mhigh, fhigh, mass)
 
 def XSUncertainty(mass):
-    known_masses = array(sorted(XSUncertainty_map_Stat_SingleWb.keys()))
+    known_masses = nparray(sorted(XSUncertainty_map_Stat_SingleWb.keys()))
     if mass <= float(min(known_masses)): mlow, mhigh = float(known_masses[0]), float(known_masses[1])
     elif mass >= float(max(known_masses)): mlow, mhigh = float(known_masses[-2]), float(known_masses[-1])
     else:
@@ -142,38 +153,155 @@ def XSUncertainty(mass):
     fdown_high = (XSUncertainty_map_Stat_SingleWb[mhigh]**2 + XSUncertainty_map_PDF_SingleWb[mhigh]**2 + XSUncertainty_map_ScaleDown_SingleWb[mhigh]**2)**0.5/100.0
     return [interpolator(mlow, fup_low, mhigh, fup_high, mass), interpolator(mlow, fdown_low, mhigh, fdown_high, mass)]
 
-def FtFactor(proc, mass, GM):
+def FtFactor(proc, mass, GM, onlyUseHighGM = False, onlyUseLowGM = False, useAverageXS = False):
     if proc in ['WTWb','WTZt','WTHt','ZBWt']:
-        return 1.0
+        return 1.0, 0.
+        
     elif proc == 'ZTZt':
-        As = {'low': {1000.0: 0.9694110113247894, 
-                      1200.0: 0.9589911555945622, 
-                      1400.0: 0.9542319706981397, 
-                      1600.0: 0.9505205665336554, 
-                      1800.0: 0.9478867479160621, 
-                      2000.0: 0.9449261210380525, 
-                      2200.0: 0.9440950010333032, 
-                      2400.0: 0.9368601844670403, 
-                      2600.0: 0.9381265125972342}, 
-              'high': {1000.0: 1.0675136197603414, 
-                       1200.0: 1.0784822610477485, 
-                       1400.0: 1.0759352030736185, 
-                       1600.0: 1.0796884306459775, 
-                       1800.0: 1.0902476909486913, 
-                       2000.0: 1.0830544018678439, 
-                       2200.0: 1.097614485004791, 
-                       2400.0: 1.1015850504657756, 
-                       2600.0: 1.1011262157275725}}
-        Bs = {'low': {1000.0: -0.7482434525643866, 1200.0: -0.47119892633257704, 1400.0: -0.3731706237419776, 1600.0: -0.21938065102307053, 1800.0: -0.10816849981545607, 2000.0: 0.02894418887135209, 2200.0: 0.07067916383018459, 2400.0: 0.3317469155268278, 2600.0: 0.4087246390807451}, 'high': {1000.0: -0.7079336902578997, 1200.0: -0.5883217107278437, 1400.0: -0.38444847905941915, 1600.0: -0.23809289156725913, 1800.0: -0.1752482290244645, 2000.0: 0.015220113329158779, 2200.0: 0.026841925864909816, 2400.0: 0.13419851650838013, 2600.0: 0.2752357958410574}}
-        Cs = {'low': {1000.0: 0.0, 1200.0: 0.0, 1400.0: 0.0, 1600.0: 0.0, 1800.0: 0.0, 2000.0: 0.0, 2200.0: 0.0, 2400.0: 0.0, 2600.0: 0.0}, 'high': {1000.0: 0.3673992315304307, 1200.0: 0.3576324663892575, 1400.0: 0.18529637509248245, 1600.0: 0.1046109953497519, 1800.0: 0.14985359361494044, 2000.0: -0.03120971028245153, 2200.0: 0.11597011742395424, 2400.0: 0.07751488487372908, 2600.0: -0.011837950047630663}}
+        As = {'low': {
+            1000.0: 0.9694110113247894, 
+            1200.0: 0.9589911555945622, 
+            1400.0: 0.9542319706981397, 
+            1600.0: 0.9505205665336554, 
+            1800.0: 0.9478867479160621, 
+            2000.0: 0.9449261210380525, 
+            2200.0: 0.9440950010333032, 
+            2400.0: 0.9368601844670403, 
+            2600.0: 0.9381265125972342}, 
+                'high': {
+            1000.0: 1.0675136197603414, 
+            1200.0: 1.0784822610477485, 
+            1400.0: 1.0759352030736185, 
+            1600.0: 1.0796884306459775, 
+            1800.0: 1.0902476909486913, 
+            2000.0: 1.0830544018678439, 
+            2200.0: 1.097614485004791, 
+            2400.0: 1.1015850504657756, 
+            2600.0: 1.1011262157275725}}
+        Bs = {'low': {
+            1000.0: -0.7482434525643866, 
+            1200.0: -0.47119892633257704, 
+            1400.0: -0.3731706237419776, 
+            1600.0: -0.21938065102307053, 
+            1800.0: -0.10816849981545607, 
+            2000.0: 0.02894418887135209, 
+            2200.0: 0.07067916383018459, 
+            2400.0: 0.3317469155268278, 
+            2600.0: 0.4087246390807451}, 
+                'high': {
+            1000.0: -0.7079336902578997, 
+            1200.0: -0.5883217107278437, 
+            1400.0: -0.38444847905941915, 
+            1600.0: -0.23809289156725913, 
+            1800.0: -0.1752482290244645, 
+            2000.0: 0.015220113329158779, 
+            2200.0: 0.026841925864909816, 
+            2400.0: 0.13419851650838013, 
+            2600.0: 0.2752357958410574}}
+        Cs = {'low': {
+            1000.0: 0.0, 
+            1200.0: 0.0, 
+            1400.0: 0.0, 
+            1600.0: 0.0, 
+            1800.0: 0.0, 
+            2000.0: 0.0, 
+            2200.0: 0.0, 
+            2400.0: 0.0, 
+            2600.0: 0.0}, 
+                'high': {
+            1000.0: 0.3673992315304307, 
+            1200.0: 0.3576324663892575, 
+            1400.0: 0.18529637509248245, 
+            1600.0: 0.1046109953497519, 
+            1800.0: 0.14985359361494044, 
+            2000.0: -0.03120971028245153, 
+            2200.0: 0.11597011742395424, 
+            2400.0: 0.07751488487372908, 
+            2600.0: -0.011837950047630663}}
+
+    elif proc == 'ZTHt':
+        As = {'low': {
+            1000.0: 0.975,
+            1200.0: 0.965,
+            1400.0: 0.962,
+            1600.0: 0.963,
+            1800.0: 0.966,
+            2000.0: 0.972,
+            2200.0: 0.984,
+            2400.0: 1.002,
+            2600.0: 1.032}, 
+                'high': {
+            1000.0: 1.122,
+            1200.0: 1.145,
+            1400.0: 1.165,
+            1600.0: 1.222,
+            1800.0: 1.274,
+            2000.0: 1.373,
+            2200.0: 1.471,
+            2400.0: 1.595,
+            2600.0: 1.771}}
+        Bs = {'low': {
+            1000.0: 2.204,
+            1200.0: 2.807,
+            1400.0: 3.391,
+            1600.0: 4.117,
+            1800.0: 4.958,
+            2000.0: 5.932,
+            2200.0: 7.057,
+            2400.0: 8.243,
+            2600.0: 9.514},
+                'high': {
+            1000.0: 2.132,
+            1200.0: 2.447,
+            1400.0: 2.926,
+            1600.0: 3.199,
+            1800.0: 3.638,
+            2000.0: 3.783,
+            2200.0: 4.029,
+            2400.0: 4.117,
+            2600.0: 3.777}}
+        Cs = {'low': {
+            1000.0: 0.0, 
+            1200.0: 0.0, 
+            1400.0: 0.0, 
+            1600.0: 0.0, 
+            1800.0: 0.0, 
+            2000.0: 0.0, 
+            2200.0: 0.0, 
+            2400.0: 0.0, 
+            2600.0: 0.0},
+                'high': {
+            1000.0: -1.318,
+            1200.0: -1.469,
+            1400.0: -2.013,
+            1600.0: -2.207,
+            1800.0: -2.760,
+            2000.0: -2.931,
+            2200.0: -3.327,
+            2400.0: -3.554,
+            2600.0: -3.074}}
+            
     else:
-        return 1.0
+        return 1.0, 0.
     
-    if GM < 0.1:
+    # if GM < 0.1:
+    #     As,Bs,Cs = As['low'],Bs['low'],Cs['low']
+    # else:
+
+    As_l,Bs_l,Cs_l = As['low'],Bs['low'],Cs['low']
+    As_h,Bs_h,Cs_h = As['high'],Bs['high'],Cs['high']
+    
+    if onlyUseHighGM:
+        As,Bs,Cs = As['high'],Bs['high'],Cs['high']
+    elif onlyUseLowGM:
         As,Bs,Cs = As['low'],Bs['low'],Cs['low']
     else:
-        As,Bs,Cs = As['high'],Bs['high'],Cs['high']
-    known_masses = array(sorted(As.keys()))
+        if GM < 0.1:
+            As,Bs,Cs = As['low'],Bs['low'],Cs['low']
+        else:
+            As,Bs,Cs = As['high'],Bs['high'],Cs['high']
+
+    known_masses = nparray(sorted(As.keys()))
     if mass <= float(min(known_masses)): mlow, mhigh = float(known_masses[0]), float(known_masses[1])
     elif mass >= float(max(known_masses)): mlow, mhigh = float(known_masses[-2]), float(known_masses[-1])
     else:
@@ -182,14 +310,84 @@ def FtFactor(proc, mass, GM):
                 mlow, mhigh = float(known_masses[ii]), float(known_masses[ii+1])
                 break
     
-
-    ### GetFt value for mlow
-
     flow = As[mlow] + Bs[mlow]*GM + Cs[mlow]*GM**2
     fhigh = As[mhigh] + Bs[mhigh]*GM + Cs[mhigh]*GM**2
 
-    return interpolator(mlow, flow, mhigh, fhigh, mass)
+    # Calculate difference between low and high Gamma/M
 
+    flow_l = As_l[mlow] + Bs_l[mlow]*GM + Cs_l[mlow]*GM**2
+    flow_h = As_h[mlow] + Bs_h[mlow]*GM + Cs_h[mlow]*GM**2
 
+    fhigh_l = As_l[mhigh] + Bs_l[mhigh]*GM + Cs_l[mhigh]*GM**2
+    fhigh_h = As_h[mhigh] + Bs_h[mhigh]*GM + Cs_h[mhigh]*GM**2
+
+    # Calculate xsec at GM = 0.1
+    flow_l_01 = As_l[mlow] + Bs_l[mlow]*0.1 + Cs_l[mlow]*0.1**2
+    flow_h_01 = As_h[mlow] + Bs_h[mlow]*0.1 + Cs_h[mlow]*0.1**2
+
+    fhigh_l_01 = As_l[mhigh] + Bs_l[mhigh]*0.1 + Cs_l[mhigh]*0.1**2
+    fhigh_h_01 = As_h[mhigh] + Bs_h[mhigh]*0.1 + Cs_h[mhigh]*0.1**2    
+
+    xsec_l_01 = interpolator(mlow, flow_l_01, mhigh, fhigh_l_01, mass)
+    xsec_h_01 = interpolator(mlow, flow_h_01, mhigh, fhigh_h_01, mass)
+
+    ft_diff = 0.
+    
+    if useAverageXS:
+        if GM < 0.1:
+            xsec = interpolator(mlow, flow, mhigh, fhigh, mass) + 0.5*(xsec_h_01 - xsec_l_01)
+        else:
+            xsec = interpolator(mlow, flow, mhigh, fhigh, mass) - 0.5*(xsec_h_01 - xsec_l_01)
+
+        ft_diff = 0.5*(xsec_h_01 - xsec_l_01)
         
+    else:
+        xsec = interpolator(mlow, flow, mhigh, fhigh, mass)
+        if GM < 0.1:
+            ft_diff = interpolator(mlow, flow_h, mhigh, fhigh_h, mass) - interpolator(mlow, flow_l, mhigh, fhigh_l, mass)
 
+    return xsec, ft_diff
+
+
+def TT_XSandError(mass):
+    XSandError = {}
+    XSandError[600] = {'xsec':1.16,'err':0.10}
+    XSandError[700] = {'xsec':0.455,'err':0.043}
+    XSandError[750] = {'xsec':0.295,'err':0.029}
+    XSandError[800] = {'xsec':0.195,'err':0.020}
+    XSandError[850] = {'xsec':0.132,'err':0.014}
+    XSandError[900] = {'xsec':0.0900,'err':0.0096}
+    XSandError[950] = {'xsec':0.0624,'err':0.0068}
+    XSandError[1000] = {'xsec':0.0438,'err':0.0048}
+    XSandError[1050] = {'xsec':0.0311,'err':0.0035}
+    XSandError[1100] = {'xsec':0.0223,'err':0.0025}
+    XSandError[1150] = {'xsec':0.0161,'err':0.0018}
+    XSandError[1200] = {'xsec':0.0117,'err':0.0013}
+    XSandError[1250] = {'xsec':0.00860,'err':0.0010}
+    XSandError[1300] = {'xsec':0.00634,'err':0.00075}
+    XSandError[1350] = {'xsec':0.00470,'err':0.00057}
+    XSandError[1400] = {'xsec':0.00350,'err':0.00043}
+    XSandError[1450] = {'xsec':0.00262,'err':0.00033}
+    XSandError[1500] = {'xsec':0.00197,'err':0.00026}
+    XSandError[1550] = {'xsec':0.00148,'err':0.00020}
+    XSandError[1600] = {'xsec':0.00112,'err':0.00015}
+    XSandError[1650] = {'xsec':0.00085,'err':0.00012}
+    XSandError[1700] = {'xsec':0.00065,'err':0.00009}
+    XSandError[1750] = {'xsec':0.00049,'err':0.00007}
+    XSandError[1800] = {'xsec':0.00038,'err':0.00006}
+    XSandError[1850] = {'xsec':0.00029,'err':0.00005}
+    XSandError[1900] = {'xsec':0.00022,'err':0.00004}
+    XSandError[1950] = {'xsec':0.000171,'err':0.00003}
+    XSandError[2000] = {'xsec':0.000132,'err':0.000024}
+    XSandError[2050] = {'xsec':0.,'err':0.}
+    XSandError[2100] = {'xsec':0.,'err':0.}
+    XSandError[2150] = {'xsec':0.,'err':0.}
+    XSandError[2200] = {'xsec':0.,'err':0.}
+    XSandError[2250] = {'xsec':0.,'err':0.}
+    XSandError[2300] = {'xsec':0.,'err':0.}
+
+    try:
+        return (XSandError[mass]['xsec'], XSandError[mass]['err'])
+    except KeyError:
+        print( "<!> ERROR !! Unknown mass passed to GetPairProductionXSandError() !!")
+        return False
