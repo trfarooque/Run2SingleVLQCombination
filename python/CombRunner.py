@@ -360,7 +360,7 @@ BRWs = {}
         for ana in ALL_CFGs.keys():
             
             #ignore HTZT if mass > 2.1 TeV
-            if ((mass > 2100) or (kappa < 0.2)) and ana=='SPT_HTZT':
+            if ((mass > 2300) or (kappa < 0.2)) and ana=='SPT_HTZT':
                 print( "No available workspace for HTZT. Comb will proceed with other channels" )
                 continue
 

@@ -594,7 +594,7 @@ class LimitPointInfo:
 
         if(drawExp and (self.theoryInfo.GM<=0.5)): 
             for cfg in self.cfgList:
-                if(self.mass>2100 and cfg=='SPT_HTZT'):
+                if(self.mass>2300 and cfg=='SPT_HTZT'):
                     continue
                 self.ReadExpLimits(dataTag,baseDir,cfg,useData)
         return
@@ -703,7 +703,7 @@ class LimitPlotter:
         tl_int.SetTextSize(tl_int.GetTextSize()*0.77)
         tl_list += [tl_int]
 
-        tl_energy = TLatex(atl_x,atl_y-0.045,"#sqrt{s} = 13 TeV, 140 fb^{-1}")
+        tl_energy = TLatex(atl_x,atl_y-0.045,"#sqrt{s} = 13 TeV, 139 fb^{-1}")
         tl_energy.SetNDC()
         tl_energy.SetTextFont(42)
         tl_energy.SetTextSize(tl_energy.GetTextSize()*0.77)
@@ -722,7 +722,7 @@ class LimitPlotter:
 
         _labels = self.configList if labels is None else labels
         limitList = self.limitInfoDict[_BRW][_kappa]
-        print(limitList)
+        #print(limitList)
         gr_cols = [kBlack,kBlue+1,kMagenta,kOrange+4,kRed] # max compare 5 configurations
         gr_fills = [3002,3004,3005,3007,3008]
 
@@ -750,7 +750,7 @@ class LimitPlotter:
             for n,cfg in enumerate(self.configList):
                 #number of points in this graph
                 gr_len = sum( ((limitList[Mass].theoryInfo.GM<0.5) and \
-                               (Mass<=2100 or cfg!='SPT_HTZT')) for Mass in self.massList)
+                               (Mass<=2300 or cfg!='SPT_HTZT')) for Mass in self.massList)
                 print(n,cfg,' : ',gr_len)
                     
                 ###########################################################
@@ -804,7 +804,7 @@ class LimitPlotter:
                 for Mass in self.massList:
                     counter=counter+1
                     if((limitList[Mass].theoryInfo.GM>0.5) or \
-                       (Mass>2100 and cfg=='SPT_HTZT')):
+                       (Mass>2300 and cfg=='SPT_HTZT')):
                         break
 
                     norm_xsec = limitList[Mass].norm_xsec
@@ -855,7 +855,7 @@ class LimitPlotter:
         # Creating the canvas
         ###
         if self.signal=="": self.signal_label = "T_K{}_BRW{}_{}".format(_kappa,_BRW,self.dataTag)
-        canv_name = "1DXSecLimit_"+self.signal_label
+        canv_name = "1DXSecLimit_"+self.signal+"_{}".format(_kappa)
         if self.drawRatio:
             can = TCanvas(canv_name,canv_name,1000,1150)
             pad1 = TPad("pad1","",0,0.4,1,1)
@@ -907,6 +907,7 @@ class LimitPlotter:
         #tmg_main.GetHistogram().SetMaximum(3)
         #tmg_main.GetHistogram().SetMinimum(0.0001)
         tmg_main.GetXaxis().SetRangeUser(self.massList[0], self.massList[-1])
+        tmg_main.GetYaxis().SetRangeUser(0.005,3)
         ROOT.gPad.Modified();ROOT.gPad.Update()
 
         leg.SetTextSize(0.028)
@@ -927,7 +928,7 @@ class LimitPlotter:
         for tl in tl_list:
             tl.Draw()
 
-        #gPad.SetLogy(1)
+        gPad.SetLogy(1)
         gPad.RedrawAxis()
         can.SetTickx()
         can.SetTicky()
