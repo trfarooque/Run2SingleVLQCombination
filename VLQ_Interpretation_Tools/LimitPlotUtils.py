@@ -831,10 +831,12 @@ class LimitPlotter:
             leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
             wideM=-1
+            max_mass = -1
             for iMass,Mass in enumerate(self.massList):
                 if(limitList[Mass].theoryInfo.GM>0.5):
                     wideM=Mass
                     break
+                max_mass = Mass
                 tg_theory.SetPoint(iMass,Mass,limitList[Mass].theoryInfo.xsec)
                 tg_theory.SetPointError(iMass,0,0,
                                         limitList[Mass].theoryInfo.xsecDown,
@@ -886,6 +888,7 @@ class LimitPlotter:
             #first draw the ratio plots
             pad2.cd()
             tmg_ratio.Draw("a")
+            tmg_ratio.GetHistogram().GetXaxis().SetLimits(1000., 2750.)
             pad1.cd()
         else:
             can.cd()
@@ -905,9 +908,26 @@ class LimitPlotter:
         tmg_main.GetHistogram().GetXaxis().SetTitleOffset(1.32)
         tmg_main.GetHistogram().GetYaxis().SetTitleOffset(1.4)
         #tmg_main.GetHistogram().SetMaximum(3)
-        #tmg_main.GetHistogram().SetMinimum(0.0001)
-        tmg_main.GetXaxis().SetRangeUser(self.massList[0], self.massList[-1])
-        tmg_main.GetYaxis().SetRangeUser(0.005,3)
+
+        if self.forceRanges:
+            tmg_main.GetYaxis().SetRangeUser(0.005,3)
+            tmg_main.GetHistogram().GetXaxis().SetLimits(1000., 2750.)
+
+            # Add a vertical line at the last mass value
+            max_Y = tmg_main.GetHistogram().GetMaximum()
+            min_Y = tmg_main.GetHistogram().GetMinimum()
+            #max_mass = wideM
+            line_ = TLine(max_mass,min_Y,max_mass,max_Y*0.04)
+            line_.SetLineColor(kGray+2)
+            line_.SetLineStyle(2)
+            line_.SetLineWidth(2)
+            line_.Draw()
+        
+        else: 
+            tmg_main.GetHistogram().SetMinimum(0.0001)
+            tmg_main.GetXaxis().SetRangeUser(self.massList[0], self.massList[-1])
+
+
         ROOT.gPad.Modified();ROOT.gPad.Update()
 
         leg.SetTextSize(0.028)
@@ -927,6 +947,8 @@ class LimitPlotter:
         tl_list = self.SetATLASLabels(atl_x, atl_y, self.signal_label.replace("_", " "), worklabel="Internal")
         for tl in tl_list:
             tl.Draw()
+
+        
 
         gPad.SetLogy(1)
         gPad.RedrawAxis()
