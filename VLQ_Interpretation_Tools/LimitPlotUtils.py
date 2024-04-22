@@ -43,17 +43,17 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
     the expected/observe limit.
     '''
     diff_min = 1000
-    for i in xrange(0,Theory.GetN()-1):
+    for i in range(0,Theory.GetN()-1):
 
-        x_ini_th = Double(-1)
-        x_end_th = Double(-1)
-        x_ini_ex = Double(-1)
-        x_end_ex = Double(-1)
+        x_ini_th = ctypes.c_double(-1)
+        x_end_th = ctypes.c_double(-1)
+        x_ini_ex = ctypes.c_double(-1)
+        x_end_ex = ctypes.c_double(-1)
 
-        y_ini_th = Double(-1)
-        y_end_th = Double(-1)
-        y_ini_ex = Double(-1)
-        y_end_ex = Double(-1)
+        y_ini_th = ctypes.c_double(-1)
+        y_end_th = ctypes.c_double(-1)
+        y_ini_ex = ctypes.c_double(-1)
+        y_end_ex = ctypes.c_double(-1)
 
         Theory.GetPoint(i,x_ini_th, y_ini_th)
         Theory.GetPoint(i+1,x_end_th, y_end_th)
@@ -74,9 +74,16 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
             Extra_Exp.Draw("same")
             ROOT.gPad.Modified(); ROOT.gPad.Update()
 
-        for x in range(0,int(x_end_th-x_ini_th)):
+        # Convert c_double to float
+        x_ini_th_value = x_ini_th.value
+        x_end_th_value = x_end_th.value
+        
+        # Correct the range calculation
+        for x in range(0, int(x_end_th_value - x_ini_th_value)):
 
-            xmod=x_ini_th+x
+        #for x in range(0,int(x_end_th-x_ini_th)):
+
+            xmod=x_ini_th_value+x
             value_th = Extra_Theory.Eval(xmod)
             value_ex = Extra_Exp.Eval(xmod)
             diff = abs(value_th-value_ex)
@@ -95,7 +102,7 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
         vertical.SetLineColor(kRed)
     vertical.SetLineWidth(2)
 
-    return x_int,vertical
+    return x_int, y_int, vertical
 
 ##____________________________________________________________________________________________
 def SumQuad(val1,val2):
@@ -469,7 +476,6 @@ def SetRootPalette():
         gStyle.SetPalette(72)
 
         return
-
 
 ##.....................................................................................
 
@@ -914,14 +920,29 @@ class LimitPlotter:
             tmg_main.GetHistogram().GetXaxis().SetLimits(1000., 2750.)
 
             # Add a vertical line at the last mass value
-            max_Y = tmg_main.GetHistogram().GetMaximum()
-            min_Y = tmg_main.GetHistogram().GetMinimum()
-            #max_mass = wideM
-            line_ = TLine(max_mass,min_Y,max_mass,max_Y*0.04)
-            line_.SetLineColor(kGray+2)
-            line_.SetLineStyle(2)
-            line_.SetLineWidth(2)
-            line_.Draw()
+            if wideM != -1:
+                if self.drawRatio:
+                    #first draw the ratio plots
+                    pad2.cd()
+                    max_ratio = tmg_ratio.GetHistogram().GetMaximum()
+                    min_ratio = tmg_ratio.GetHistogram().GetMinimum()
+                    line_pad2 = TLine(max_mass,min_ratio,max_mass,max_ratio)
+                    line_pad2.SetLineColor(kGray+2)
+                    line_pad2.SetLineStyle(2)
+                    line_pad2.SetLineWidth(2)
+                    line_pad2.Draw()
+                    pad1.cd()
+    
+                else:
+                    can.cd()
+            
+                max_Y = tmg_main.GetHistogram().GetMaximum()
+                min_Y = tmg_main.GetHistogram().GetMinimum()
+                line_pad1 = TLine(max_mass,min_Y,max_mass,max_Y*0.04)
+                line_pad1.SetLineColor(kGray+2)
+                line_pad1.SetLineStyle(2)
+                line_pad1.SetLineWidth(2)
+                line_pad1.Draw()
         
         else: 
             tmg_main.GetHistogram().SetMinimum(0.0001)
@@ -935,12 +956,14 @@ class LimitPlotter:
         
 
         #Intersections
-        #intersx=FitFunctionAndDefineIntersection(tg_theory,tg_exp,isData=False )
-        #print "Expected limit: " + `intersx[0]`
-        #intersx[1].Draw("lp")
-        #if(data):
-        #    intersxData=FitFunctionAndDefineIntersection(tg_theory,tg_obs,isData=True )
-        #    print "Observed limit: " + `intersxData[0]`
+        intersx = FitFunctionAndDefineIntersection(tg_theory,tg_exp[0],isData=False )
+        print("Expected mass limit [GeV]: %.1f" % intersx[0])
+        print("Expected xsec limit [pb]: %.4f" % intersx[1])
+        #intersx[2].Draw("lp")
+        if(self.useData):
+            intersxData=FitFunctionAndDefineIntersection(tg_theory,tg_obs[0],isData=True )
+            print("Observed limit [GeV]: %.1f" % intersxData[0])
+            print("Observed xsec limit [pb]: %.4f" % intersxData[1])
         
         atl_x = 0.19
         atl_y = 0.88
