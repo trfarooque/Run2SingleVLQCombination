@@ -196,7 +196,14 @@ def MassLimitsPlotter(limit_map_all, kfact=1.0, plotnametag="", plotsubdir="", l
     h.GetZaxis().SetTitleOffset(1.3)
     h.GetZaxis().SetTitleSize(0.045)
     h.GetZaxis().SetLabelSize(0.035)
-    h.GetZaxis().SetRangeUser(1100, 2200)
+    if plotnametag == "SPT_OSML":
+        h.GetZaxis().SetRangeUser(1000, 2100)
+    elif plotnametag == "SPT_HTZT":
+        h.GetZaxis().SetRangeUser(1000, 2100)
+    elif plotnametag == "SPT_MONOTOP":
+        h.GetZaxis().SetRangeUser(1100, 1900)
+    else:
+        h.GetZaxis().SetRangeUser(1100, 2200)
     h.Draw("COLZ")
 
     ROOT.gStyle.SetPadTickY(1)
@@ -209,7 +216,10 @@ def MassLimitsPlotter(limit_map_all, kfact=1.0, plotnametag="", plotsubdir="", l
     if plotnametag == "SPT_OSML":
         contours = np.array([1500., 1700., 1900.])
     elif plotnametag == "SPT_HTZT":
-        contours = np.array([1400., 1600., 1800.])
+        if limit_type == "obs":
+            contours = np.array([1600., 1800., 2000.])
+        else:
+            contours = np.array([1400., 1600., 1800.])
     elif plotnametag == "SPT_MONOTOP":
         contours = np.array([1400., 1600., 1800.])
     else:
@@ -225,17 +235,18 @@ def MassLimitsPlotter(limit_map_all, kfact=1.0, plotnametag="", plotsubdir="", l
 
     if limit_type == "exp":
         if plotnametag == "SPT_OSML":
-            tl.DrawLatex(0.16, 15, "1700")
-            tl.DrawLatex(0.74, 15, "1700")
-            tl.DrawLatex(0.59, 22.5, "1900")
-            tl.DrawLatex(0.53, 39, "2100")
+            tl.DrawLatex(0.11, 15, "1500")
+            tl.DrawLatex(0.76, 15, "1500")
+            tl.DrawLatex(0.70, 22.5, "1700")
+            tl.DrawLatex(0.62, 39, "1900")
         elif plotnametag == "SPT_HTZT":
-            tl.DrawLatex(0.16, 15, "1400")
+            tl.DrawLatex(0.45, 12, "1400")
             tl.DrawLatex(0.59, 22.5, "1600")
             tl.DrawLatex(0.53, 39, "1800")
         elif plotnametag == "SPT_MONOTOP":
-            tl.DrawLatex(0.16, 12, "1400")
-            tl.DrawLatex(0.70, 18, "1600")
+            tl.DrawLatex(0.17, 12, "1400")
+            tl.DrawLatex(0.76, 12, "1400")
+            tl.DrawLatex(0.72, 18, "1600")
             tl.DrawLatex(0.53, 30, "1800")
         else:
             tl.DrawLatex(0.16, 15, "1700")
@@ -244,16 +255,18 @@ def MassLimitsPlotter(limit_map_all, kfact=1.0, plotnametag="", plotsubdir="", l
             tl.DrawLatex(0.53, 39, "2100")            
     elif limit_type == "obs":
         if plotnametag == "SPT_OSML":
-            tl.DrawLatex(0.16, 15, "1700")
-            tl.DrawLatex(0.74, 15, "1700")
-            tl.DrawLatex(0.30, 22.5, "1900")
-            tl.DrawLatex(0.58, 22.5, "1900")
-            tl.DrawLatex(0.59, 39, "2100")
+            tl.DrawLatex(0.11, 15, "1500")
+            tl.DrawLatex(0.76, 15, "1500")
+            tl.DrawLatex(0.65, 22.5, "1700")
+            tl.DrawLatex(0.63, 39, "1900")
         elif plotnametag == "SPT_HTZT":
-            tl.DrawLatex(0.16, 15, "1400")
-            tl.DrawLatex(0.59, 22.5, "1600")
-            tl.DrawLatex(0.53, 39, "1800")
+            tl.DrawLatex(0.18, 15, "1600")
+            tl.DrawLatex(0.70, 15, "1600")
+            tl.DrawLatex(0.65, 22.5, "1800")
+            tl.DrawLatex(0.53, 39, "2000")
         elif plotnametag == "SPT_MONOTOP":
+            tl.DrawLatex(0.20, 12, "1400")
+            tl.DrawLatex(0.73, 12, "1400")
             tl.DrawLatex(0.59, 16, "1600")
             tl.DrawLatex(0.53, 35, "1800")
         else:
