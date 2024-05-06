@@ -43,17 +43,17 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
     the expected/observe limit.
     '''
     diff_min = 1000
-    for i in xrange(0,Theory.GetN()-1):
+    for i in range(0,Theory.GetN()-1):
 
-        x_ini_th = Double(-1)
-        x_end_th = Double(-1)
-        x_ini_ex = Double(-1)
-        x_end_ex = Double(-1)
+        x_ini_th = ctypes.c_double(-1)
+        x_end_th = ctypes.c_double(-1)
+        x_ini_ex = ctypes.c_double(-1)
+        x_end_ex = ctypes.c_double(-1)
 
-        y_ini_th = Double(-1)
-        y_end_th = Double(-1)
-        y_ini_ex = Double(-1)
-        y_end_ex = Double(-1)
+        y_ini_th = ctypes.c_double(-1)
+        y_end_th = ctypes.c_double(-1)
+        y_ini_ex = ctypes.c_double(-1)
+        y_end_ex = ctypes.c_double(-1)
 
         Theory.GetPoint(i,x_ini_th, y_ini_th)
         Theory.GetPoint(i+1,x_end_th, y_end_th)
@@ -74,9 +74,16 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
             Extra_Exp.Draw("same")
             ROOT.gPad.Modified(); ROOT.gPad.Update()
 
-        for x in range(0,int(x_end_th-x_ini_th)):
+        # Convert c_double to float
+        x_ini_th_value = x_ini_th.value
+        x_end_th_value = x_end_th.value
+        
+        # Correct the range calculation
+        for x in range(0, int(x_end_th_value - x_ini_th_value)):
 
-            xmod=x_ini_th+x
+        #for x in range(0,int(x_end_th-x_ini_th)):
+
+            xmod=x_ini_th_value+x
             value_th = Extra_Theory.Eval(xmod)
             value_ex = Extra_Exp.Eval(xmod)
             diff = abs(value_th-value_ex)
@@ -95,7 +102,7 @@ def FitFunctionAndDefineIntersection( Theory, Med, isData ):
         vertical.SetLineColor(kRed)
     vertical.SetLineWidth(2)
 
-    return x_int,vertical
+    return x_int, y_int, vertical
 
 ##____________________________________________________________________________________________
 def SumQuad(val1,val2):
@@ -470,7 +477,6 @@ def SetRootPalette():
 
         return
 
-
 ##.....................................................................................
 
 ##.....................................................................................
@@ -581,7 +587,7 @@ class LimitPointInfo:
         if len(files)==0 or len(files)>1:
             print("<!> ERROR for", cfg, "signal", self.sigTag," !! --> nFiles = ",len(files))
             return
-
+        
         self.expInfo[cfg] = ExpInfo()
         self.expInfo[cfg].ExtractLimitsFromFile(files[0],useData)
 
@@ -594,7 +600,7 @@ class LimitPointInfo:
 
         if(drawExp and (self.theoryInfo.GM<=0.5)): 
             for cfg in self.cfgList:
-                if(self.mass>2100 and cfg=='SPT_HTZT'):
+                if(self.mass>2300 and cfg=='SPT_HTZT'):
                     continue
                 self.ReadExpLimits(dataTag,baseDir,cfg,useData)
         return
@@ -636,9 +642,7 @@ class LimitPlotter:
         self.addText=addText
         self.signal=signal
         self.signal_label = "T"
-        if signal=="":
-            self.signal = "T_K{}_BRW{}_{}".format(_kappa,_BRW,self.dataTag)
-        elif signal=="TSinglet":
+        if signal=="TSinglet":
             self.signal_label += " singlet"
         elif signal=="TDoublet":
             self.signal_label += " doublet"
@@ -656,7 +660,9 @@ class LimitPlotter:
                     self.limitInfoDict[BRW][Kappa][Mass] = LimitPointInfo(Mass, Kappa, BRW, self.configList)
                     self.limitInfoDict[BRW][Kappa][Mass].FillInfo(
                         self.dataTag,self.inputDir,self.drawExp,self.useData)
-
+                    #for attr, value in vars(self.limitInfoDict[BRW][Kappa][Mass]).items():
+                    #    print(f"{attr}: {value}")
+                    #print("----------------------------------------------------\n")
         return
 
     def Setup2DCanvas(self,canv_name,plot_mode):
@@ -703,7 +709,7 @@ class LimitPlotter:
         tl_int.SetTextSize(tl_int.GetTextSize()*0.77)
         tl_list += [tl_int]
 
-        tl_energy = TLatex(atl_x,atl_y-0.045,"#sqrt{s} = 13 TeV, 140 fb^{-1}")
+        tl_energy = TLatex(atl_x,atl_y-0.045,"#sqrt{s} = 13 TeV, 139 fb^{-1}")
         tl_energy.SetNDC()
         tl_energy.SetTextFont(42)
         tl_energy.SetTextSize(tl_energy.GetTextSize()*0.77)
@@ -722,7 +728,7 @@ class LimitPlotter:
 
         _labels = self.configList if labels is None else labels
         limitList = self.limitInfoDict[_BRW][_kappa]
-
+        #print(limitList)
         gr_cols = [kBlack,kBlue+1,kMagenta,kOrange+4,kRed] # max compare 5 configurations
         gr_fills = [3002,3004,3005,3007,3008]
 
@@ -736,24 +742,7 @@ class LimitPlotter:
         leg.SetFillStyle(0)
         leg.SetBorderSize(0)
         
-        if self.drawTheory:
-            tg_theory = TGraphAsymmErrors()
-            tg_theory.SetLineColor(kRed)
-            tg_theory.SetFillColor(kRed-9)
-            print("Adding theory")
-            tmg_main.Add(tg_theory, "4lx")
-            leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
-            wideM=-1
-            for iMass,Mass in enumerate(self.massList):
-                if(limitList[Mass].theoryInfo.GM>0.5):
-                    wideM=Mass
-                    break
-                tg_theory.SetPoint(iMass,Mass,limitList[Mass].theoryInfo.xsec)
-                tg_theory.SetPointError(iMass,0,0,
-                                        limitList[Mass].theoryInfo.xsecDown,
-                                        limitList[Mass].theoryInfo.xsecUp)
-            print('BRW:',_BRW,' Kappa:',_kappa,'==>wideM : ',wideM)
         if self.drawExp:
 
             tg_obs = [TGraph() for i in range(self.nConfigs)]
@@ -767,8 +756,8 @@ class LimitPlotter:
             for n,cfg in enumerate(self.configList):
                 #number of points in this graph
                 gr_len = sum( ((limitList[Mass].theoryInfo.GM<0.5) and \
-                               (Mass<=2100 or cfg!='SPT_HTZT')) for Mass in self.massList)
-                print(cfg,' : ',gr_len)
+                               (Mass<=2300 or cfg!='SPT_HTZT')) for Mass in self.massList)
+                print(n,cfg,' : ',gr_len)
                     
                 ###########################################################
                 #Set graph styles and add to the multigraph
@@ -821,23 +810,50 @@ class LimitPlotter:
                 for Mass in self.massList:
                     counter=counter+1
                     if((limitList[Mass].theoryInfo.GM>0.5) or \
-                       (Mass>2100 and cfg=='SPT_HTZT')):
+                       (Mass>2300 and cfg=='SPT_HTZT')):
                         break
 
                     norm_xsec = limitList[Mass].norm_xsec
-                    expInfo = limitList[Mass].expInfo[cfg]
-                    tg_obs[n].SetPoint(counter,Mass,(expInfo.expLim["obs"])*norm_xsec)
-                    tg_exp[n].SetPoint(counter,Mass,(expInfo.expLim["exp"])*norm_xsec)
-                    tg_exp1s[n].SetPoint(counter,Mass,(expInfo.expLim["exp_p1"])*norm_xsec)
-                    tg_exp2s[n].SetPoint(counter,Mass,(expInfo.expLim["exp_p2"])*norm_xsec)
-                    tg_exp1s[n].SetPoint(2*gr_len-counter-1,Mass,(expInfo.expLim["exp_m1"])*norm_xsec)
-                    tg_exp2s[n].SetPoint(2*gr_len-counter-1,Mass,(expInfo.expLim["exp_m2"])*norm_xsec)
-                
+                    if cfg in limitList[Mass].expInfo:
+                        expInfo = limitList[Mass].expInfo[cfg]
+                        tg_obs[n].SetPoint(counter,Mass,(expInfo.expLim["obs"])*norm_xsec)
+                        tg_exp[n].SetPoint(counter,Mass,(expInfo.expLim["exp"])*norm_xsec)
+                        tg_exp1s[n].SetPoint(counter,Mass,(expInfo.expLim["exp_p1"])*norm_xsec)
+                        tg_exp2s[n].SetPoint(counter,Mass,(expInfo.expLim["exp_p2"])*norm_xsec)
+                        tg_exp1s[n].SetPoint(2*gr_len-counter-1,Mass,(expInfo.expLim["exp_m1"])*norm_xsec)
+                        tg_exp2s[n].SetPoint(2*gr_len-counter-1,Mass,(expInfo.expLim["exp_m2"])*norm_xsec)
+                        
                     if self.drawRatio:
                         tg_ratio[n].SetPoint(counter,Mass,tg_exp[n].Eval(Mass)
                                              /tg_exp[0].Eval(Mass))
             ###########################################################
+        if self.drawTheory:
+            tg_theory = TGraphAsymmErrors()
+            tg_theory.SetLineColor(kRed)
+            tg_theory.SetFillColor(kRed-9)
+            tg_theory.SetLineWidth(2)
+            print("Adding theory")
+            tmg_main.Add(tg_theory, "4lx")
+            leg.AddEntry(tg_theory,"Theory (NLO)","lf")
 
+            wideM=-1
+            max_mass = -1
+            for iMass,Mass in enumerate(self.massList):
+                if(limitList[Mass].theoryInfo.GM>0.5):
+                    wideM=Mass
+                    break
+                max_mass = Mass
+                tg_theory.SetPoint(iMass,Mass,limitList[Mass].theoryInfo.xsec)
+                tg_theory.SetPointError(iMass,0,0,
+                                        limitList[Mass].theoryInfo.xsecDown,
+                                        limitList[Mass].theoryInfo.xsecUp)
+            print('BRW:',_BRW,' Kappa:',_kappa,'==>wideM : ',wideM)
+        
+        #To remove all TGraph objects with no points from the TMultiGraph i
+        graph_list = tmg_main.GetListOfGraphs()
+        for graph in graph_list:
+            if isinstance(graph, ROOT.TGraph) and graph.GetN() == 0:
+                graph_list.Remove(graph)
 
         ###################### All required TGraphs made and filled ########################
 
@@ -846,7 +862,8 @@ class LimitPlotter:
         ###
         # Creating the canvas
         ###
-        canv_name = "1DXSecLimit_"+self.signal
+        if self.signal=="": self.signal_label = "T_K{}_BRW{}_{}".format(_kappa,_BRW,self.dataTag)
+        canv_name = "1DXSecLimit_"+self.signal+"_{}".format(_kappa)
         if self.drawRatio:
             can = TCanvas(canv_name,canv_name,1000,1150)
             pad1 = TPad("pad1","",0,0.4,1,1)
@@ -870,7 +887,6 @@ class LimitPlotter:
             can.SetLeftMargin(0.15)
             can.SetRightMargin(0.05)
             can.SetTopMargin(0.05)
-
         ###
         # Limits
         ###
@@ -878,16 +894,15 @@ class LimitPlotter:
             #first draw the ratio plots
             pad2.cd()
             tmg_ratio.Draw("a")
+            tmg_ratio.GetHistogram().GetXaxis().SetLimits(1000., 2750.)
             pad1.cd()
         else:
             can.cd()
-
         tmg_main.Draw("a")
-        tmg_main.GetXaxis().SetNdivisions(406)
+        #tmg_main.GetXaxis().SetNdivisions(406)
         tmg_main.SetTitle("")
         tmg_main.GetXaxis().SetTitle("m_{T} [GeV]")
         tmg_main.GetYaxis().SetTitle("#sigma(pp #rightarrow qb(T #rightarrow Ht/Zt)) [pb]")
-        
         tmg_main.GetHistogram().GetXaxis().SetLabelSize(
             tmg_main.GetHistogram().GetXaxis().GetLabelSize()*1.3)
         tmg_main.GetHistogram().GetYaxis().SetLabelSize(
@@ -898,31 +913,71 @@ class LimitPlotter:
             tmg_main.GetHistogram().GetYaxis().GetTitleSize()*1.6)
         tmg_main.GetHistogram().GetXaxis().SetTitleOffset(1.32)
         tmg_main.GetHistogram().GetYaxis().SetTitleOffset(1.4)
-        ROOT.gPad.Modified(); ROOT.gPad.Update()
+        #tmg_main.GetHistogram().SetMaximum(3)
+
+        if self.forceRanges:
+            tmg_main.GetYaxis().SetRangeUser(0.005,3)
+            tmg_main.GetHistogram().GetXaxis().SetLimits(1000., 2750.)
+
+            # Add a vertical line at the last mass value
+            if wideM != -1:
+                if self.drawRatio:
+                    #first draw the ratio plots
+                    pad2.cd()
+                    max_ratio = tmg_ratio.GetHistogram().GetMaximum()
+                    min_ratio = tmg_ratio.GetHistogram().GetMinimum()
+                    line_pad2 = TLine(max_mass,min_ratio,max_mass,max_ratio)
+                    line_pad2.SetLineColor(kGray+2)
+                    line_pad2.SetLineStyle(2)
+                    line_pad2.SetLineWidth(2)
+                    line_pad2.Draw()
+                    pad1.cd()
+    
+                else:
+                    can.cd()
+            
+                max_Y = tmg_main.GetHistogram().GetMaximum()
+                min_Y = tmg_main.GetHistogram().GetMinimum()
+                line_pad1 = TLine(max_mass,min_Y,max_mass,max_Y*0.04)
+                line_pad1.SetLineColor(kGray+2)
+                line_pad1.SetLineStyle(2)
+                line_pad1.SetLineWidth(2)
+                line_pad1.Draw()
         
+        else: 
+            tmg_main.GetHistogram().SetMinimum(0.0001)
+            tmg_main.GetXaxis().SetRangeUser(self.massList[0], self.massList[-1])
+
+
+        ROOT.gPad.Modified();ROOT.gPad.Update()
+
         leg.SetTextSize(0.028)
         leg.Draw()
         
 
         #Intersections
-        #intersx=FitFunctionAndDefineIntersection(tg_theory,tg_exp,isData=False )
-        #print "Expected limit: " + `intersx[0]`
-        #intersx[1].Draw("lp")
-        #if(data):
-        #    intersxData=FitFunctionAndDefineIntersection(tg_theory,tg_obs,isData=True )
-        #    print "Observed limit: " + `intersxData[0]`
+        intersx = FitFunctionAndDefineIntersection(tg_theory,tg_exp[0],isData=False )
+        print("Expected mass limit [GeV]: %.1f" % intersx[0])
+        print("Expected xsec limit [pb]: %.4f" % intersx[1])
+        #intersx[2].Draw("lp")
+        if(self.useData):
+            intersxData=FitFunctionAndDefineIntersection(tg_theory,tg_obs[0],isData=True )
+            print("Observed limit [GeV]: %.1f" % intersxData[0])
+            print("Observed xsec limit [pb]: %.4f" % intersxData[1])
         
         atl_x = 0.19
         atl_y = 0.88
-        tl_list = self.SetATLASLabels(atl_x, atl_y, signal_label, worklabel="Internal")
+        tl_list = self.SetATLASLabels(atl_x, atl_y, self.signal_label.replace("_", " "), worklabel="Internal")
         for tl in tl_list:
             tl.Draw()
 
+        
+
+        gPad.SetLogy(1)
         gPad.RedrawAxis()
         can.SetTickx()
         can.SetTicky()
-        ROOT.gPad.Modified(); ROOT.gPad.Update()
-        
+        ROOT.gPad.Modified();ROOT.gPad.Update()
         printName = self.outputDir + "/" + canv_name.upper()+outSuffix+".png"
         can.SaveAs(printName)
         return
@@ -954,16 +1009,40 @@ class LimitPlotter:
                     tg_theory_GammaM.SetPoint(iPoint,Mass,Kappa,limitList[Kappa][Mass].theoryInfo.GM)
                 iPoint = iPoint+1
         
-
+        print("Total calculated points", iPoint)
         ####### Get Gamma/M contours with associated labels #########
         GMLevels = [0.05,0.10,0.20,0.50]
         gm_contourset = GetGammaContours(GMLevels, tg_theory_GammaM)#, canv)
-        gm_border = GetGammaBorder(gm_contourset[0][-1])
-        gm_border.SetPoint(gm_border.GetN(),self.massList[0],self.kappaList[-1])
-        gm_border.SetPoint(gm_border.GetN(),self.massList[-1],self.kappaList[-1])
-        gm_border.SetFillColor(kGray)
-        gm_border.SetFillStyle(1)
+        #gm_border = GetGammaBorder(gm_contourset[0][-1])
+        #gm_border.SetPoint(gm_border.GetN(),self.massList[0],self.kappaList[-1])
+        #gm_border.SetPoint(gm_border.GetN(),self.massList[-1],self.kappaList[-1])
+        #gm_border.SetFillColor(kGray)
+        #gm_border.SetFillStyle(1)
+        gammaMax = 0.5
+        c = vlq()
+        masses = list(range(1000,2700,10))
+        gm_border = ROOT.TGraph(2*len(masses))
+        Nmasses = len(masses)
+        for ii in range(Nmasses):
+            _m = masses[ii]*1.0
+            c.setMVLQ(_m)
+            c.setGammaBRs(_m*gammaMax, _BRW, (1-_BRW)/2.)
+            cw = c.getc_Vals()[0]
+            k = c.getKappa()
+            gm_border.SetPoint(ii,_m,k-0.001)
+            _m = masses[Nmasses-ii-1]*1.0
+            c.setMVLQ(_m)
+            c.setGammaBRs(_m*gammaMax, _BRW, (1-_BRW)/2.)
+            cw = c.getc_Vals()[0]
+            k = c.getKappa()
+            gm_border.SetPoint(Nmasses + ii,masses[Nmasses-ii-1]*1.0,3.0)
 
+        gm_border.SetLineColor(4)
+        gm_border.SetLineWidth(2)
+        gm_border.SetLineStyle(10)
+        gm_border.SetFillColor(19)
+        gm_border.SetFillStyle(1001)
+        
         if self.drawExp:
 
             tg_types = ["exp", "exp_p2", "exp_p1", "exp_m1", "exp_m2"]
