@@ -1,8 +1,8 @@
 #!/bin/bash
 
 setupATLAS -q
-asetup StatAnalysis,0.2.5
-#asetup StatAnalysis,0.0.4
+#asetup StatAnalysis,0.2.5
+asetup StatAnalysis,0.0.4
 
 ## Versions from 0.3.0 need AlmaLinux
 #setupATLAS -c el9
