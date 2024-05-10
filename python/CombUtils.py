@@ -250,7 +250,9 @@ class VLQCombinationConfig:
         ConfigName = self.getScalingConfigPath(mass, kappa, brw, datatag)
         if not os.path.exists(ConfigName):
             return False
+        print(colored("cp {}/dtd/Organization.dtd {}".format(os.getenv('VLQCOMBDIR'),self.ScalingConfigDir), color = "black", on_color="on_yellow"))
         os.system("cp {}/dtd/Organization.dtd {}".format(os.getenv('VLQCOMBDIR'),self.ScalingConfigDir))
+        print(colored("manager -w edit -x {} > {} 2>&1".format(ConfigName, LogFile), color = "black", on_color="on_yellow"))
         code = os.system('manager -w edit -x {} > {} 2>&1'.format(ConfigName, LogFile))
         if code == 0:
             print("Workspace scaling done for {}".format(colored(sigtag, color = "green")))
@@ -290,6 +292,8 @@ class VLQCombinationConfig:
                                         self.getCombinationConfigPath(mass, kappa, brw, datatag).split('/')[-1],
                                         self.CombinedWSDir,
                                         self.getCombinedWSPath(mass, kappa, brw, datatag).split('/')[-1])
+        
+        print(colored(cmd, color = "black", on_color="on_yellow"))
         code = os.system(cmd)
         return True if code == 0 else None
 
@@ -298,7 +302,9 @@ class VLQCombinationConfig:
         ConfigName = self.getCombinationConfigPath(mass, kappa, brw, datatag)
         if not os.path.exists(ConfigName):
             return False
+        print("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir))
         os.system("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir))
+        print("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile))
         code = os.system("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile))
         return True if code == 0 else False
 
@@ -343,7 +349,9 @@ class VLQCombinationConfig:
         DataName = 'asimovData' if not self.isCombined else 'combData'
         if not os.path.exists(ConfigName):
             return False
+        print(colored("cp {}/dtd/asimovUtil.dtd {}".format(os.getenv('VLQCOMBDIR'),self.AsimovConfigDir), color = "black", on_color="on_yellow"))
         os.system("cp {}/dtd/asimovUtil.dtd {}".format(os.getenv('VLQCOMBDIR'),self.AsimovConfigDir))
+        print(colored("quickAsimov -x {} -w {} -m ModelConfig -d {} > {} 2>&1".format(ConfigName, self.WSName, DataName, LogFile), color = "black", on_color="on_yellow"))
         code = os.system('quickAsimov -x {} -w {} -m ModelConfig -d {} > {} 2>&1'.format(ConfigName, self.WSName, DataName, LogFile))
         return True if code == 0 else False
 
@@ -373,6 +381,7 @@ class VLQCombinationConfig:
                                                                 self.getFittedResultPath(mass, kappa, brw, mu, fittype, isAsimov), 
                                                                 fitarg,
                                                                 LogFile)
+        print(colored(cmd, color = "black", on_color="on_yellow"))
         code = os.system(cmd)
         return True if code == 0 else False
 
@@ -396,6 +405,7 @@ class VLQCombinationConfig:
                              self.getLimitsPath(mass, kappa, brw, mu, isAsimov),
                              LogFile)
 
+        print(colored(cmd, color = "black", on_color="on_yellow"))
         code = os.system(cmd)
         return True if code == 0 else False
 
@@ -429,6 +439,7 @@ fittype={}
            sigtag + "_" + datatag + "_" + fittype,
            DSName,
            fittype)
+    print(colored(cmd, color = "black", on_color="on_yellow"))
     code = os.system(cmd)
     return True if code == 0 else False
 
@@ -478,11 +489,15 @@ def getTRExFFitFileFromRoot(in_fname, out_fname):
 def getTRExFFitFileFromLog(in_log, out_fname):
 
     cmd = "perl {}/utils/make_TRExNPfile.perl {} {}".format(os.getenv("VLQCOMBDIR"), in_log, out_fname)
+    
+    print(colored(cmd, color = "black", on_color="on_yellow"))
     code = os.system(cmd)
     return True if code == 0 else False
 
 def plotCorrelationMatrix(wsFile, fitResultFile, outputPath, wsName, plotName):
 
+    print("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}"
+                     .format(wsFile,fitResultFile,outputPath,wsName, plotName))
     code = os.system("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}"
                      .format(wsFile,fitResultFile,outputPath,wsName, plotName))
     return True if code == 0 else False
@@ -501,6 +516,7 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
             if "Job: " in line:
                 # name of the directory should be the same as the workspace+"_"+fittype
                 dirname = line.strip().split(':')[1].strip()
+                print("mkdir -p {}/{}/Fits/".format(ConfDir, dirname))
                 os.system("mkdir -p {}/{}/Fits/".format(ConfDir, dirname)) # the directory is in the same place as the config 
                 trex_dirs.append(dirname)
                 break
@@ -509,6 +525,8 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
     for dirname in trex_dirs:
         if "multifit" in dirname:
             continue
+        
+        print("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir))
         code = os.system("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir)) # copy the already created fit file from LogDir to the  TRExF's Fits/ dir
         if code != 0:
             return False

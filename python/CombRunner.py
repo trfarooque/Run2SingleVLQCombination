@@ -499,6 +499,7 @@ BRWs = {}
                 if(do_Separate_Ranking_Plots):
                     ranking_plotter.WriteTRexFRankingFile()
                     confName = ranking_plotter.GetTRexFConfigFile()
+                    print("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName))
                     code = os.system("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName))
                     if not code == 0:
                         print(colored("TRExFitter ranking plot failed for {} in channel {}!".format(sigtag, ana), 
@@ -670,6 +671,7 @@ BRWs = {}
                 print(colored("TRExF Directories could not be setup for {}!".format(sigtag), color = "black", on_color="on_red"))
                 time.sleep(5)
             else:
+                print(colored("cd {} && trex-fitter m configFile_multifit_{}.txt && cd -".format(TRExFConfDir, tag_flag), color = "black", on_color="on_yellow"))
                 code = os.system("cd {} && trex-fitter m configFile_multifit_{}.txt && cd -".format(TRExFConfDir, tag_flag))
                 if not code == 0:
                     print(colored("TRExFitter multi-fit failed for {}!".format(sigtag), color = "black", on_color="on_red"))
@@ -702,6 +704,7 @@ BRWs = {}
             if(do_Combined_Ranking_Plots):
                 ranking_plotter_comb.WriteTRexFRankingFile()
                 confName = ranking_plotter_comb.GetTRexFConfigFile()
+                print(colored("cd {} && trex-fitter r {} Ranking=plot && cd -".format(combination_cfg.RankingDir, confName), color = "black", on_color="on_yellow"))
                 code = os.system("cd {} && trex-fitter r {} Ranking=plot && cd -".format(combination_cfg.RankingDir, confName))
                 if not code == 0:
                     print(colored("TRExFitter combined ranking plot failed for {}!".format(sigtag), 
