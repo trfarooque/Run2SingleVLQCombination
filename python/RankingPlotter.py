@@ -262,17 +262,17 @@ class RankingPlotter:
             for np_index,np in self.NPlist.items():
 
 
-                baseLogPath = self.outputPath+'/Logs/' + np['name'] 
-                mu_preUP = self.ReadMuFromLogFile(baseLogPath,True,True)
-                mu_preDOWN = self.ReadMuFromLogFile(baseLogPath,True,False)
-                mu_postUP = self.ReadMuFromLogFile(baseLogPath,False,True)
-                mu_postDOWN = self.ReadMuFromLogFile(baseLogPath,False,False)
+                #baseLogPath = self.outputPath+'/Logs/' + np['name'] 
+                #mu_preUP = self.ReadMuFromLogFile(baseLogPath,True,True)
+                #mu_preDOWN = self.ReadMuFromLogFile(baseLogPath,True,False)
+                #mu_postUP = self.ReadMuFromLogFile(baseLogPath,False,True)
+                #mu_postDOWN = self.ReadMuFromLogFile(baseLogPath,False,False)
 
-                # baseResultPath = self.outputPath+'/Results/fit_NPRanking_'+np['name']
-                # mu_preUP = self.ReadMuFromResultRootFile(baseResultPath,True,True)
-                # mu_preDOWN = self.ReadMuFromResultRootFile(baseResultPath,True,False)
-                # mu_postUP = self.ReadMuFromResultRootFile(baseResultPath,False,True)
-                # mu_postDOWN = self.ReadMuFromResultRootFile(baseResultPath,False,False)
+                baseResultPath = self.outputPath+'/Results/fit_NPRanking_'+np['name']
+                mu_preUP = self.ReadMuFromResultRootFile(baseResultPath,True,True)
+                mu_preDOWN = self.ReadMuFromResultRootFile(baseResultPath,True,False)
+                mu_postUP = self.ReadMuFromResultRootFile(baseResultPath,False,True)
+                mu_postDOWN = self.ReadMuFromResultRootFile(baseResultPath,False,False)
 
                 if(not (mu_preUP and mu_preDOWN and mu_postUP and mu_postDOWN) ):
                     continue
