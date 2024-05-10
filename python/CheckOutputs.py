@@ -61,9 +61,11 @@ def submitFailedJobs( expectedRootFile, scriptFile ):
             com += "qsub "
         elif platform.find("lxplus")>-1:#we work at lxbatch
             com += "bsub "
-        elif platform.find("atlui")>-1:#we work at lxbatch
+        elif platform.find("glui")>-1:#we work at lxbatch
             com += "qsub "
         elif platform.find("mlui")>-1:#we work at lxbatch
+            com += "qsub "
+        elif platform.find("glui")>-1:#we work at lxbatch
             com += "qsub "
         com += "-q " + batchQueue + " " + new_scriptFile
 
