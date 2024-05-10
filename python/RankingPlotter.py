@@ -222,17 +222,8 @@ class RankingPlotter:
                     try:
                         mu_stats = line.split('=')[1].strip().split('L')[0]
                         central = float(mu_stats.split('+/-')[0])
-                        
-                        var = mu_stats.split('+/-')[1].split('L')[0].strip()
-                        #print('var:', var)
-                        if ('(' in var) and (')' in var):
-                            print('Asymmetric errors for mu_signal in {}'.format(fname))
-                            up = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[1])
-                            down = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[0])
-                        else:
-                            #print('symmetric errors')
-                            up = float(mu_stats.split('+/-')[1].split('L')[0].strip())
-                            down = float(mu_stats.split('+/-')[1].split('L')[0].strip())
+                        up = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[1])
+                        down = float(mu_stats.split('+/-')[1].strip().replace('(', '').replace(')','').split(',')[0])
                         mu_fit = {'name': 'mu_signal_'+config, 
                                   'central': float(central),
                                   'up': float(up), 
