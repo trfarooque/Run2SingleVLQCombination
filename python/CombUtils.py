@@ -302,9 +302,9 @@ class VLQCombinationConfig:
         ConfigName = self.getCombinationConfigPath(mass, kappa, brw, datatag)
         if not os.path.exists(ConfigName):
             return False
-        print("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir))
+        print(colored("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir), color = "black", on_color="on_yellow"))
         os.system("cp {}/dtd/Combination.dtd {}".format(os.getenv('VLQCOMBDIR'),self.CombinationConfigDir))
-        print("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile))
+        print(colored("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile), color = "black", on_color="on_yellow"))
         code = os.system("manager -w combine -x {} > {} 2>&1".format(ConfigName, LogFile))
         return True if code == 0 else False
 
@@ -496,8 +496,7 @@ def getTRExFFitFileFromLog(in_log, out_fname):
 
 def plotCorrelationMatrix(wsFile, fitResultFile, outputPath, wsName, plotName):
 
-    print("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}"
-                     .format(wsFile,fitResultFile,outputPath,wsName, plotName))
+    print(colored("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}".format(wsFile,fitResultFile,outputPath,wsName, plotName), color = "black", on_color="on_yellow"))
     code = os.system("makeCorrMatrix --wsFile={} --fitResultFile={} --outputPath={} --wsName={} --plotName={}"
                      .format(wsFile,fitResultFile,outputPath,wsName, plotName))
     return True if code == 0 else False
@@ -516,7 +515,7 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
             if "Job: " in line:
                 # name of the directory should be the same as the workspace+"_"+fittype
                 dirname = line.strip().split(':')[1].strip()
-                print("mkdir -p {}/{}/Fits/".format(ConfDir, dirname))
+                print(colored("mkdir -p {}/{}/Fits/".format(ConfDir, dirname), color = "black", on_color="on_yellow"))
                 os.system("mkdir -p {}/{}/Fits/".format(ConfDir, dirname)) # the directory is in the same place as the config 
                 trex_dirs.append(dirname)
                 break
@@ -526,7 +525,7 @@ def makeTRExFCompDirs(ConfDir, LogDir, sigtag, mu=0, fittype="BONLY", isAsimov=T
         if "multifit" in dirname:
             continue
         
-        print("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir))
+        print(colored("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir), color = "black", on_color="on_yellow"))
         code = os.system("cp {0}/{1}.txt {2}/{1}/Fits/".format(LogDir, dirname, ConfDir)) # copy the already created fit file from LogDir to the  TRExF's Fits/ dir
         if code != 0:
             return False

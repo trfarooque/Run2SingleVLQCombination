@@ -499,7 +499,7 @@ BRWs = {}
                 if(do_Separate_Ranking_Plots):
                     ranking_plotter.WriteTRexFRankingFile()
                     confName = ranking_plotter.GetTRexFConfigFile()
-                    print("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName))
+                    print(colored("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName), color = "black", on_color="on_yellow"))
                     code = os.system("cd {} && trex-fitter r {} Ranking=plot && cd -".format(cfg.RankingDir, confName))
                     if not code == 0:
                         print(colored("TRExFitter ranking plot failed for {} in channel {}!".format(sigtag, ana), 
