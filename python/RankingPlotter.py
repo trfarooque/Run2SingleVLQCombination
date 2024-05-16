@@ -340,7 +340,7 @@ RankingMaxNP: 20
 RankingPlot: all
 POI: "mu_signal"
 LumiLabel: 139 fb^{{-1}}
-%NPRankingCanvasSize: 900,500
+NPRankingCanvasSize: 850,830
 
 Region: DUMMY
 Type: SIGNAL
