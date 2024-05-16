@@ -281,6 +281,10 @@ class RankingPlotter:
                 dmu_postUP = mu_postUP['central'] - self.mu_nominal['central']
                 dmu_postDOWN = mu_postDOWN['central'] - self.mu_nominal['central']
 
+                if "BKGNF" in np['name']:
+                    dmu_preUP = 0.
+                    dmu_preDOWN = 0.
+
                 outLine = "{}   {:g} {:+.6f} {:+.6f}  {:.6f}   {:.6f}  {:.6f}   {:.6f} \n"\
                     .format(np['name'],np['central'],np['up'],np['down'],
                             dmu_postUP,dmu_postDOWN,dmu_preUP,dmu_preDOWN)
@@ -316,6 +320,8 @@ HistoChecks: NOCRASH
 RankingMaxNP: 20
 RankingPlot: all
 POI: "mu_signal"
+LumiLabel: 139 fb^{{-1}}
+%NPRankingCanvasSize: 900,500
 
 Region: DUMMY
 Type: SIGNAL
