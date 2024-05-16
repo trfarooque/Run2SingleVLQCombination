@@ -13,6 +13,25 @@ platform = socket.gethostname()
 now = datetime.datetime.now().strftime("%Y_%m_%d_%H%M")
 sleep = 1
 
+# Read yaml config with simplified names
+def readYamlConfig(yamlConfig):
+    import yaml
+    with open(yamlConfig, 'r') as stream:
+        try:
+            mapping = yaml.safe_load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
+    return mapping
+
+def simplify_names(name):
+    yaml = os.getenv('VLQCOMBDIR')+'/utils/simplify_names.yml'
+    mapping = readYamlConfig(yaml)
+    simplified = name
+    for type_ in mapping:
+        for string in mapping[type_]:
+            simplified = simplified.replace(string, mapping[type_][string])
+    return simplified
+
 class RankingPlotter:
 
     def __init__(self, wsPath, wsName, dsName, fitFileName, outputPath, nMerge, includeGamma, 
@@ -329,9 +348,16 @@ NormFactor: mu_signal \n\n''').format(jobName) )
                 
                 if(np['name'].startswith('gamma_')):
                     continue
-                    
-                sysLine = ("NormFactor: {0} \n\n" if('BKGNF' in np['name']) else "Systematic: {0} \n\n").format(np['name'])
+
+                sysLine = ("NormFactor: {0} \n" if('BKGNF' in np['name']) else "Systematic: {0} \n").format(np['name'])
                 configFile.write(sysLine)
+                
+                # Simplify names for title in the plots
+                if simplify_names(np['name']) == np['name']: 
+                    configFile.write("\n")
+                else:
+                    titLine = ("Title: {0} \n\n").format(simplify_names(np['name']))
+                    configFile.write(titLine)
 
         configFile.close()
 
