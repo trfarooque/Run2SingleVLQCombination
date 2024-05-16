@@ -38,6 +38,11 @@ public:
   void init();
   void dump_files();
 
+  // Function to simplify parameter names
+  //std::ifstream yaml_file (const std::string &file);
+  //std::map < std::string, std::string > read_mapping( const std::ifstream &yaml_file);
+  std::string simplify_name( const std::string &name );
+
 private:
   Options m_opt;
   std::map < std::string, Channel > m_channels;

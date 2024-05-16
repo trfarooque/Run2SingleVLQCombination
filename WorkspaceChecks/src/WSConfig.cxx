@@ -15,6 +15,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <map>
 
 //______________________________________________________________________________
 //
@@ -29,6 +30,65 @@ WSConfig::WSConfig( const WSConfig& ){}
 //______________________________________________________________________________
 //
 WSConfig::~WSConfig(){}
+
+//______________________________________________________________________________
+//
+
+// Read yaml config to simplify names
+
+//std::ifstream yaml_file ("../utils/simplify_names.yml");
+//
+//if (!yaml_file.is_open()) {
+//        std::cerr << "Failed to open file: " << filename << std::endl;
+//        return false;
+//}
+//
+//// Save yaml into a map
+//std::map < std::string, std::string > read_mapping( const std::ifstream &yaml_file){
+//  std::map < std::string, std::string > mapping;
+//  std::string line;
+//  while (std::getline(yaml_file, line)){
+//    std::string key = line.substr(0, line.find(":"));
+//    std::string value = line.substr(line.find(":") + 1, line.length());
+//    mapping.insert(std::pair<std::string, std::string>(key, value));
+//  }
+//}
+
+std::string WSConfig::simplify_name( const std::string &name ){
+  std::string simplified_name = name;
+
+  //// Read yaml file
+  //std::map < std::string, std::string > mapping = read_mapping(yaml_file);
+  //// Simplify names
+  //if(mapping.find(name) != mapping.end()){
+  //  simplified_name = mapping.at(name);
+  //}
+
+    // Simplify NP names
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS","MONO_VJETS_weight_muRmuF_WJETS");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_ZJETS","MONO_VJETS_weight_muRmuF_ZJETS");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNP_VV_weight_muR05_muF05_to_muR2_muF2","MONO_VV_weight_muRmuF");
+
+    // Simplify NFs names
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNF_TTBAR","MONO_ttbar");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNF_VJETS","MONO_Vjets");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_OSML_BKGNF_2l_z_hf","OSML_2lZhf");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_OSML_BKGNF_2l_z_lf","OSML_2lZlf");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_OSML_BKGNF_3l_mu_VV","OSML_3lVV");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_OSML_BKGNF_3l_mu_ttV","OSML_3lttV");
+
+    // Simplify channel names
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP","MONO");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_HTZT","HTZT");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_OSML","OSML");
+    simplified_name = string_utils::replace_string(simplified_name,"SPT_COMBINED","COMB");
+
+    // Simplify general strings
+    simplified_name = string_utils::replace_string(simplified_name,"BKGNF_","");
+    simplified_name = string_utils::replace_string(simplified_name,"BKGNP_","");
+
+  return simplified_name;
+}
 
 //______________________________________________________________________________
 //
@@ -206,7 +266,10 @@ void WSConfig::dump_files(){
       //Add channel to master multifit config
       o_master_trexf_file << "Fit: \"" << channel_name << "\"" << std::endl;
       o_master_trexf_file << "ConfigFile: \"" << m_opt.output_trexf_folder + "/configFile_" + channel_name + "_" + m_opt.output_tag + ".txt" << "\"" << std::endl;
-      o_master_trexf_file << "Label: \"" << channel_name << "\"" << std::endl;
+
+      // Simplify channel name 
+      std::string simplified_channel_name = WSConfig::simplify_name(channel_name);
+      o_master_trexf_file << "Label: \"" << simplified_channel_name << "\"" << std::endl;
       o_master_trexf_file << std::endl;
 
     }
@@ -252,7 +315,16 @@ void WSConfig::dump_files(){
 	if(string_utils::contains_string(varname,"alpha_")){
 	  std::string varname_NP = string_utils::replace_string(varname,"alpha_","");
 
-	  o_channel_trexf_file << "  Systematic:    " + varname_NP << std::endl;
+    o_channel_trexf_file << "  Systematic:    " + varname_NP << std::endl;
+    
+    // Simplify NPs name for title in the plots
+    std::string simplified_varname_NP = WSConfig::simplify_name(varname_NP);
+
+    // If simplified name is different from the original name, add the original name to the title
+    if(simplified_varname_NP != varname_NP){
+      o_channel_trexf_file << "  Title:         " + simplified_varname_NP << std::endl;
+    }
+
   	  if(string_utils::contains_string(varname_NP,"JET_") || string_utils::contains_string(varname_NP,"COMB_")){
 	    o_channel_trexf_file << "  Category: Jets" << std::endl;
 	  }
@@ -291,6 +363,10 @@ void WSConfig::dump_files(){
 	}//Nuisance parameters
 	else if(string_utils::contains_string(varname,"BKGNF_")){
 	  o_channel_trexf_file << "  NormFactor:    " + varname << std::endl;
+
+    // Simplify NFs name for title in the plots
+    std::string simplified_varname = WSConfig::simplify_name(varname);
+    o_channel_trexf_file << "  Title:         " + simplified_varname << std::endl;
 	}//Background norm factors
 
 	o_channel_trexf_file << std::endl;
