@@ -42,6 +42,7 @@ public:
   //std::ifstream yaml_file (const std::string &file);
   //std::map < std::string, std::string > read_mapping( const std::ifstream &yaml_file);
   std::string simplify_name( const std::string &name );
+  std::string change_JER_name( const std::string &name, const std::string &channel_name );
 
 private:
   Options m_opt;

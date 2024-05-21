@@ -90,6 +90,21 @@ std::string WSConfig::simplify_name( const std::string &name ){
   return simplified_name;
 }
 
+// Funciton to change name of JER systematics. Arguments: name and channel name
+std::string WSConfig::change_JER_name( const std::string &name, const std::string &channel_name ){
+  std::string new_name = name;
+
+  // If channel is SPT_MONOTOP, JET_JER --> JET_FullJER
+  // If other channel, JET_JER --> JET_simpleJER
+  if(string_utils::contains_string(channel_name,"SPT_MONOTOP")){
+    new_name = string_utils::replace_string(new_name,"JET_JER","JET_FullJER");
+  } else {
+    new_name = string_utils::replace_string(new_name,"JET_JER","JET_simpleJER");
+  }
+
+  return new_name;
+}
+
 //______________________________________________________________________________
 //
 void WSConfig::init(){
@@ -230,6 +245,7 @@ void WSConfig::dump_files(){
     }
     //Getting the rename map if needed 
     std::map < std::string, std::string > rn_map;
+    messages::print_warning( __func__, __FILE__, __LINE__, "np_naming_path: "+ch.second.np_naming_path);
     if(ch.second.np_naming_path!=""){
       std::vector < std::string > rn_map_file_content;
       for( const std::string &file_name : string_utils::split_string( ch.second.np_naming_path, ',' ) ){
@@ -279,9 +295,16 @@ void WSConfig::dump_files(){
     while( (var = (RooRealVar*) it->Next()) ){
       std::string varname = (std::string) var->GetName();
       std::string repname = varname;
+      
       if(rn_map.find(varname) != rn_map.end()){
+        messages::print_warning( __func__, __FILE__, __LINE__, "Found "+varname+" in the rename map. Replacing it with "+rn_map.at(varname));
         repname = rn_map.at(varname);
       }
+      // Change names for JET JER systematics
+      if(string_utils::contains_string(repname,"JET_JER")){
+        repname = WSConfig::change_JER_name(repname, channel_name);
+      }
+      
       if(m_opt.do_config_dump){
 
 	std::string oldname = "";
@@ -295,8 +318,10 @@ void WSConfig::dump_files(){
 	//Master
 	o_master_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
+    messages::print_warning( __func__, __FILE__, __LINE__, "decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_master_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
+    messages::print_warning( __func__, __FILE__, __LINE__, "NO decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_master_file << "\"     NewName =       \"" + repname; 
 	}
 	o_master_file << "\" />" << std::endl;
@@ -304,8 +329,10 @@ void WSConfig::dump_files(){
 	//Channel
 	o_channel_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
+    messages::print_warning( __func__, __FILE__, __LINE__, "decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_channel_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
+    messages::print_warning( __func__, __FILE__, __LINE__, "NO decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_channel_file << "\"     NewName =       \"" + repname;        
 	}
 	o_channel_file << "\" />" << std::endl;
@@ -319,6 +346,11 @@ void WSConfig::dump_files(){
     
     // Simplify NPs name for title in the plots
     std::string simplified_varname_NP = WSConfig::simplify_name(varname_NP);
+
+    // Change name for JET JER systematics
+    if(string_utils::contains_string(simplified_varname_NP,"JET_JER")){
+        simplified_varname_NP = WSConfig::change_JER_name(simplified_varname_NP, channel_name);
+      }
 
     // If simplified name is different from the original name, add the original name to the title
     if(simplified_varname_NP != varname_NP){
@@ -378,6 +410,7 @@ void WSConfig::dump_files(){
     if(m_opt.do_config_dump){
       RooAbsCategoryLValue* cat = ( RooAbsCategoryLValue* ) &simPdf->indexCat();
       std::string catName = (std::string)cat->GetName();
+      messages::print_warning( __func__, __FILE__, __LINE__, "catName: "+catName);
       //Master
       o_master_file << "      <Syst OldName = \"" + catName;
       o_master_file << "\"     NewName =       \"" + channel_name + "_" + catName;
