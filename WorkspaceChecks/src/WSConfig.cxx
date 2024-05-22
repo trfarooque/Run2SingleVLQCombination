@@ -347,10 +347,10 @@ void WSConfig::dump_files(){
     // Simplify NPs name for title in the plots
     std::string simplified_varname_NP = WSConfig::simplify_name(varname_NP);
 
-    // Change name for JET JER systematics
-    if(string_utils::contains_string(simplified_varname_NP,"JET_JER")){
-        simplified_varname_NP = WSConfig::change_JER_name(simplified_varname_NP, channel_name);
-      }
+    //// Change name for JET JER systematics
+    //if(string_utils::contains_string(simplified_varname_NP,"JET_JER")){
+    //    simplified_varname_NP = WSConfig::change_JER_name(simplified_varname_NP, channel_name);
+    //  }
 
     // If simplified name is different from the original name, add the original name to the title
     if(simplified_varname_NP != varname_NP){
