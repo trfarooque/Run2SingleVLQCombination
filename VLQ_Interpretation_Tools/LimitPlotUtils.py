@@ -756,7 +756,7 @@ class LimitPlotter:
             for n,cfg in enumerate(self.configList):
                 #number of points in this graph
                 gr_len = sum( ((limitList[Mass].theoryInfo.GM<0.5) and \
-                               (Mass<=2300 or cfg!='SPT_HTZT')) for Mass in self.massList)
+                               (Mass<=2100 or cfg!='SPT_HTZT')) for Mass in self.massList)
                 print(n,cfg,' : ',gr_len)
                     
                 ###########################################################
@@ -810,7 +810,7 @@ class LimitPlotter:
                 for Mass in self.massList:
                     counter=counter+1
                     if((limitList[Mass].theoryInfo.GM>0.5) or \
-                       (Mass>2300 and cfg=='SPT_HTZT')):
+                       (Mass>2100 and cfg=='SPT_HTZT')):
                         break
 
                     norm_xsec = limitList[Mass].norm_xsec
