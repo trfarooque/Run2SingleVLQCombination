@@ -808,7 +808,7 @@ class LimitPlotter:
                 if self.drawRatio:
                     tg_ratio[n].SetLineColor(gr_cols[n])
                     tg_ratio[n].SetLineWidth(3)
-                    tg_ratio[n].SetLineStyle(2)
+                    tg_ratio[n].SetLineStyle(1) if self.drawIndObs else tg_ratio[n].SetLineStyle(2)
                     tmg_ratio.Add(tg_ratio[n], "l")
                 ###########################################################
 
