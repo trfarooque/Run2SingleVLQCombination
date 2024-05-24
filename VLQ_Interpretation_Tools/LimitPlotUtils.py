@@ -967,7 +967,7 @@ class LimitPlotter:
         
         atl_x = 0.19
         atl_y = 0.88
-        tl_list = self.SetATLASLabels(atl_x, atl_y, self.signal_label.replace("_", " "), worklabel="Internal")
+        tl_list = self.SetATLASLabels(atl_x, atl_y, "{}, #kappa={}".format(self.signal_label.replace("_", " "), _kappa), worklabel="Internal")
         for tl in tl_list:
             tl.Draw()
 
