@@ -114,11 +114,11 @@ if do1DXSecPlots:
     for _BRW in BRWList:
         for _kappa in KappaList:
             print('1D plot: k=',_kappa,' , BR=',_BRW)
-            limPlotter.Make1DLimitPlot(_kappa, _BRW,outSuffix="",labels=labels)
+            limPlotter.Make1DLimitPlot(_kappa, _BRW,outSuffix=outSuffix,labels=labels)
 
 if do2DMKContour:
     for _BRW in BRWList:
         print('2D plot: BR=',_BRW)
-        limPlotter.Make2DMassKappaPlot(_BRW,outSuffix="",labels=labels)
+        limPlotter.Make2DMassKappaPlot(_BRW,outSuffix=outSuffix,labels=labels)
 
 ##############################################################################
