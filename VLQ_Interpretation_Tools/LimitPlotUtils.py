@@ -600,7 +600,7 @@ class LimitPointInfo:
 
         if(drawExp and (self.theoryInfo.GM<=0.5)): 
             for cfg in self.cfgList:
-                if(self.mass>2300 and cfg=='SPT_HTZT'):
+                if(self.mass>2100 and cfg=='SPT_HTZT'):
                     continue
                 self.ReadExpLimits(dataTag,baseDir,cfg,useData)
         return
@@ -612,7 +612,7 @@ class LimitPointInfo:
 class LimitPlotter:
 
     def __init__(self, inputDir, outputDir, configList, massList, kappaList, BRWList,
-                 useData=True, drawTheory=True, drawExp=True, drawRatio=True, forceRanges=False,
+                 useData=True, drawTheory=True, drawExp=True, drawIndObs=False, drawRatio=True, forceRanges=False,
                  addText='',signal='',dataTag=''):
 
         self.inputDir=inputDir
@@ -636,6 +636,7 @@ class LimitPlotter:
         self.useData=useData
         self.drawTheory=drawTheory
         self.drawExp=drawExp
+        self.drawIndObs=drawIndObs
         self.drawRatio=drawRatio
         self.forceRanges=forceRanges
 
@@ -786,14 +787,22 @@ class LimitPlotter:
                         leg.AddEntry(tg_obs[n],"95% CL observed limit","l")
 
                 else:
-                    tg_exp[n].SetLineColor(gr_cols[n])
-                    tg_exp[n].SetFillColor(gr_cols[n])
-                    tg_exp[n].SetFillStyle(3005)
-                    tg_exp[n].SetLineWidth(3)
-                    tg_exp[n].SetLineStyle(2)
-                    print("Adding exp line :",n)
-                    tmg_main.Add(tg_exp[n], "l")
-                    leg.AddEntry(tg_exp[n],_labels[n],"l")
+                    if self.drawIndObs:
+                        tg_obs[n].SetLineColor(gr_cols[n])
+                        tg_obs[n].SetLineWidth(3)
+                        tg_obs[n].SetLineStyle(1)
+                        print("Adding obs line :",n)
+                        tmg_main.Add(tg_obs[n], "l")
+                        leg.AddEntry(tg_obs[n],_labels[n],"l")
+                    else:
+                        tg_exp[n].SetLineColor(gr_cols[n])
+                        tg_exp[n].SetFillColor(gr_cols[n])
+                        tg_exp[n].SetFillStyle(3005)
+                        tg_exp[n].SetLineWidth(3)
+                        tg_exp[n].SetLineStyle(2)
+                        print("Adding exp line :",n)
+                        tmg_main.Add(tg_exp[n], "l")
+                        leg.AddEntry(tg_exp[n],_labels[n],"l")
                     
 
                 if self.drawRatio:
@@ -824,8 +833,10 @@ class LimitPlotter:
                         tg_exp2s[n].SetPoint(2*gr_len-counter-1,Mass,(expInfo.expLim["exp_m2"])*norm_xsec)
                         
                     if self.drawRatio:
-                        tg_ratio[n].SetPoint(counter,Mass,tg_exp[n].Eval(Mass)
-                                             /tg_exp[0].Eval(Mass))
+                        if self.drawIndObs:
+                            tg_ratio[n].SetPoint(counter,Mass,tg_obs[n].Eval(Mass)/tg_obs[0].Eval(Mass))
+                        else:
+                            tg_ratio[n].SetPoint(counter,Mass,tg_exp[n].Eval(Mass)/tg_exp[0].Eval(Mass))
             ###########################################################
         if self.drawTheory:
             tg_theory = TGraphAsymmErrors()
