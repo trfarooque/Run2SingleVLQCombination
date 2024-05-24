@@ -978,8 +978,9 @@ class LimitPlotter:
         can.SetTickx()
         can.SetTicky()
         ROOT.gPad.Modified();ROOT.gPad.Update()
-        printName = self.outputDir + "/" + canv_name.upper()+outSuffix+".png"
-        can.SaveAs(printName)
+        printName = self.outputDir + "/" + canv_name.upper()+outSuffix
+        can.SaveAs(printName+".png")
+        can.SaveAs(printName+".pdf")
         return
 
     #............................................................
