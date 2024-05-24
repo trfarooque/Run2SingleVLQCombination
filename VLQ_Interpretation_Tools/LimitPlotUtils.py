@@ -981,6 +981,7 @@ class LimitPlotter:
         printName = self.outputDir + "/" + canv_name.upper()+outSuffix
         can.SaveAs(printName+".png")
         can.SaveAs(printName+".pdf")
+        can.SaveAs(printName+".eps")
         return
 
     #............................................................
