@@ -34,35 +34,8 @@ WSConfig::~WSConfig(){}
 //______________________________________________________________________________
 //
 
-// Read yaml config to simplify names
-
-//std::ifstream yaml_file ("../utils/simplify_names.yml");
-//
-//if (!yaml_file.is_open()) {
-//        std::cerr << "Failed to open file: " << filename << std::endl;
-//        return false;
-//}
-//
-//// Save yaml into a map
-//std::map < std::string, std::string > read_mapping( const std::ifstream &yaml_file){
-//  std::map < std::string, std::string > mapping;
-//  std::string line;
-//  while (std::getline(yaml_file, line)){
-//    std::string key = line.substr(0, line.find(":"));
-//    std::string value = line.substr(line.find(":") + 1, line.length());
-//    mapping.insert(std::pair<std::string, std::string>(key, value));
-//  }
-//}
-
 std::string WSConfig::simplify_name( const std::string &name ){
   std::string simplified_name = name;
-
-  //// Read yaml file
-  //std::map < std::string, std::string > mapping = read_mapping(yaml_file);
-  //// Simplify names
-  //if(mapping.find(name) != mapping.end()){
-  //  simplified_name = mapping.at(name);
-  //}
 
     // Simplify NP names
     simplified_name = string_utils::replace_string(simplified_name,"SPT_MONOTOP_BKGNP_VJETS_weight_muR05_muF05_to_muR2_muF2_WJETS","MONO_VJETS_weight_muRmuF_WJETS");
@@ -97,9 +70,11 @@ std::string WSConfig::change_JER_name( const std::string &name, const std::strin
   // If channel is SPT_MONOTOP, JET_JER --> JET_FullJER
   // If other channel, JET_JER --> JET_simpleJER
   if(string_utils::contains_string(channel_name,"SPT_MONOTOP")){
-    new_name = string_utils::replace_string(new_name,"JET_JER","JET_FullJER");
+    new_name = string_utils::replace_string(new_name,"JET_JER_EffectiveNP","JET_FullJER_EffectiveNP");
+    new_name = string_utils::replace_string(new_name,"JET_JER_DataVsMC_MC16","JET_FullJER_DataVsMC_MC16");
   } else {
-    new_name = string_utils::replace_string(new_name,"JET_JER","JET_simpleJER");
+    new_name = string_utils::replace_string(new_name,"JET_JER_EffectiveNP","JET_SimpleJER_EffectiveNP");
+    new_name = string_utils::replace_string(new_name,"JET_JER_DataVsMC_MC16","JET_SimpleJER_DataVsMC_MC16");
   }
 
   return new_name;
@@ -245,7 +220,6 @@ void WSConfig::dump_files(){
     }
     //Getting the rename map if needed 
     std::map < std::string, std::string > rn_map;
-    messages::print_warning( __func__, __FILE__, __LINE__, "np_naming_path: "+ch.second.np_naming_path);
     if(ch.second.np_naming_path!=""){
       std::vector < std::string > rn_map_file_content;
       for( const std::string &file_name : string_utils::split_string( ch.second.np_naming_path, ',' ) ){
@@ -301,9 +275,7 @@ void WSConfig::dump_files(){
         repname = rn_map.at(varname);
       }
       // Change names for JET JER systematics
-      if(string_utils::contains_string(repname,"JET_JER")){
-        repname = WSConfig::change_JER_name(repname, channel_name);
-      }
+      repname = WSConfig::change_JER_name(repname, channel_name);
       
       if(m_opt.do_config_dump){
 
@@ -346,11 +318,6 @@ void WSConfig::dump_files(){
     
     // Simplify NPs name for title in the plots
     std::string simplified_varname_NP = WSConfig::simplify_name(varname_NP);
-
-    //// Change name for JET JER systematics
-    //if(string_utils::contains_string(simplified_varname_NP,"JET_JER")){
-    //    simplified_varname_NP = WSConfig::change_JER_name(simplified_varname_NP, channel_name);
-    //  }
 
     // If simplified name is different from the original name, add the original name to the title
     if(simplified_varname_NP != varname_NP){
