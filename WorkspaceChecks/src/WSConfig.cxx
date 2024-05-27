@@ -290,10 +290,8 @@ void WSConfig::dump_files(){
 	//Master
 	o_master_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
-    messages::print_warning( __func__, __FILE__, __LINE__, "decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_master_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
-    messages::print_warning( __func__, __FILE__, __LINE__, "NO decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_master_file << "\"     NewName =       \"" + repname; 
 	}
 	o_master_file << "\" />" << std::endl;
@@ -301,10 +299,8 @@ void WSConfig::dump_files(){
 	//Channel
 	o_channel_file << "      <Syst OldName = \"" + oldname;
 	if(m_opt.decorr_all){
-    messages::print_warning( __func__, __FILE__, __LINE__, "decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_channel_file << "\"     NewName =       \"" + channel_name << "_" << varname;
 	} else {
-    messages::print_warning( __func__, __FILE__, __LINE__, "NO decorr_all: "+std::to_string(m_opt.decorr_all));
 	  o_channel_file << "\"     NewName =       \"" + repname;        
 	}
 	o_channel_file << "\" />" << std::endl;
