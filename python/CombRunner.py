@@ -346,9 +346,9 @@ BRWs = {}
     for (mass, kappa, brw) in product(*[masses, kappas, BRWs]):
 
         #ignore if fractional width>50%:
-        if getWidth(mass, kappa, brw) > 0.5:
-            print( "Gamma/M exceeds 50%. Skipping" )
-            continue
+        #if getWidth(mass, kappa, brw) > 0.5:
+        #    print( "Gamma/M exceeds 50%. Skipping" )
+        #    continue
 
         if use_defScaling:
             mu = getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt'])

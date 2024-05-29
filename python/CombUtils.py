@@ -18,11 +18,13 @@ def getmuScale(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
     c = vlq(mass, 'T')
     c.setKappaxi(kappa, brw, (1-brw)/2.0)
     GM = c.getGamma()/mass
+    BRs = c.getBRs()
     cw, cz, _, _ = c.getc_Vals()
     XSsum = 0.
     for mode in all_modes:
-        this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * (brw if mode[2] == 'W' else (1-brw)/2.) * \
-                  FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)/PNWA(proc=mode, mass=mass, GM=GM)
+        this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * \
+                  (BRs[0] if mode[2] == 'W' else (BRs[1] if mode[2] == 'Z' else BRs[2]) ) * \
+                  FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)[0]/PNWA(proc=mode, mass=mass, GM=GM)
         XSsum += this_xs
     return XSsum/0.1
 
@@ -38,11 +40,13 @@ def getSF(mass, kappa, brw, all_modes = ['WTZt', 'WTHt', 'ZTZt', 'ZTHt']):
     c = vlq(mass, 'T')
     c.setKappaxi(kappa, brw, (1-brw)/2.0)
     GM = c.getGamma()/mass
+    BRs = c.getBRs()
     cw, cz, _, _ = c.getc_Vals()
     XSvals = []
     XSsum = 0.
     for mode in all_modes:
-        this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * (brw if mode[2] == 'W' else (1-brw)/2.) * \
+        this_xs = XS_NWA(mass, cw if mode[0] == 'W' else cz, mode = mode[0:2]) * \
+                  (BRs[0] if mode[2] == 'W' else (BRs[1] if mode[2] == 'Z' else BRs[2]) ) * \
                   FtFactor(proc=mode, mass=mass, GM=GM, useAverageXS=True)[0]/PNWA(proc=mode, mass=mass, GM=GM)
         XSsum += this_xs
         XSvals.append(this_xs)

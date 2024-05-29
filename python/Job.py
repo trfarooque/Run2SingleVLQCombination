@@ -217,6 +217,8 @@ class JobSet:
         f.write("log                     = "+self.logDir+self.scriptName+".$(ClusterId).log \n")
         f.write("\n")
         f.write("\n")
+        if(self.platform == "lxplus"):
+            f.write("requirements = (OpSysAndVer =?= \"CentOS7\") \n")
         if(self.platform == "aglt2"):
             f.write("#Duration of job \n")
             if(self.queue.upper() == "MEDIUM"):
@@ -292,7 +294,10 @@ class JobSet:
     ##
     def submitSet(self):
         if self.batch != "pbs":
-            com="condor_submit " + self.scriptDir + "/" + self.scriptName + ".sub"
+            if(self.platform == "lxplus"):
+                com="condor_submit -spool " + self.scriptDir + "/" + self.scriptName + ".sub"
+            else:
+                com="condor_submit " + self.scriptDir + "/" + self.scriptName + ".sub"
             time.sleep(2)
             os.system(com)
         else:
