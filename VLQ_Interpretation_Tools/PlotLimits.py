@@ -40,6 +40,7 @@ parser.add_argument("--signal",help="signal interpretation. TSinglet or TDoublet
 parser.add_argument("--useData",help="consider data",action="store",default=0, type=int)
 parser.add_argument("--drawTheory",help="draw theory",action="store",default=0, type=int)
 parser.add_argument("--drawExp",help="draw expected and observed limits",action="store",default=1, type=int )
+parser.add_argument("--drawIndObs",help="draw individual observed limits",action="store",default=0, type=int )
 parser.add_argument("--forceRanges",help="force ranges",action="store",default=0, type=int)
 parser.add_argument("--drawRatio",help="make ratio panel",action="store",default=0, type=int)
 parser.add_argument("--dataTag",help="tag used in limit file (asimov, data_mu0, data_mu1,...)", default="")
@@ -85,6 +86,7 @@ BRWList = [float(w) for w in options.BRWs.strip('[]').split(',')]
 useData=options.useData
 drawTheory=options.drawTheory
 drawExp=options.drawExp
+drawIndObs=options.drawIndObs
 forceRanges=options.forceRanges
 drawRatio=options.drawRatio
 dataTag=options.dataTag
@@ -104,7 +106,7 @@ if drawRatio and not doMulti:
 #### Initialise the limit plotter
 limPlotter = LimitPlotter(inputDir, outputDir, configs, 
                             MassList, KappaList, BRWList,
-                            useData, drawTheory, drawExp, drawRatio, forceRanges,
+                            useData, drawTheory, drawExp, drawIndObs, drawRatio, forceRanges,
                             addText=addText,signal=signal,dataTag=dataTag)
 
 print("do1DXSecPlots:",do1DXSecPlots)
@@ -114,11 +116,11 @@ if do1DXSecPlots:
     for _BRW in BRWList:
         for _kappa in KappaList:
             print('1D plot: k=',_kappa,' , BR=',_BRW)
-            limPlotter.Make1DLimitPlot(_kappa, _BRW,outSuffix="",labels=labels)
+            limPlotter.Make1DLimitPlot(_kappa, _BRW,outSuffix=outSuffix,labels=labels)
 
 if do2DMKContour:
     for _BRW in BRWList:
         print('2D plot: BR=',_BRW)
-        limPlotter.Make2DMassKappaPlot(_BRW,outSuffix="",labels=labels)
+        limPlotter.Make2DMassKappaPlot(_BRW,outSuffix=outSuffix,labels=labels)
 
 ##############################################################################

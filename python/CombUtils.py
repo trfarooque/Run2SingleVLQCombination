@@ -458,6 +458,21 @@ def getTRExFFitFile(in_fname, out_fname, fromLog=True):
 
     return (getTRExFFitFileFromLog(in_fname, out_fname) if fromLog else getTRExFFitFileFromRoot(in_fname, out_fname))
 
+def change_JER_name(param_name, fname):
+    if 'SPT_MONOTOP' in fname: channel = 'SPT_MONOTOP'
+    elif 'SPT_HTZT' in fname: channel = 'SPT_HTZT'
+    elif 'SPT_OSML' in fname: channel = 'SPT_OSML'
+    else:
+        return param_name
+
+    new_name = param_name
+    if channel == 'SPT_MONOTOP':
+        new_name = param_name.replace("JET_JER_EffectiveNP","JET_FullJER_EffectiveNP").replace("JET_JER_DataVsMC_MC16","JET_FullJER_DataVsMC_MC16")
+    elif channel == 'SPT_HTZT' or channel == 'SPT_OSML':
+        new_name = param_name.replace("JET_JER_EffectiveNP","JET_SimpleJER_EffectiveNP").replace("JET_JER_DataVsMC_MC16","JET_SimpleJER_DataVsMC_MC16")
+    return new_name
+
+
 def getTRExFFitFileFromRoot(in_fname, out_fname):
 
     #extract the list of nuisance parameters and signal strength; also extract correlation matrix
@@ -470,8 +485,9 @@ def getTRExFFitFileFromRoot(in_fname, out_fname):
     outfile = open(out_fname, 'w')
     outfile.write('NUISANCE_PARAMETERS\n')
     for par in fitResult.floatParsFinal():
+        modified_name = change_JER_name(par.GetName(), out_fname)
         line = "{}  {:g} {:+.6f} {:+.6f}\n"\
-            .format(par.GetName().replace('alpha_',''),par.getValV(),par.getErrorHi(),par.getErrorLo())
+            .format(modified_name.replace('alpha_',''),par.getValV(),par.getErrorHi(),par.getErrorLo())
         outfile.write(line)
 
     outfile.write('\n\nCORRELATION_MATRIX\n')
